@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Home, Briefcase, User, Users } from 'lucide-react';
+import { Menu, X, ChevronDown, Home, Briefcase, User, Users, Sofa, Lamp } from 'lucide-react';
 import Button from '../shared/Button';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +14,8 @@ const Navbar = () => {
     { name: 'Home', path: '/', icon: <Home size={18} /> },
     { name: 'Projects', path: '/dashboard', icon: <Briefcase size={18} /> },
     { name: 'Contractors', path: '/contractors', icon: <Users size={18} /> },
+    { name: 'Furniture', path: '/furniture', icon: <Sofa size={18} /> },
+    { name: 'Finishings', path: '/finishings', icon: <Lamp size={18} /> },
   ];
 
   useEffect(() => {
