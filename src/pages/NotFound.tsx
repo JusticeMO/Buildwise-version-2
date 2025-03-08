@@ -38,13 +38,14 @@ const NotFound = () => {
             Go Back
           </Button>
           
-          <Button
-            icon={<Home size={18} />}
-            as={Link}
-            to="/"
-          >
-            Return Home
-          </Button>
+          {/* Replace the Button with as={Link} prop with a styled Link component */}
+          <Link to="/">
+            <Button
+              icon={<Home size={18} />}
+            >
+              Return Home
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
