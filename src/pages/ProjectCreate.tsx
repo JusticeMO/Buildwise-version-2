@@ -19,7 +19,9 @@ import {
   CreditCard,
   Users,
   ArrowRight,
-  ThumbsUp
+  ThumbsUp,
+  Shield,
+  Info
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

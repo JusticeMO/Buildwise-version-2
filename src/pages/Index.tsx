@@ -6,7 +6,7 @@ import HeroSection from '@/components/Home/HeroSection';
 import FeatureSection from '@/components/Home/FeatureSection';
 import TestimonialSection from '@/components/Home/TestimonialSection';
 import Button from '@/components/shared/Button';
-import { ArrowRight, DollarSign, Shield, Briefcase, CreditCard, ExternalLink } from 'lucide-react';
+import { ArrowRight, DollarSign, Shield, Briefcase, CreditCard, ExternalLink, Building2 as Building2Icon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -36,7 +36,7 @@ const Index = () => {
                 {
                   title: "Construction Loans",
                   description: "Specialized loans for new construction with flexible payment terms tailored to project milestones.",
-                  icon: <Building2 className="text-primary" size={24} />,
+                  icon: <Building2Icon className="text-primary" size={24} />,
                   features: ["Up to KES 20M", "Terms up to 15 years", "Competitive interest rates"]
                 },
                 {
@@ -106,16 +106,16 @@ const Index = () => {
                 projects back home in Kenya with complete transparency and peace of mind.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                <Button 
-                  size="lg"
-                  className="group"
-                  icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />}
-                  iconPosition="right"
-                  as={Link}
-                  to="/projects/create"
-                >
-                  Get started for free
-                </Button>
+                <Link to="/projects/create">
+                  <Button 
+                    size="lg"
+                    className="group"
+                    icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />}
+                    iconPosition="right"
+                  >
+                    Get started for free
+                  </Button>
+                </Link>
                 <Button 
                   variant="outline" 
                   size="lg"

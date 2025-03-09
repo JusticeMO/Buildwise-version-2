@@ -51,24 +51,24 @@ const HeroSection = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in stagger-2">
-          <Button 
-            size="lg"
-            className="group"
-            icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />}
-            iconPosition="right"
-            as={Link}
-            to="/projects/create"
-          >
-            Start your project
-          </Button>
-          <Button 
-            variant="outline" 
-            size="lg"
-            as={Link}
-            to="/contractors"
-          >
-            Find contractors
-          </Button>
+          <Link to="/projects/create">
+            <Button 
+              size="lg"
+              className="group"
+              icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />}
+              iconPosition="right"
+            >
+              Start your project
+            </Button>
+          </Link>
+          <Link to="/contractors">
+            <Button 
+              variant="outline" 
+              size="lg"
+            >
+              Find contractors
+            </Button>
+          </Link>
         </div>
         
         <div className="w-full max-w-4xl h-80 sm:h-96 rounded-xl glass p-2 overflow-hidden animate-fade-in stagger-3">
