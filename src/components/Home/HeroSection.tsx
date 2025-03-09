@@ -1,8 +1,9 @@
 
 import React, { useEffect, useRef } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, DollarSign, Shield } from 'lucide-react';
 import Button from '../shared/Button';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -55,12 +56,16 @@ const HeroSection = () => {
             className="group"
             icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />}
             iconPosition="right"
+            as={Link}
+            to="/projects/create"
           >
             Start your project
           </Button>
           <Button 
             variant="outline" 
             size="lg"
+            as={Link}
+            to="/contractors"
           >
             Find contractors
           </Button>
