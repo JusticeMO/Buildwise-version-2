@@ -15,91 +15,23 @@ import {
   Phone, 
   ChevronDown,
   Paintbrush,
-  Grid
+  Grid,
+  X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
-// Mock finishing suppliers data
-const mockFinishingSuppliers = [
-  {
-    id: 1,
-    name: "Superior Paint Solutions",
-    rating: 4.9,
-    reviewCount: 68,
-    verified: true,
-    specialization: ["Interior Painting", "Exterior Painting"],
-    location: "Nairobi",
-    description: "Premium painting services using high-quality, eco-friendly paints with expert application techniques for lasting, beautiful finishes.",
-    completedProjects: 124,
-    featuredProject: "Luxury Residential Complex, Karen",
-    contactPhone: "+254 712 345 678"
-  },
-  {
-    id: 2,
-    name: "Elegant Tile Works",
-    rating: 4.8,
-    reviewCount: 55,
-    verified: true,
-    specialization: ["Ceramic Tiles", "Porcelain Flooring"],
-    location: "Mombasa",
-    description: "Specialized in imported and local tile installation with precise workmanship and creative design solutions for all spaces.",
-    completedProjects: 93,
-    featuredProject: "Five-Star Hotel Renovation, Nyali",
-    contactPhone: "+254 723 456 789"
-  },
-  {
-    id: 3,
-    name: "Luminous Lighting Kenya",
-    rating: 4.7,
-    reviewCount: 42,
-    verified: true,
-    specialization: ["Lighting Design", "Light Fixtures"],
-    location: "Nairobi",
-    description: "Comprehensive lighting solutions with a focus on energy-efficient designs, mood lighting, and statement fixtures for residential and commercial spaces.",
-    completedProjects: 78,
-    featuredProject: "Corporate Headquarters, Westlands",
-    contactPhone: "+254 734 567 890"
-  },
-  {
-    id: 4,
-    name: "Woodwork Finishers",
-    rating: 4.9,
-    reviewCount: 49,
-    verified: true,
-    specialization: ["Wood Staining", "Varnishing"],
-    location: "Nakuru",
-    description: "Expert wood finishing services bringing out the natural beauty of wooden surfaces with traditional and modern techniques.",
-    completedProjects: 86,
-    featuredProject: "Heritage Building Restoration, CBD",
-    contactPhone: "+254 745 678 901"
-  },
-  {
-    id: 5,
-    name: "Luxe Wall Coverings",
-    rating: 4.8,
-    reviewCount: 39,
-    verified: true,
-    specialization: ["Wallpaper", "Decorative Panels"],
-    location: "Nairobi",
-    description: "Premium wall finishing solutions including imported wallpapers, textured finishes, and decorative wall panels for distinctive interiors.",
-    completedProjects: 64,
-    featuredProject: "Boutique Hotel, Gigiri",
-    contactPhone: "+254 756 789 012"
-  },
-  {
-    id: 6,
-    name: "Stone & Marble Experts",
-    rating: 4.6,
-    reviewCount: 33,
-    verified: true,
-    specialization: ["Natural Stone", "Marble Installation"],
-    location: "Kisumu",
-    description: "Specialized in sourcing and installing premium natural stone and marble with expert craftsmanship for countertops, floors and decorative elements.",
-    completedProjects: 57,
-    featuredProject: "Luxury Residential Kitchen Renovation, Runda",
-    contactPhone: "+254 767 890 123"
-  }
-];
+// Import data for finishing suppliers
+import { mockFinishingSuppliers, getUniqueLocations, getUniqueSpecializations } from '@/data/finishingSuppliers';
 
 // Star rating component
 const StarRating = ({ rating }: { rating: number }) => {
@@ -121,8 +53,14 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 // Specialization tag component
-const SpecializationTag = ({ label }: { label: string }) => (
-  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+const SpecializationTag = ({ label, onClick }: { label: string, onClick?: () => void }) => (
+  <span 
+    className={cn(
+      "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground",
+      onClick && "cursor-pointer hover:bg-primary/10 transition-colors"
+    )}
+    onClick={onClick}
+  >
     {label}
   </span>
 );
@@ -144,10 +82,109 @@ const FinishingIcon = ({ category }: { category: string }) => {
   }
 };
 
+const ContactModal = ({ isOpen, onClose, supplier }: { 
+  isOpen: boolean, 
+  onClose: () => void, 
+  supplier: any 
+}) => {
+  const { toast } = useToast();
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (!supplier) return null;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast({
+        title: "Message sent successfully",
+        description: `Your message has been sent to ${supplier.name}. They will contact you shortly.`,
+      });
+      setMessage('');
+      onClose();
+    }, 1000);
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-xl">Contact {supplier.name}</DialogTitle>
+        </DialogHeader>
+        
+        <div className="py-4">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-primary/10 p-2 rounded-full">
+                <Phone size={20} className="text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Phone Number</p>
+                <p className="font-medium">{supplier.contactPhone}</p>
+              </div>
+            </div>
+            
+            <div className="border-t pt-4">
+              <h3 className="font-medium mb-2">Send a message</h3>
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-3">
+                  <div>
+                    <label htmlFor="message" className="text-sm text-muted-foreground">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      className="w-full p-2 border rounded-md h-24 focus:ring-1 focus:ring-primary"
+                      placeholder={`Hello, I'm interested in your services for my project...`}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="pt-2">
+                    <Button
+                      type="submit"
+                      icon={<Phone size={16} />}
+                      className="w-full"
+                      isLoading={isSubmitting}
+                    >
+                      Send Message
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const Finishings = () => {
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
   const [specializationFilter, setSpecializationFilter] = useState<string | null>(null);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<any>(null);
+  
+  // Get unique locations and specializations
+  const locations = getUniqueLocations();
+  const specializations = getUniqueSpecializations();
   
   // Filter suppliers based on search term and filters
   const filteredSuppliers = mockFinishingSuppliers.filter(supplier => {
@@ -157,6 +194,19 @@ const Finishings = () => {
       supplier.specialization.includes(specializationFilter) : true;
     return matchesSearch && matchesLocation && matchesSpecialization;
   });
+  
+  // Handle contact click
+  const handleContactClick = (supplier: any) => {
+    setSelectedSupplier(supplier);
+    setContactModalOpen(true);
+    
+    // Track engagement
+    toast({
+      title: `Contacting ${supplier.name}`,
+      description: "Opening contact options...",
+      duration: 2000,
+    });
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -189,31 +239,98 @@ const Finishings = () => {
               </div>
               
               <div className="flex gap-2 flex-wrap md:flex-nowrap">
-                <div className="relative">
-                  <button 
-                    className="px-4 py-2 border rounded-lg inline-flex items-center gap-2 bg-background hover:bg-accent transition-colors duration-200"
-                  >
-                    <MapPin size={18} />
-                    <span>Location</span>
-                    <ChevronDown size={16} />
-                  </button>
-                </div>
+                {/* Location Filter */}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button 
+                      className="px-4 py-2 border rounded-lg inline-flex items-center gap-2 bg-background hover:bg-accent transition-colors duration-200"
+                    >
+                      <MapPin size={18} />
+                      <span>{locationFilter || "Location"}</span>
+                      <ChevronDown size={16} />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-64 p-0">
+                    <div className="p-2">
+                      <div className="space-y-1">
+                        {locationFilter && (
+                          <button
+                            onClick={() => setLocationFilter(null)}
+                            className="flex items-center justify-between w-full px-2 py-1.5 text-sm rounded hover:bg-accent"
+                          >
+                            <span>Clear filter</span>
+                            <X size={14} />
+                          </button>
+                        )}
+                        {locations.map((location) => (
+                          <button
+                            key={location}
+                            onClick={() => setLocationFilter(location)}
+                            className={cn(
+                              "flex items-center w-full px-2 py-1.5 text-sm rounded hover:bg-accent",
+                              locationFilter === location && "bg-primary/10"
+                            )}
+                          >
+                            <MapPin size={14} className="mr-2" />
+                            {location}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 
-                <div className="relative">
-                  <button 
-                    className="px-4 py-2 border rounded-lg inline-flex items-center gap-2 bg-background hover:bg-accent transition-colors duration-200"
-                  >
-                    <Paintbrush size={18} />
-                    <span>Specialization</span>
-                    <ChevronDown size={16} />
-                  </button>
-                </div>
+                {/* Specialization Filter */}
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button 
+                      className="px-4 py-2 border rounded-lg inline-flex items-center gap-2 bg-background hover:bg-accent transition-colors duration-200"
+                    >
+                      <Paintbrush size={18} />
+                      <span>{specializationFilter || "Specialization"}</span>
+                      <ChevronDown size={16} />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-64 p-0">
+                    <div className="p-2">
+                      <div className="space-y-1">
+                        {specializationFilter && (
+                          <button
+                            onClick={() => setSpecializationFilter(null)}
+                            className="flex items-center justify-between w-full px-2 py-1.5 text-sm rounded hover:bg-accent"
+                          >
+                            <span>Clear filter</span>
+                            <X size={14} />
+                          </button>
+                        )}
+                        {specializations.map((specialization) => (
+                          <button
+                            key={specialization}
+                            onClick={() => setSpecializationFilter(specialization)}
+                            className={cn(
+                              "flex items-center w-full px-2 py-1.5 text-sm rounded hover:bg-accent",
+                              specializationFilter === specialization && "bg-primary/10"
+                            )}
+                          >
+                            <Paintbrush size={14} className="mr-2" />
+                            {specialization}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 
                 <Button
                   variant="outline"
                   icon={<Filter size={18} />}
+                  onClick={() => {
+                    setLocationFilter(null);
+                    setSpecializationFilter(null);
+                    setSearchTerm('');
+                  }}
                 >
-                  More Filters
+                  Clear Filters
                 </Button>
               </div>
             </div>
@@ -260,6 +377,7 @@ const Finishings = () => {
                             variant="outline"
                             icon={<Phone size={16} />}
                             className="shrink-0"
+                            onClick={() => handleContactClick(supplier)}
                           >
                             Contact
                           </Button>
@@ -267,9 +385,16 @@ const Finishings = () => {
                         
                         <div className="flex flex-wrap gap-2 mb-3">
                           {supplier.specialization.map((spec, index) => (
-                            <SpecializationTag key={index} label={spec} />
+                            <SpecializationTag 
+                              key={index} 
+                              label={spec} 
+                              onClick={() => setSpecializationFilter(spec)}
+                            />
                           ))}
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <div 
+                            className="flex items-center gap-1 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
+                            onClick={() => setLocationFilter(supplier.location)}
+                          >
                             <MapPin size={14} />
                             <span>{supplier.location}</span>
                           </div>
@@ -312,6 +437,13 @@ const Finishings = () => {
           </div>
         </div>
       </main>
+      
+      {/* Contact Modal */}
+      <ContactModal 
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        supplier={selectedSupplier}
+      />
       
       <Footer />
     </div>
