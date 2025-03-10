@@ -4,7 +4,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Card from '@/components/shared/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, Sofa } from 'lucide-react';
+import { Building, Sofa, Send, Users } from 'lucide-react';
 import Button from '@/components/shared/Button';
 import { useToast } from '@/hooks/use-toast';
 
@@ -13,6 +13,7 @@ import ContractorCard from '@/components/contractors/ContractorCard';
 import SupplierCard from '@/components/contractors/SupplierCard';
 import SearchFilters from '@/components/contractors/SearchFilters';
 import ContactModal from '@/components/contractors/ContactModal';
+import MultiSelectActionBar from '@/components/contractors/MultiSelectActionBar';
 
 // Import data and types
 import { mockContractors, getUniqueLocations as getContractorLocations, getUniqueSpecializations as getContractorSpecializations } from '@/data/contractors';
@@ -28,6 +29,10 @@ const Contractors = () => {
   const [activeTab, setActiveTab] = useState<string>("contractors");
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState<Contractor | Supplier | null>(null);
+  
+  // Add state for multi-select contractors
+  const [selectedContractors, setSelectedContractors] = useState<number[]>([]);
+  const [multiSelectMode, setMultiSelectMode] = useState(false);
   
   // Get unique locations and specializations based on active tab
   const locations = activeTab === 'contractors' 
@@ -45,8 +50,13 @@ const Contractors = () => {
     setSearchTerm('');
   };
   
-  // Open contact modal for contractor
+  // Open contact modal for a single contractor
   const handleContactClick = (entity: Contractor | Supplier) => {
+    if (multiSelectMode) {
+      handleContractorSelection('contractor' in entity ? entity.id : entity.id);
+      return;
+    }
+    
     setSelectedEntity(entity);
     setContactModalOpen(true);
     
@@ -56,6 +66,53 @@ const Contractors = () => {
       description: "Opening contact options...",
       duration: 2000,
     });
+  };
+  
+  // Handle contractor selection for multi-select
+  const handleContractorSelection = (contractorId: number) => {
+    setSelectedContractors(prev => {
+      if (prev.includes(contractorId)) {
+        return prev.filter(id => id !== contractorId);
+      } else {
+        return [...prev, contractorId];
+      }
+    });
+  };
+  
+  // Toggle multi-select mode
+  const toggleMultiSelectMode = () => {
+    setMultiSelectMode(prev => !prev);
+    if (multiSelectMode) {
+      setSelectedContractors([]);
+    }
+  };
+  
+  // Request quotes from multiple contractors
+  const requestMultipleQuotes = () => {
+    if (selectedContractors.length === 0) {
+      toast({
+        title: "No contractors selected",
+        description: "Please select at least one contractor to request quotes.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    const selectedNames = selectedContractors.map(id => {
+      const contractor = mockContractors.find(c => c.id === id);
+      return contractor ? contractor.name : '';
+    }).filter(Boolean).join(", ");
+    
+    toast({
+      title: "Quote requests sent!",
+      description: `Quote requests have been sent to ${selectedContractors.length} contractors: ${selectedNames}`,
+      duration: 3000,
+    });
+    
+    // Reset selection
+    setSelectedContractors([]);
+    setMultiSelectMode(false);
   };
   
   // Filter contractors based on search term and filters
@@ -80,6 +137,11 @@ const Contractors = () => {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
     clearFilters();
+    // Exit multi-select mode when changing tabs
+    if (multiSelectMode) {
+      setMultiSelectMode(false);
+      setSelectedContractors([]);
+    }
   };
   
   return (
@@ -109,6 +171,20 @@ const Contractors = () => {
               </TabsList>
             </div>
             
+            {/* Multi-select toggle for contractors tab */}
+            {activeTab === 'contractors' && (
+              <div className="flex justify-end mb-4">
+                <Button
+                  variant={multiSelectMode ? "default" : "outline"}
+                  size="sm"
+                  onClick={toggleMultiSelectMode}
+                  icon={<Users size={16} />}
+                >
+                  {multiSelectMode ? "Exit Selection Mode" : "Select Multiple Contractors"}
+                </Button>
+              </div>
+            )}
+            
             {/* Search and Filters */}
             <SearchFilters 
               searchTerm={searchTerm}
@@ -132,6 +208,9 @@ const Contractors = () => {
                       key={contractor.id}
                       contractor={contractor}
                       onContactClick={handleContactClick}
+                      isSelected={selectedContractors.includes(contractor.id)}
+                      selectable={multiSelectMode}
+                      onSelect={() => handleContractorSelection(contractor.id)}
                     />
                   ))
                 ) : (
@@ -182,6 +261,15 @@ const Contractors = () => {
         onClose={() => setContactModalOpen(false)}
         entity={selectedEntity}
       />
+      
+      {/* Multi-select Action Bar */}
+      {multiSelectMode && selectedContractors.length > 0 && (
+        <MultiSelectActionBar
+          selectedCount={selectedContractors.length}
+          onRequestQuotes={requestMultipleQuotes}
+          onClear={() => setSelectedContractors([])}
+        />
+      )}
       
       <Footer />
     </div>

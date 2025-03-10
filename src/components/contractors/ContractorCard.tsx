@@ -1,14 +1,18 @@
 
 import React from 'react';
-import { Phone, Check, MapPin, Award, Star } from 'lucide-react';
+import { Phone, Check, MapPin, Award, Star, Users } from 'lucide-react';
 import Card from '@/components/shared/Card';
 import Button from '@/components/shared/Button';
 import { useToast } from '@/hooks/use-toast';
 import { Contractor } from '@/types/contractor';
+import { cn } from '@/lib/utils';
 
 interface ContractorCardProps {
   contractor: Contractor;
   onContactClick: (contractor: Contractor) => void;
+  isSelected?: boolean;
+  selectable?: boolean;
+  onSelect?: () => void;
 }
 
 // Star rating component
@@ -37,11 +41,20 @@ const SpecializationTag = ({ label }: { label: string }) => (
   </span>
 );
 
-const ContractorCard: React.FC<ContractorCardProps> = ({ contractor, onContactClick }) => {
+const ContractorCard: React.FC<ContractorCardProps> = ({ 
+  contractor, 
+  onContactClick, 
+  isSelected = false,
+  selectable = false,
+  onSelect
+}) => {
   return (
     <Card 
       variant="outline" 
-      className="overflow-hidden animate-fade-in"
+      className={cn(
+        "overflow-hidden animate-fade-in",
+        isSelected && "border-primary border-2"
+      )}
       withHover
       padding="none"
     >
@@ -73,15 +86,33 @@ const ContractorCard: React.FC<ContractorCardProps> = ({ contractor, onContactCl
                   </span>
                 </div>
               </div>
-              <Button 
-                size="sm"
-                variant="outline"
-                icon={<Phone size={16} />}
-                className="shrink-0"
-                onClick={() => onContactClick(contractor)}
-              >
-                Contact
-              </Button>
+              <div className="flex gap-2">
+                {selectable && (
+                  <Button 
+                    size="sm"
+                    variant={isSelected ? "default" : "outline"}
+                    className="shrink-0"
+                    onClick={onSelect}
+                  >
+                    {isSelected ? (
+                      <>
+                        <Check size={16} className="mr-1" /> Selected
+                      </>
+                    ) : (
+                      "Select"
+                    )}
+                  </Button>
+                )}
+                <Button 
+                  size="sm"
+                  variant="outline"
+                  icon={<Phone size={16} />}
+                  className="shrink-0"
+                  onClick={() => onContactClick(contractor)}
+                >
+                  Contact
+                </Button>
+              </div>
             </div>
             
             <div className="flex flex-wrap gap-2 mb-3">
