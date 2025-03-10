@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useUser, SignIn } from '@clerk/clerk-react';
 import Navbar from '@/components/layout/Navbar';
@@ -256,19 +257,18 @@ const VendorApplication = () => {
                           contractTerm === term 
                             ? "bg-primary text-primary-foreground" 
                             : "hover:bg-muted"
-                          )}
-                          onClick={() => setContractTerm(term)}
-                        >
-                          {term} {term === 1 ? 'Year' : 'Years'}
-                        </button>
-                      ))}
-                    </div>
-                    {contractTerm > 1 && (
-                      <p className="text-xs text-green-600 mt-1">
-                        {contractTerm === 2 ? '5% discount' : '10% discount'} for {contractTerm}-year contract
-                      </p>
-                    )}
+                        )}
+                        onClick={() => setContractTerm(term)}
+                      >
+                        {term} {term === 1 ? 'Year' : 'Years'}
+                      </button>
+                    ))}
                   </div>
+                  {contractTerm > 1 && (
+                    <p className="text-xs text-green-600 mt-1">
+                      {contractTerm === 2 ? '5% discount' : '10% discount'} for {contractTerm}-year contract
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
