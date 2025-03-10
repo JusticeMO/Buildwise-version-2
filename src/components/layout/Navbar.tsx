@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Home, Briefcase, User, Users, Sofa, Lamp } from 'lucide-react';
-import { useUser, useClerk, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
 import Button from '../shared/Button';
 import { cn } from '@/lib/utils';
 
@@ -10,8 +9,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { isSignedIn, user } = useUser();
-  const { signOut } = useClerk();
 
   const navLinks = [
     { name: 'Home', path: '/', icon: <Home size={18} /> },
@@ -84,28 +81,14 @@ const Navbar = () => {
                 For Businesses
               </Button>
             </NavLink>
-            
-            {isSignedIn ? (
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-medium">{user.firstName}</span>
-                <UserButton afterSignOutUrl="/" />
-              </div>
-            ) : (
-              <>
-                <SignInButton mode="modal">
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="font-medium"
-                  >
-                    Log in
-                  </Button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <Button size="sm">Sign up</Button>
-                </SignUpButton>
-              </>
-            )}
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="font-medium"
+            >
+              Log in
+            </Button>
+            <Button size="sm">Sign up</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -149,36 +132,15 @@ const Navbar = () => {
             >
               For Businesses
             </NavLink>
-            
-            {isSignedIn ? (
-              <div className="pt-2 mt-2 border-t flex flex-col gap-3">
-                <div className="flex items-center gap-3 px-4 py-2">
-                  <UserButton />
-                  <span className="font-medium">{user.firstName} {user.lastName}</span>
-                </div>
-                <Button 
-                  variant="outline"
-                  fullWidth
-                  onClick={() => signOut()}
-                >
-                  Log out
-                </Button>
-              </div>
-            ) : (
-              <div className="pt-2 mt-2 border-t grid grid-cols-2 gap-2">
-                <SignInButton mode="modal">
-                  <Button 
-                    variant="outline" 
-                    fullWidth
-                  >
-                    Log in
-                  </Button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <Button fullWidth>Sign up</Button>
-                </SignUpButton>
-              </div>
-            )}
+            <div className="pt-2 mt-2 border-t grid grid-cols-2 gap-2">
+              <Button 
+                variant="outline" 
+                fullWidth
+              >
+                Log in
+              </Button>
+              <Button fullWidth>Sign up</Button>
+            </div>
           </div>
         </div>
       </div>
