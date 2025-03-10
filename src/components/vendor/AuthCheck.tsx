@@ -17,7 +17,7 @@ const AuthCheck: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="p-6" id="sign-in-button">
+      <div className="p-6">
         <SignIn redirectUrl="/vendor-application" />
       </div>
     </div>
