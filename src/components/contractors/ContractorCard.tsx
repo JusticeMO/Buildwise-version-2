@@ -90,7 +90,7 @@ const ContractorCard: React.FC<ContractorCardProps> = ({
                 {selectable && (
                   <Button 
                     size="sm"
-                    variant={isSelected ? "default" : "outline"}
+                    variant={isSelected ? "primary" : "outline"}
                     className="shrink-0"
                     onClick={onSelect}
                   >

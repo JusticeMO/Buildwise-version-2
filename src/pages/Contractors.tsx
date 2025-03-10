@@ -175,7 +175,7 @@ const Contractors = () => {
             {activeTab === 'contractors' && (
               <div className="flex justify-end mb-4">
                 <Button
-                  variant={multiSelectMode ? "default" : "outline"}
+                  variant={multiSelectMode ? "primary" : "outline"}
                   size="sm"
                   onClick={toggleMultiSelectMode}
                   icon={<Users size={16} />}
