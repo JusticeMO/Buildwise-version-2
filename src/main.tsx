@@ -6,7 +6,12 @@ import App from './App';
 import './index.css';
 
 // Get the publishable key from the environment variable
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_placeholder_key';
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+// Check that the key exists
+if (!PUBLISHABLE_KEY) {
+  throw new Error('Missing Clerk Publishable Key');
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
