@@ -72,6 +72,15 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <NavLink to="/vendor-application">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="font-medium"
+              >
+                For Businesses
+              </Button>
+            </NavLink>
             <Button 
               variant="ghost" 
               size="sm"
@@ -117,6 +126,12 @@ const Navbar = () => {
                 {link.name}
               </NavLink>
             ))}
+            <NavLink 
+              to="/vendor-application"
+              className="px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium bg-secondary hover:bg-secondary/80 smooth-transition"
+            >
+              For Businesses
+            </NavLink>
             <div className="pt-2 mt-2 border-t grid grid-cols-2 gap-2">
               <Button 
                 variant="outline" 
