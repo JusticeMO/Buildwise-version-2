@@ -27,11 +27,11 @@ const FAQSection = () => {
     },
     {
       question: 'How do I receive inquiries from clients?',
-      answer: 'When a client is interested in your services, they can contact you directly through your profile page or request a quote. You'll receive notifications via email and on your BuildWise dashboard.'
+      answer: "When a client is interested in your services, they can contact you directly through your profile page or request a quote. You'll receive notifications via email and on your BuildWise dashboard."
     },
     {
       question: 'Is there a limit to how many inquiries I can receive?',
-      answer: 'No, there's no limit to the number of inquiries you can receive. Our goal is to connect you with as many potential clients as possible.'
+      answer: "No, there's no limit to the number of inquiries you can receive. Our goal is to connect you with as many potential clients as possible."
     }
   ];
 
