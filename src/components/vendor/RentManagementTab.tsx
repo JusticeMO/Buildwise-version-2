@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Bell, CreditCard, PieChart, FileText, Calendar, ChevronRight, Building2, CheckCircle } from 'lucide-react';
-import { DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import Button from '@/components/shared/Button';
 import FeatureListItem from './FeatureListItem';
 
@@ -36,12 +36,14 @@ const RentManagementTab = ({ features, onOpenDialog }: RentManagementTabProps) =
           ))}
         </ul>
         
-        <DialogTrigger asChild onClick={onOpenDialog}>
-          <Button size="lg" className="mt-4">
-            Explore Rent Management
-            <ChevronRight size={16} />
-          </Button>
-        </DialogTrigger>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="lg" className="mt-4" onClick={onOpenDialog}>
+              Explore Rent Management
+              <ChevronRight size={16} />
+            </Button>
+          </DialogTrigger>
+        </Dialog>
       </div>
       
       <div className="bg-muted rounded-lg p-6 relative overflow-hidden">
