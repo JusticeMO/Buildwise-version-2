@@ -15,6 +15,7 @@ import PricingTiersSection from '@/components/vendor/PricingTiersSection';
 import KeyBenefits from '@/components/vendor/KeyBenefits';
 import BillingOptions from '@/components/vendor/BillingOptions';
 import FAQSection from '@/components/vendor/FAQSection';
+import ECaretakerSection from '@/components/vendor/ECaretakerSection';
 
 const VendorApplication = () => {
   const { toast } = useToast();
@@ -186,6 +187,9 @@ const VendorApplication = () => {
         
         {/* Benefits Section */}
         <KeyBenefits />
+        
+        {/* E-Caretaker Section */}
+        <ECaretakerSection />
         
         {/* Pricing Section */}
         <PricingTiersSection 
