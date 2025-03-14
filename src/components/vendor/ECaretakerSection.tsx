@@ -1,10 +1,42 @@
-
-import React from 'react';
-import { Building2, BadgeDollarSign, Wrench, Users, BarChart3, Shield, CreditCard, MessageSquare } from 'lucide-react';
+import React, { useState } from 'react';
+import { Building2, BadgeDollarSign, Wrench, Users, BarChart3, Shield, CreditCard, MessageSquare, Calendar, Bell, FileText, ChevronRight, PieChart, CheckCircle } from 'lucide-react';
 import Button from '@/components/shared/Button';
 import Card from '@/components/shared/Card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const ECaretakerSection = () => {
+  const [activeFeature, setActiveFeature] = useState('rent');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const rentFeatures = [
+    {
+      title: "Automated Reminders",
+      description: "Customizable rent reminders sent via SMS, email, or app notifications to reduce late payments.",
+      icon: <Bell className="text-primary" size={20} />
+    },
+    {
+      title: "Flexible Payment Options",
+      description: "Accept M-Pesa, bank transfers, cards, and more with automatic reconciliation.",
+      icon: <CreditCard className="text-primary" size={20} />
+    },
+    {
+      title: "Payment Tracking",
+      description: "Real-time dashboard showing paid, pending, and overdue rent payments across all units.",
+      icon: <PieChart className="text-primary" size={20} />
+    },
+    {
+      title: "Digital Receipts",
+      description: "Automatic generation and distribution of rent receipts to tenants via email or SMS.",
+      icon: <FileText className="text-primary" size={20} />
+    },
+    {
+      title: "Payment Plans",
+      description: "Create custom payment plans for tenants needing flexible arrangements.",
+      icon: <Calendar className="text-primary" size={20} />
+    }
+  ];
+
   return (
     <section className="py-20 bg-white">
       <div className="container px-4">
@@ -18,55 +50,112 @@ const ECaretakerSection = () => {
           </p>
         </div>
 
-        {/* Core Features */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {[
-            {
-              title: "Rent Management",
-              description: "Automated rent reminders, customizable payment schedules, and secure transaction processing.",
-              icon: <BadgeDollarSign className="h-6 w-6 text-primary" />,
-              features: ["Automated reminders", "Secure payments", "Financial integration"]
-            },
-            {
-              title: "Maintenance Coordination",
-              description: "AI-driven alerts for routine repairs with direct access to verified professionals from our marketplace.",
-              icon: <Wrench className="h-6 w-6 text-primary" />,
-              features: ["Proactive alerts", "Verified professionals", "Repair tracking"]
-            },
-            {
-              title: "Tenant Community Hub",
-              description: "Moderated forum for tenants to communicate, resolve issues, and collaborate on building decisions.",
-              icon: <Users className="h-6 w-6 text-primary" />,
-              features: ["Community forums", "Transparent communication", "Building updates"]
-            },
-            {
-              title: "Occupancy Analytics",
-              description: "Real-time dashboards to track vacancy rates, lease statuses, and revenue trends for informed decisions.",
-              icon: <BarChart3 className="h-6 w-6 text-primary" />,
-              features: ["Real-time insights", "Customizable reports", "Revenue tracking"]
-            }
-          ].map((feature, index) => (
-            <Card 
-              key={index} 
-              className="flex flex-col hover:shadow-md transition-shadow"
-              padding="lg"
-            >
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                {feature.icon}
+        {/* Feature Tabs */}
+        <Tabs defaultValue="rent" className="w-full mb-16" onValueChange={setActiveFeature}>
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-8">
+            <TabsTrigger value="rent" className="flex items-center justify-center gap-2 py-3">
+              <BadgeDollarSign size={18} />
+              <span>Rent Management</span>
+            </TabsTrigger>
+            <TabsTrigger value="maintenance" className="flex items-center justify-center gap-2 py-3">
+              <Wrench size={18} />
+              <span>Maintenance</span>
+            </TabsTrigger>
+            <TabsTrigger value="community" className="flex items-center justify-center gap-2 py-3">
+              <Users size={18} />
+              <span>Tenant Community</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center justify-center gap-2 py-3">
+              <BarChart3 size={18} />
+              <span>Analytics</span>
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Rent Management Content */}
+          <TabsContent value="rent" className="p-0">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 className="text-2xl font-bold mb-4">Streamlined Rent Collection & Management</h3>
+                <p className="text-muted-foreground mb-6">
+                  Our comprehensive rent management system eliminates payment headaches with automated reminders, flexible payment options, and real-time tracking—all accessible from any device.
+                </p>
+                
+                <ul className="space-y-4 mb-6">
+                  {rentFeatures.map((feature, idx) => (
+                    <li key={idx} className="flex gap-3 items-start">
+                      <div className="mt-1">{feature.icon}</div>
+                      <div>
+                        <h4 className="font-medium">{feature.title}</h4>
+                        <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                
+                <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
+                  <Button size="lg" className="mt-4">
+                    Explore Rent Management
+                    <ChevronRight size={16} />
+                  </Button>
+                </DialogTrigger>
               </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground mb-4 flex-grow">{feature.description}</p>
-              <ul className="space-y-2">
-                {feature.features.map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm">
-                    <Shield size={16} className="text-primary" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-          ))}
-        </div>
+              
+              <div className="bg-muted rounded-lg p-6 relative overflow-hidden">
+                <div className="bg-background rounded-lg shadow-lg p-5 border">
+                  <h4 className="font-medium mb-4">Rent Collection Overview</h4>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-secondary/30 rounded">
+                      <div>
+                        <p className="font-medium">Total Units</p>
+                        <p className="text-2xl font-bold">24</p>
+                      </div>
+                      <Building2 size={24} className="text-primary" />
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-emerald-50 rounded">
+                      <div>
+                        <p className="font-medium text-emerald-800">Paid</p>
+                        <p className="text-2xl font-bold text-emerald-600">20</p>
+                      </div>
+                      <CheckCircle size={24} className="text-emerald-600" />
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-amber-50 rounded">
+                      <div>
+                        <p className="font-medium text-amber-800">Pending</p>
+                        <p className="text-2xl font-bold text-amber-600">4</p>
+                      </div>
+                      <Calendar size={24} className="text-amber-600" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Placeholder content for other tabs */}
+          <TabsContent value="maintenance">
+            <div className="text-center py-12">
+              <Wrench size={48} className="mx-auto text-primary mb-4" />
+              <h3 className="text-2xl font-bold mb-2">Maintenance Management</h3>
+              <p className="text-muted-foreground">Coming soon! Track and manage property maintenance with ease.</p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="community">
+            <div className="text-center py-12">
+              <Users size={48} className="mx-auto text-primary mb-4" />
+              <h3 className="text-2xl font-bold mb-2">Tenant Community Hub</h3>
+              <p className="text-muted-foreground">Coming soon! Build stronger relationships with your tenants.</p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <div className="text-center py-12">
+              <BarChart3 size={48} className="mx-auto text-primary mb-4" />
+              <h3 className="text-2xl font-bold mb-2">Analytics Dashboard</h3>
+              <p className="text-muted-foreground">Coming soon! Get insights into your property performance.</p>
+            </div>
+          </TabsContent>
+        </Tabs>
 
         {/* Benefit Columns */}
         <div className="grid md:grid-cols-2 gap-10 mb-16">
@@ -196,6 +285,36 @@ const ECaretakerSection = () => {
             <Button variant="outline" size="lg">View Pricing</Button>
           </div>
         </div>
+
+        {/* Feature Demo Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="sm:max-w-xl">
+            <DialogHeader>
+              <DialogTitle>Rent Management Features</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-6">
+              <div className="space-y-4">
+                <h4 className="font-medium">Key Features:</h4>
+                <div className="grid gap-4">
+                  {rentFeatures.map((feature, idx) => (
+                    <Card key={idx} className="p-4">
+                      <div className="flex gap-3">
+                        {feature.icon}
+                        <div>
+                          <h5 className="font-medium">{feature.title}</h5>
+                          <p className="text-sm text-muted-foreground">{feature.description}</p>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+              <Button onClick={() => setIsDialogOpen(false)}>
+                Close Preview
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
