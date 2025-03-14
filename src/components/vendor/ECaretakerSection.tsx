@@ -1,9 +1,14 @@
+
 import React, { useState } from 'react';
-import { Building2, BadgeDollarSign, Wrench, Users, BarChart3, Shield, CreditCard, MessageSquare, Calendar, Bell, FileText, ChevronRight, PieChart, CheckCircle } from 'lucide-react';
-import Button from '@/components/shared/Button';
-import Card from '@/components/shared/Card';
+import { Building2, BadgeDollarSign, Wrench, Users, BarChart3, Bell, CreditCard, PieChart, FileText, Calendar } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
+import Button from '@/components/shared/Button';
+import BenefitColumn from './BenefitColumn';
+import RentManagementTab from './RentManagementTab';
+import PlaceholderTab from './PlaceholderTab';
+import DashboardPreview from './DashboardPreview';
+import FeatureDialog from './FeatureDialog';
 
 const ECaretakerSection = () => {
   const [activeFeature, setActiveFeature] = useState('rent');
@@ -34,6 +39,42 @@ const ECaretakerSection = () => {
       title: "Payment Plans",
       description: "Create custom payment plans for tenants needing flexible arrangements.",
       icon: <Calendar className="text-primary" size={20} />
+    }
+  ];
+
+  const propertyOwnerBenefits = [
+    {
+      number: 1,
+      title: "Reduce administrative workload by 50%+",
+      description: "Automate repetitive tasks and focus on growing your property portfolio"
+    },
+    {
+      number: 2,
+      title: "Improve tenant retention",
+      description: "Build stronger relationships through transparent communication"
+    },
+    {
+      number: 3,
+      title: "Minimize downtime with proactive maintenance",
+      description: "Identify and address issues before they become expensive problems"
+    }
+  ];
+
+  const tenantBenefits = [
+    {
+      number: 1,
+      title: "Simplified payments and requests",
+      description: "Pay rent and submit maintenance requests from a single dashboard"
+    },
+    {
+      number: 2,
+      title: "Voice in community decisions",
+      description: "Participate in discussions and contribute to building improvements"
+    },
+    {
+      number: 3,
+      title: "Enhanced security and convenience",
+      description: "Secure communication and digital records of all interactions"
     }
   ];
 
@@ -73,195 +114,52 @@ const ECaretakerSection = () => {
 
           {/* Rent Management Content */}
           <TabsContent value="rent" className="p-0">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <h3 className="text-2xl font-bold mb-4">Streamlined Rent Collection & Management</h3>
-                <p className="text-muted-foreground mb-6">
-                  Our comprehensive rent management system eliminates payment headaches with automated reminders, flexible payment options, and real-time tracking—all accessible from any device.
-                </p>
-                
-                <ul className="space-y-4 mb-6">
-                  {rentFeatures.map((feature, idx) => (
-                    <li key={idx} className="flex gap-3 items-start">
-                      <div className="mt-1">{feature.icon}</div>
-                      <div>
-                        <h4 className="font-medium">{feature.title}</h4>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                
-                <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
-                  <Button size="lg" className="mt-4">
-                    Explore Rent Management
-                    <ChevronRight size={16} />
-                  </Button>
-                </DialogTrigger>
-              </div>
-              
-              <div className="bg-muted rounded-lg p-6 relative overflow-hidden">
-                <div className="bg-background rounded-lg shadow-lg p-5 border">
-                  <h4 className="font-medium mb-4">Rent Collection Overview</h4>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-secondary/30 rounded">
-                      <div>
-                        <p className="font-medium">Total Units</p>
-                        <p className="text-2xl font-bold">24</p>
-                      </div>
-                      <Building2 size={24} className="text-primary" />
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-emerald-50 rounded">
-                      <div>
-                        <p className="font-medium text-emerald-800">Paid</p>
-                        <p className="text-2xl font-bold text-emerald-600">20</p>
-                      </div>
-                      <CheckCircle size={24} className="text-emerald-600" />
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-amber-50 rounded">
-                      <div>
-                        <p className="font-medium text-amber-800">Pending</p>
-                        <p className="text-2xl font-bold text-amber-600">4</p>
-                      </div>
-                      <Calendar size={24} className="text-amber-600" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <RentManagementTab 
+              features={rentFeatures} 
+              onOpenDialog={() => setIsDialogOpen(true)} 
+            />
           </TabsContent>
 
           {/* Placeholder content for other tabs */}
           <TabsContent value="maintenance">
-            <div className="text-center py-12">
-              <Wrench size={48} className="mx-auto text-primary mb-4" />
-              <h3 className="text-2xl font-bold mb-2">Maintenance Management</h3>
-              <p className="text-muted-foreground">Coming soon! Track and manage property maintenance with ease.</p>
-            </div>
+            <PlaceholderTab 
+              icon={Wrench} 
+              title="Maintenance Management" 
+              description="Coming soon! Track and manage property maintenance with ease." 
+            />
           </TabsContent>
 
           <TabsContent value="community">
-            <div className="text-center py-12">
-              <Users size={48} className="mx-auto text-primary mb-4" />
-              <h3 className="text-2xl font-bold mb-2">Tenant Community Hub</h3>
-              <p className="text-muted-foreground">Coming soon! Build stronger relationships with your tenants.</p>
-            </div>
+            <PlaceholderTab 
+              icon={Users} 
+              title="Tenant Community Hub" 
+              description="Coming soon! Build stronger relationships with your tenants." 
+            />
           </TabsContent>
 
           <TabsContent value="analytics">
-            <div className="text-center py-12">
-              <BarChart3 size={48} className="mx-auto text-primary mb-4" />
-              <h3 className="text-2xl font-bold mb-2">Analytics Dashboard</h3>
-              <p className="text-muted-foreground">Coming soon! Get insights into your property performance.</p>
-            </div>
+            <PlaceholderTab 
+              icon={BarChart3} 
+              title="Analytics Dashboard" 
+              description="Coming soon! Get insights into your property performance." 
+            />
           </TabsContent>
         </Tabs>
 
         {/* Benefit Columns */}
         <div className="grid md:grid-cols-2 gap-10 mb-16">
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold flex items-center gap-2">
-              <Building2 className="text-primary" />
-              For Property Owners
-            </h3>
-            <ul className="space-y-4">
-              <li className="flex gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-semibold">1</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Reduce administrative workload by 50%+</h4>
-                  <p className="text-muted-foreground">Automate repetitive tasks and focus on growing your property portfolio</p>
-                </div>
-              </li>
-              <li className="flex gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-semibold">2</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Improve tenant retention</h4>
-                  <p className="text-muted-foreground">Build stronger relationships through transparent communication</p>
-                </div>
-              </li>
-              <li className="flex gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-semibold">3</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Minimize downtime with proactive maintenance</h4>
-                  <p className="text-muted-foreground">Identify and address issues before they become expensive problems</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold flex items-center gap-2">
-              <Users className="text-primary" />
-              For Tenants
-            </h3>
-            <ul className="space-y-4">
-              <li className="flex gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-semibold">1</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Simplified payments and requests</h4>
-                  <p className="text-muted-foreground">Pay rent and submit maintenance requests from a single dashboard</p>
-                </div>
-              </li>
-              <li className="flex gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-semibold">2</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Voice in community decisions</h4>
-                  <p className="text-muted-foreground">Participate in discussions and contribute to building improvements</p>
-                </div>
-              </li>
-              <li className="flex gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="font-semibold">3</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Enhanced security and convenience</h4>
-                  <p className="text-muted-foreground">Secure communication and digital records of all interactions</p>
-                </div>
-              </li>
-            </ul>
-          </div>
+          <BenefitColumn 
+            title={<><Building2 className="text-primary" /> For Property Owners</>} 
+            items={propertyOwnerBenefits} 
+          />
+          <BenefitColumn 
+            title={<><Users className="text-primary" /> For Tenants</>} 
+            items={tenantBenefits} 
+          />
         </div>
 
         {/* Dashboard Preview */}
-        <div className="mb-16 flex flex-col md:flex-row gap-8 items-center">
-          <div className="md:w-1/2">
-            <h3 className="text-2xl font-bold mb-4">Powerful Dashboard at Your Fingertips</h3>
-            <p className="text-muted-foreground mb-6">
-              Say goodbye to manual spreadsheets and missed payments. e-Caretaker automates every aspect of property management, from rent collection to maintenance tracking. With real-time insights and a tenant engagement hub, you'll build stronger relationships while saving time and resources.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 bg-secondary/50 px-3 py-1.5 rounded-full">
-                <CreditCard size={16} className="text-primary" />
-                <span className="text-sm font-medium">Encrypted Payments</span>
-              </div>
-              <div className="flex items-center gap-2 bg-secondary/50 px-3 py-1.5 rounded-full">
-                <Shield size={16} className="text-primary" />
-                <span className="text-sm font-medium">Data Security</span>
-              </div>
-              <div className="flex items-center gap-2 bg-secondary/50 px-3 py-1.5 rounded-full">
-                <MessageSquare size={16} className="text-primary" />
-                <span className="text-sm font-medium">24/7 Support</span>
-              </div>
-            </div>
-          </div>
-          <div className="md:w-1/2 bg-gray-100 rounded-lg p-4 shadow-md">
-            <div className="aspect-video bg-white rounded border overflow-hidden relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-muted-foreground text-center p-4">Dashboard Interface Preview</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <DashboardPreview />
 
         {/* Testimonial */}
         <div className="bg-secondary/30 rounded-xl p-8 mb-16">
@@ -288,32 +186,10 @@ const ECaretakerSection = () => {
 
         {/* Feature Demo Dialog */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="sm:max-w-xl">
-            <DialogHeader>
-              <DialogTitle>Rent Management Features</DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-6">
-              <div className="space-y-4">
-                <h4 className="font-medium">Key Features:</h4>
-                <div className="grid gap-4">
-                  {rentFeatures.map((feature, idx) => (
-                    <Card key={idx} className="p-4">
-                      <div className="flex gap-3">
-                        {feature.icon}
-                        <div>
-                          <h5 className="font-medium">{feature.title}</h5>
-                          <p className="text-sm text-muted-foreground">{feature.description}</p>
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-              <Button onClick={() => setIsDialogOpen(false)}>
-                Close Preview
-              </Button>
-            </div>
-          </DialogContent>
+          <FeatureDialog 
+            features={rentFeatures} 
+            onClose={() => setIsDialogOpen(false)} 
+          />
         </Dialog>
       </div>
     </section>
