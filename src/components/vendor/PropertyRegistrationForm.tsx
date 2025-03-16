@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -18,7 +17,7 @@ const formSchema = z.object({
   propertyName: z.string().min(2, { message: "Property name must be at least 2 characters" }),
   propertyType: z.string({ required_error: "Please select a property type" }),
   address: z.string().min(5, { message: "Address must be at least 5 characters" }),
-  numberOfUnits: z.string().transform(val => Number(val)),
+  numberOfUnits: z.string(),
   description: z.string().optional(),
   contactName: z.string().min(2, { message: "Contact name must be at least 2 characters" }),
   contactPhone: z.string().min(10, { message: "Please enter a valid phone number" }),
@@ -40,21 +39,18 @@ const PropertyRegistrationForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       propertyType: '',
-      numberOfUnits: '1', // Keep as string since it comes from an input
+      numberOfUnits: '1',
       paymentMethod: '',
       acceptTerms: false
     }
   });
 
-  const { watch, setValue } = form;
+  const { watch } = form;
   const numberOfUnits = watch('numberOfUnits');
   const paymentMethod = watch('paymentMethod');
   
-  // Calculate price based on number of units
   const getPrice = () => {
-    const units = typeof numberOfUnits === 'string' ? 
-      parseInt(numberOfUnits || '0', 10) : 
-      numberOfUnits || 0;
+    const units = parseInt(numberOfUnits || '0', 10);
     
     if (units < 10) {
       return 1000;
@@ -63,15 +59,12 @@ const PropertyRegistrationForm = () => {
     } else if (units <= 70) {
       return 2500;
     } else {
-      return 3500; // For more than 70 units
+      return 3500;
     }
   };
 
-  // Get plan name based on number of units
   const getPlanName = () => {
-    const units = typeof numberOfUnits === 'string' ? 
-      parseInt(numberOfUnits || '0', 10) : 
-      numberOfUnits || 0;
+    const units = parseInt(numberOfUnits || '0', 10);
     
     if (units < 10) {
       return 'Basic Plan';
@@ -85,7 +78,6 @@ const PropertyRegistrationForm = () => {
   };
 
   const onSubmit = (data: FormValues) => {
-    // Here you would handle form submission, e.g., send to a backend API
     console.log('Form submitted:', data);
     toast.success('Property registered successfully!', {
       description: `${data.propertyName} has been registered with ${data.numberOfUnits} units.`
@@ -181,7 +173,6 @@ const PropertyRegistrationForm = () => {
                             {...field}
                             onChange={(e) => {
                               field.onChange(e);
-                              // Update plan when units change
                               const units = parseInt(e.target.value, 10);
                               if (units < 10) {
                                 setSelectedPlan('basic');
@@ -453,9 +444,7 @@ const PropertyRegistrationForm = () => {
                   KSh {getPrice().toLocaleString()}/month
                 </div>
                 <div className="text-sm">
-                  For properties with {typeof numberOfUnits === 'string' ? 
-                    parseInt(numberOfUnits || '0', 10) : 
-                    numberOfUnits || 0} units
+                  For properties with {parseInt(numberOfUnits || '0', 10)} units
                 </div>
               </div>
               
