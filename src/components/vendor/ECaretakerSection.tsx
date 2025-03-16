@@ -9,10 +9,12 @@ import RentManagementTab from './RentManagementTab';
 import PlaceholderTab from './PlaceholderTab';
 import DashboardPreview from './DashboardPreview';
 import FeatureDialog from './FeatureDialog';
+import PropertyRegistrationForm from './PropertyRegistrationForm';
 
 const ECaretakerSection = () => {
   const [activeFeature, setActiveFeature] = useState('rent');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
 
   const rentFeatures = [
     {
@@ -91,106 +93,123 @@ const ECaretakerSection = () => {
           </p>
         </div>
 
-        {/* Feature Tabs */}
-        <Tabs defaultValue="rent" className="w-full mb-16" onValueChange={setActiveFeature}>
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-8">
-            <TabsTrigger value="rent" className="flex items-center justify-center gap-2 py-3">
-              <BadgeDollarSign size={18} />
-              <span>Rent Management</span>
-            </TabsTrigger>
-            <TabsTrigger value="maintenance" className="flex items-center justify-center gap-2 py-3">
-              <Wrench size={18} />
-              <span>Maintenance</span>
-            </TabsTrigger>
-            <TabsTrigger value="community" className="flex items-center justify-center gap-2 py-3">
-              <Users size={18} />
-              <span>Tenant Community</span>
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center justify-center gap-2 py-3">
-              <BarChart3 size={18} />
-              <span>Analytics</span>
-            </TabsTrigger>
-          </TabsList>
+        {showRegistrationForm ? (
+          <PropertyRegistrationForm />
+        ) : (
+          <>
+            {/* Feature Tabs */}
+            <Tabs defaultValue="rent" className="w-full mb-16" onValueChange={setActiveFeature}>
+              <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-8">
+                <TabsTrigger value="rent" className="flex items-center justify-center gap-2 py-3">
+                  <BadgeDollarSign size={18} />
+                  <span>Rent Management</span>
+                </TabsTrigger>
+                <TabsTrigger value="maintenance" className="flex items-center justify-center gap-2 py-3">
+                  <Wrench size={18} />
+                  <span>Maintenance</span>
+                </TabsTrigger>
+                <TabsTrigger value="community" className="flex items-center justify-center gap-2 py-3">
+                  <Users size={18} />
+                  <span>Tenant Community</span>
+                </TabsTrigger>
+                <TabsTrigger value="analytics" className="flex items-center justify-center gap-2 py-3">
+                  <BarChart3 size={18} />
+                  <span>Analytics</span>
+                </TabsTrigger>
+              </TabsList>
 
-          {/* Rent Management Content */}
-          <TabsContent value="rent" className="p-0">
-            <RentManagementTab 
-              features={rentFeatures} 
-              onOpenDialog={() => setIsDialogOpen(true)} 
-            />
-          </TabsContent>
+              {/* Rent Management Content */}
+              <TabsContent value="rent" className="p-0">
+                <RentManagementTab 
+                  features={rentFeatures} 
+                  onOpenDialog={() => setIsDialogOpen(true)} 
+                />
+              </TabsContent>
 
-          {/* Placeholder content for other tabs */}
-          <TabsContent value="maintenance">
-            <PlaceholderTab 
-              icon={Wrench} 
-              title="Maintenance Management" 
-              description="Coming soon! Track and manage property maintenance with ease." 
-            />
-          </TabsContent>
+              {/* Placeholder content for other tabs */}
+              <TabsContent value="maintenance">
+                <PlaceholderTab 
+                  icon={Wrench} 
+                  title="Maintenance Management" 
+                  description="Coming soon! Track and manage property maintenance with ease." 
+                />
+              </TabsContent>
 
-          <TabsContent value="community">
-            <PlaceholderTab 
-              icon={Users} 
-              title="Tenant Community Hub" 
-              description="Coming soon! Build stronger relationships with your tenants." 
-            />
-          </TabsContent>
+              <TabsContent value="community">
+                <PlaceholderTab 
+                  icon={Users} 
+                  title="Tenant Community Hub" 
+                  description="Coming soon! Build stronger relationships with your tenants." 
+                />
+              </TabsContent>
 
-          <TabsContent value="analytics">
-            <PlaceholderTab 
-              icon={BarChart3} 
-              title="Analytics Dashboard" 
-              description="Coming soon! Get insights into your property performance." 
-            />
-          </TabsContent>
-        </Tabs>
+              <TabsContent value="analytics">
+                <PlaceholderTab 
+                  icon={BarChart3} 
+                  title="Analytics Dashboard" 
+                  description="Coming soon! Get insights into your property performance." 
+                />
+              </TabsContent>
+            </Tabs>
 
-        {/* Benefit Columns */}
-        <div className="grid md:grid-cols-2 gap-10 mb-16">
-          <BenefitColumn 
-            title={<><Building2 className="text-primary" /> For Property Owners</>} 
-            items={propertyOwnerBenefits} 
-          />
-          <BenefitColumn 
-            title={<><Users className="text-primary" /> For Tenants</>} 
-            items={tenantBenefits} 
-          />
-        </div>
+            {/* Benefit Columns */}
+            <div className="grid md:grid-cols-2 gap-10 mb-16">
+              <BenefitColumn 
+                title={<><Building2 className="text-primary" /> For Property Owners</>} 
+                items={propertyOwnerBenefits} 
+              />
+              <BenefitColumn 
+                title={<><Users className="text-primary" /> For Tenants</>} 
+                items={tenantBenefits} 
+              />
+            </div>
 
-        {/* Dashboard Preview */}
-        <DashboardPreview />
+            {/* Dashboard Preview */}
+            <DashboardPreview />
 
-        {/* Testimonial */}
-        <div className="bg-secondary/30 rounded-xl p-8 mb-16">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-lg font-bold italic mb-4">
-              "Since implementing e-Caretaker, we've reduced our management overhead by 60% and increased tenant satisfaction scores. The seamless integration with BuildWise's construction marketplace means we can quickly address maintenance issues with verified professionals."
-            </h3>
-            <p className="font-medium">Sarah Kamau</p>
-            <p className="text-sm text-muted-foreground">Property Manager, Westlands Heights Apartments</p>
+            {/* Testimonial */}
+            <div className="bg-secondary/30 rounded-xl p-8 mb-16">
+              <div className="max-w-3xl mx-auto text-center">
+                <h3 className="text-lg font-bold italic mb-4">
+                  "Since implementing e-Caretaker, we've reduced our management overhead by 60% and increased tenant satisfaction scores. The seamless integration with BuildWise's construction marketplace means we can quickly address maintenance issues with verified professionals."
+                </h3>
+                <p className="font-medium">Sarah Kamau</p>
+                <p className="text-sm text-muted-foreground">Property Manager, Westlands Heights Apartments</p>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="text-center">
+              <h3 className="text-2xl font-bold mb-4">Ready to transform your property management?</h3>
+              <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Whether you manage a single unit or a large complex, e-Caretaker scales to meet your needs.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" onClick={() => setShowRegistrationForm(true)}>Register Your Property</Button>
+                <Button variant="outline" size="lg">View Pricing</Button>
+              </div>
+            </div>
+
+            {/* Feature Demo Dialog */}
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <FeatureDialog 
+                features={rentFeatures} 
+                onClose={() => setIsDialogOpen(false)} 
+              />
+            </Dialog>
+          </>
+        )}
+        
+        {showRegistrationForm && (
+          <div className="mt-8 text-center">
+            <Button 
+              variant="outline"
+              onClick={() => setShowRegistrationForm(false)}
+            >
+              ← Back to Features
+            </Button>
           </div>
-        </div>
-
-        {/* CTA */}
-        <div className="text-center">
-          <h3 className="text-2xl font-bold mb-4">Ready to transform your property management?</h3>
-          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Whether you manage a single unit or a large complex, e-Caretaker scales to meet your needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg">Schedule a Demo</Button>
-            <Button variant="outline" size="lg">View Pricing</Button>
-          </div>
-        </div>
-
-        {/* Feature Demo Dialog */}
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <FeatureDialog 
-            features={rentFeatures} 
-            onClose={() => setIsDialogOpen(false)} 
-          />
-        </Dialog>
+        )}
       </div>
     </section>
   );
