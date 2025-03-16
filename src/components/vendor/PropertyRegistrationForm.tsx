@@ -18,7 +18,7 @@ const formSchema = z.object({
   propertyName: z.string().min(2, { message: "Property name must be at least 2 characters" }),
   propertyType: z.string({ required_error: "Please select a property type" }),
   address: z.string().min(5, { message: "Address must be at least 5 characters" }),
-  numberOfUnits: z.string().transform(val => parseInt(val, 10)),
+  numberOfUnits: z.string().transform(val => Number(val)),
   description: z.string().optional(),
   contactName: z.string().min(2, { message: "Contact name must be at least 2 characters" }),
   contactPhone: z.string().min(10, { message: "Please enter a valid phone number" }),
@@ -40,7 +40,7 @@ const PropertyRegistrationForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       propertyType: '',
-      numberOfUnits: '1',
+      numberOfUnits: '1', // Keep as string since it comes from an input
       paymentMethod: '',
       acceptTerms: false
     }
@@ -52,7 +52,9 @@ const PropertyRegistrationForm = () => {
   
   // Calculate price based on number of units
   const getPrice = () => {
-    const units = parseInt(numberOfUnits || '0');
+    const units = typeof numberOfUnits === 'string' ? 
+      parseInt(numberOfUnits || '0', 10) : 
+      numberOfUnits || 0;
     
     if (units < 10) {
       return 1000;
@@ -67,7 +69,9 @@ const PropertyRegistrationForm = () => {
 
   // Get plan name based on number of units
   const getPlanName = () => {
-    const units = parseInt(numberOfUnits || '0');
+    const units = typeof numberOfUnits === 'string' ? 
+      parseInt(numberOfUnits || '0', 10) : 
+      numberOfUnits || 0;
     
     if (units < 10) {
       return 'Basic Plan';
@@ -449,7 +453,9 @@ const PropertyRegistrationForm = () => {
                   KSh {getPrice().toLocaleString()}/month
                 </div>
                 <div className="text-sm">
-                  For properties with {parseInt(numberOfUnits || '0')} units
+                  For properties with {typeof numberOfUnits === 'string' ? 
+                    parseInt(numberOfUnits || '0', 10) : 
+                    numberOfUnits || 0} units
                 </div>
               </div>
               
