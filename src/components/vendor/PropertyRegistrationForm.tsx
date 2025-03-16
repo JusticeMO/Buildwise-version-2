@@ -52,7 +52,7 @@ const PropertyRegistrationForm = () => {
   
   // Calculate price based on number of units
   const getPrice = () => {
-    const units = parseInt(numberOfUnits || '0', 10);
+    const units = parseInt(numberOfUnits || '0');
     
     if (units < 10) {
       return 1000;
@@ -67,7 +67,7 @@ const PropertyRegistrationForm = () => {
 
   // Get plan name based on number of units
   const getPlanName = () => {
-    const units = parseInt(numberOfUnits || '0', 10);
+    const units = parseInt(numberOfUnits || '0');
     
     if (units < 10) {
       return 'Basic Plan';
@@ -449,7 +449,7 @@ const PropertyRegistrationForm = () => {
                   KSh {getPrice().toLocaleString()}/month
                 </div>
                 <div className="text-sm">
-                  For properties with {parseInt(numberOfUnits || '0', 10)} units
+                  For properties with {parseInt(numberOfUnits || '0')} units
                 </div>
               </div>
               
