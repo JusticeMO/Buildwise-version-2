@@ -9,6 +9,12 @@ interface RentFeature {
   title: string;
   description: string;
   icon: React.ReactNode;
+  details?: {
+    subTitle: string;
+    description: string;
+    benefits: string[];
+    icon?: React.ReactNode;
+  }[];
 }
 
 interface RentManagementTabProps {
