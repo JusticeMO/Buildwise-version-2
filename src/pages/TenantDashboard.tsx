@@ -29,7 +29,7 @@ const TenantDashboard = () => {
       {/* Mobile Navigation */}
       <Sheet>
         <SheetTrigger asChild className="fixed bottom-4 right-4 lg:hidden z-50">
-          <Button size="icon" variant="outline" className="rounded-full h-12 w-12 shadow-lg">
+          <Button size="lg" variant="outline" className="rounded-full h-12 w-12 shadow-lg">
             <Menu />
           </Button>
         </SheetTrigger>
@@ -206,7 +206,7 @@ const TenantOverview = () => {
           <p className="text-2xl font-bold">KES 500</p>
           <div className="mt-2 flex justify-between items-center text-sm">
             <span>Monthly Fee</span>
-            <Badge variant="success" className="bg-green-100 text-green-800">Paid</Badge>
+            <Badge variant="secondary" className="bg-green-100 text-green-800">Paid</Badge>
           </div>
         </div>
         
@@ -618,7 +618,7 @@ const TenantWaterUsage = () => {
                   <td className="py-3 px-4 text-sm">{data.units}</td>
                   <td className="py-3 px-4 text-sm">{data.amount}</td>
                   <td className="py-3 px-4">
-                    <Badge variant="success" className="bg-green-100 text-green-800">
+                    <Badge variant="secondary" className="bg-green-100 text-green-800">
                       Paid
                     </Badge>
                   </td>
@@ -643,7 +643,7 @@ const TenantGarbageServices = () => {
           <p className="text-sm text-muted-foreground">Monthly Fee</p>
           <p className="text-2xl font-bold">KES 500</p>
           <div className="mt-2 text-sm">
-            <Badge variant="success" className="bg-green-100 text-green-800">Paid for June</Badge>
+            <Badge variant="secondary" className="bg-green-100 text-green-800">Paid for June</Badge>
           </div>
         </div>
         
@@ -727,7 +727,7 @@ const TenantGarbageServices = () => {
                 <td className="py-3 px-4 text-sm">500</td>
                 <td className="py-3 px-4 text-sm">June 3, 2023</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">Paid</Badge>
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">Paid</Badge>
                 </td>
               </tr>
               <tr className="border-b">
@@ -735,7 +735,7 @@ const TenantGarbageServices = () => {
                 <td className="py-3 px-4 text-sm">500</td>
                 <td className="py-3 px-4 text-sm">May 5, 2023</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">Paid</Badge>
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">Paid</Badge>
                 </td>
               </tr>
               <tr className="border-b">
@@ -743,7 +743,7 @@ const TenantGarbageServices = () => {
                 <td className="py-3 px-4 text-sm">500</td>
                 <td className="py-3 px-4 text-sm">April 2, 2023</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">Paid</Badge>
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">Paid</Badge>
                 </td>
               </tr>
             </tbody>
@@ -792,7 +792,7 @@ const TenantHistory = () => {
                 <td className="py-3 px-4 text-sm">25,000</td>
                 <td className="py-3 px-4 text-sm">M-Pesa</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">
                     Completed
                   </Badge>
                 </td>
@@ -808,7 +808,7 @@ const TenantHistory = () => {
                 <td className="py-3 px-4 text-sm">1,200</td>
                 <td className="py-3 px-4 text-sm">M-Pesa</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">
                     Completed
                   </Badge>
                 </td>
@@ -824,7 +824,7 @@ const TenantHistory = () => {
                 <td className="py-3 px-4 text-sm">500</td>
                 <td className="py-3 px-4 text-sm">M-Pesa</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">
                     Completed
                   </Badge>
                 </td>
@@ -840,7 +840,7 @@ const TenantHistory = () => {
                 <td className="py-3 px-4 text-sm">25,000</td>
                 <td className="py-3 px-4 text-sm">Bank Transfer</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">
                     Completed
                   </Badge>
                 </td>
@@ -856,7 +856,7 @@ const TenantHistory = () => {
                 <td className="py-3 px-4 text-sm">1,160</td>
                 <td className="py-3 px-4 text-sm">Bank Transfer</td>
                 <td className="py-3 px-4">
-                  <Badge variant="success" className="bg-green-100 text-green-800">
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">
                     Completed
                   </Badge>
                 </td>
@@ -875,3 +875,4 @@ const TenantHistory = () => {
 };
 
 export default TenantDashboard;
+
