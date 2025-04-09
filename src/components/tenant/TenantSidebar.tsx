@@ -21,7 +21,7 @@ const TenantSidebar = ({ onLogout, onNavChange, activeTab }: TenantSidebarProps)
   ];
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white">
       <div className="p-4 border-b">
         <Link to="/" className="text-xl font-bold flex items-center gap-2">
           <span className="text-kenya-red">Build</span>

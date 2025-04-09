@@ -8,8 +8,17 @@ import TestimonialSection from '@/components/Home/TestimonialSection';
 import Button from '@/components/shared/Button';
 import { ArrowRight, DollarSign, Shield, Briefcase, CreditCard, ExternalLink, Building2 as Building2Icon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const Index = () => {
+  const bankAgents = [
+    { name: "Kenya Commercial Bank", url: "https://ke.kcbgroup.com/mortgage-loans" },
+    { name: "Equity Bank", url: "https://equitygroupholdings.com/ke/borrow/equity-mortgages" },
+    { name: "Cooperative Bank", url: "https://www.co-opbank.co.ke/personal-banking/borrowing/mortgages/" },
+    { name: "Absa Kenya", url: "https://www.absabank.co.ke/personal/borrow/home-loans/" },
+    { name: "DTB Bank", url: "https://dtbk.dtbafrica.com/personal-banking/loans-financing/mortgage/" }
+  ];
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -81,13 +90,26 @@ const Index = () => {
             </div>
             
             <div className="flex justify-center">
-              <Button 
-                size="lg"
-                icon={<Briefcase size={18} />}
-                iconPosition="left"
-              >
-                Apply for Financing
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="lg"
+                    icon={<Briefcase size={18} />}
+                    iconPosition="left"
+                  >
+                    Apply for Financing
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="bg-white w-56">
+                  {bankAgents.map((bank, index) => (
+                    <DropdownMenuItem key={index} asChild className="cursor-pointer">
+                      <a href={bank.url} target="_blank" rel="noopener noreferrer" className="w-full">
+                        {bank.name}
+                      </a>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </section>

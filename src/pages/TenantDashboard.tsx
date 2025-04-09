@@ -37,7 +37,7 @@ const TenantDashboard = () => {
             <Menu />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-64 p-0">
+        <SheetContent side="left" className="w-64 p-0 bg-white border-r shadow-xl">
           <TenantSidebar onLogout={handleLogout} onNavChange={setActiveTab} activeTab={activeTab} />
         </SheetContent>
       </Sheet>
@@ -113,8 +113,8 @@ const TenantDashboard = () => {
           {activeTab === 'messages' && <TenantMessages />}
           {activeTab === 'water' && <TenantWaterUsage />}
           {activeTab === 'garbage' && <TenantGarbageServices />}
-          {activeTab === 'history' && <TenantHistory />}
           {activeTab === 'complaints' && <TenantComplaints />}
+          {activeTab === 'history' && <TenantHistory />}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { ArrowRight, DollarSign, Shield } from 'lucide-react';
+import { ArrowRight, DollarSign, Shield, BarChart, Users, ClipboardList, Home } from 'lucide-react';
 import Button from '../shared/Button';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
@@ -72,8 +72,86 @@ const HeroSection = () => {
         </div>
         
         <div className="w-full max-w-4xl h-80 sm:h-96 rounded-xl glass p-2 overflow-hidden animate-fade-in stagger-3">
-          <div className="w-full h-full bg-muted rounded-lg flex items-center justify-center">
-            <span className="text-muted-foreground">Dashboard Preview</span>
+          <div className="w-full h-full bg-white rounded-lg flex flex-col">
+            <div className="bg-slate-50 border-b px-4 py-3 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-full bg-red-400"></div>
+                <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
+                <div className="h-3 w-3 rounded-full bg-green-400"></div>
+              </div>
+              <div className="text-xs font-medium text-slate-500">BuildWise Dashboard</div>
+            </div>
+            
+            <div className="flex-1 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {/* Dashboard Cards */}
+                <div className="bg-blue-50 rounded-md p-3 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-1.5 bg-blue-100 text-blue-600 rounded-lg">
+                      <ClipboardList size={16} />
+                    </div>
+                    <h4 className="text-sm font-medium">Active Projects</h4>
+                  </div>
+                  <p className="text-lg font-bold">3</p>
+                  <div className="mt-2 text-xs text-blue-600">On schedule</div>
+                </div>
+                
+                <div className="bg-green-50 rounded-md p-3 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-1.5 bg-green-100 text-green-600 rounded-lg">
+                      <DollarSign size={16} />
+                    </div>
+                    <h4 className="text-sm font-medium">Budget Used</h4>
+                  </div>
+                  <p className="text-lg font-bold">KES 2.4M</p>
+                  <div className="mt-2 text-xs text-green-600">Within budget</div>
+                </div>
+                
+                <div className="bg-amber-50 rounded-md p-3 shadow-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-1.5 bg-amber-100 text-amber-600 rounded-lg">
+                      <Users size={16} />
+                    </div>
+                    <h4 className="text-sm font-medium">Contractors</h4>
+                  </div>
+                  <p className="text-lg font-bold">5</p>
+                  <div className="mt-2 text-xs text-amber-600">All verified</div>
+                </div>
+              </div>
+              
+              {/* Progress bars */}
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs font-medium">Kileleshwa Project</span>
+                    <span className="text-xs font-medium">65%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs font-medium">Kikuyu Apartments</span>
+                    <span className="text-xs font-medium">25%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-amber-500 h-2 rounded-full" style={{ width: '25%' }}></div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs font-medium">Westlands Office</span>
+                    <span className="text-xs font-medium">100%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-green-500 h-2 rounded-full" style={{ width: '100%' }}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
