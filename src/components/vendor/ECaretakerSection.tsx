@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Building2, BadgeDollarSign, Wrench, Users, BarChart3, Bell, CreditCard, PieChart, FileText, Calendar } from 'lucide-react';
+import { Building2, BadgeDollarSign, Wrench, Users, BarChart3 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog } from '@/components/ui/dialog';
 import Button from '@/components/shared/Button';
@@ -10,39 +9,12 @@ import PlaceholderTab from './PlaceholderTab';
 import DashboardPreview from './DashboardPreview';
 import FeatureDialog from './FeatureDialog';
 import PropertyRegistrationForm from './PropertyRegistrationForm';
+import { rentFeatures } from '@/data/rentFeatures';
 
 const ECaretakerSection = () => {
   const [activeFeature, setActiveFeature] = useState('rent');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [showRegistrationForm, setShowRegistrationForm] = useState(false);
-
-  const rentFeatures = [
-    {
-      title: "Automated Reminders",
-      description: "Customizable rent reminders sent via SMS, email, or app notifications to reduce late payments.",
-      icon: <Bell className="text-primary" size={20} />
-    },
-    {
-      title: "Flexible Payment Options",
-      description: "Accept M-Pesa, bank transfers, cards, and more with automatic reconciliation.",
-      icon: <CreditCard className="text-primary" size={20} />
-    },
-    {
-      title: "Payment Tracking",
-      description: "Real-time dashboard showing paid, pending, and overdue rent payments across all units.",
-      icon: <PieChart className="text-primary" size={20} />
-    },
-    {
-      title: "Digital Receipts",
-      description: "Automatic generation and distribution of rent receipts to tenants via email or SMS.",
-      icon: <FileText className="text-primary" size={20} />
-    },
-    {
-      title: "Payment Plans",
-      description: "Create custom payment plans for tenants needing flexible arrangements.",
-      icon: <Calendar className="text-primary" size={20} />
-    }
-  ];
 
   const propertyOwnerBenefits = [
     {
@@ -120,8 +92,7 @@ const ECaretakerSection = () => {
 
               {/* Rent Management Content */}
               <TabsContent value="rent" className="p-0">
-                <RentManagementTab 
-                  features={rentFeatures} 
+                <RentManagementTab
                   onOpenDialog={() => setIsDialogOpen(true)} 
                 />
               </TabsContent>

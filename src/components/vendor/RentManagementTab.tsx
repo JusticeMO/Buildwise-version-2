@@ -4,19 +4,13 @@ import { Bell, CreditCard, PieChart, FileText, Calendar, ChevronRight, Building2
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import Button from '@/components/shared/Button';
 import FeatureListItem from './FeatureListItem';
-
-interface RentFeature {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-}
+import { rentFeatures } from '@/data/rentFeatures';
 
 interface RentManagementTabProps {
-  features: RentFeature[];
   onOpenDialog: () => void;
 }
 
-const RentManagementTab = ({ features, onOpenDialog }: RentManagementTabProps) => {
+const RentManagementTab = ({ onOpenDialog }: RentManagementTabProps) => {
   return (
     <div className="grid md:grid-cols-2 gap-8 items-center">
       <div>
@@ -26,7 +20,7 @@ const RentManagementTab = ({ features, onOpenDialog }: RentManagementTabProps) =
         </p>
         
         <ul className="space-y-4 mb-6">
-          {features.map((feature, idx) => (
+          {rentFeatures.map((feature, idx) => (
             <FeatureListItem 
               key={idx} 
               icon={feature.icon} 
