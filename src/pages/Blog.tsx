@@ -1,13 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Calendar, User, ArrowRight, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Button from '@/components/shared/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Blog = () => {
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  
   const blogPosts = [
     {
       title: "5 Tips for Managing Construction Projects from Abroad",
@@ -69,6 +72,20 @@ const Blog = () => {
     "Sustainability"
   ];
 
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+    if (category !== "All Categories") {
+      navigate(`/blog/category/${category.toLowerCase().replace(/\s+/g, '-')}`);
+    } else {
+      navigate('/blog');
+    }
+  };
+
+  // Filter posts based on selected category
+  const filteredPosts = selectedCategory === "All Categories" 
+    ? blogPosts 
+    : blogPosts.filter(post => post.category === selectedCategory);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -100,8 +117,9 @@ const Blog = () => {
               {categories.map((category, index) => (
                 <button
                   key={index}
+                  onClick={() => handleCategoryClick(category)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    index === 0 
+                    category === selectedCategory
                       ? 'bg-primary text-white hover:bg-primary/90' 
                       : 'bg-secondary hover:bg-secondary/80 text-foreground'
                   }`}
@@ -117,16 +135,18 @@ const Blog = () => {
         <section className="py-12">
           <div className="container px-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogPosts.map((post, index) => (
+              {filteredPosts.map((post, index) => (
                 <article key={index} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
                   <div className="aspect-video bg-muted flex items-center justify-center">
                     <span className="text-muted-foreground">Featured Image</span>
                   </div>
                   <div className="p-6">
                     <div className="mb-2">
-                      <span className="inline-block bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">
-                        {post.category}
-                      </span>
+                      <Link to={`/blog/category/${post.category.toLowerCase().replace(/\s+/g, '-')}`}>
+                        <span className="inline-block bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded cursor-pointer">
+                          {post.category}
+                        </span>
+                      </Link>
                     </div>
                     <h3 className="text-xl font-bold mb-2 hover:text-primary transition-colors">
                       <Link to={`/blog/${post.title.toLowerCase().replace(/\s+/g, '-')}`}>

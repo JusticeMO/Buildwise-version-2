@@ -15,11 +15,14 @@ import VendorApplication from "./pages/VendorApplication";
 import About from "./pages/About";
 import Help from "./pages/Help";
 import Blog from "./pages/Blog";
+import BlogCategory from "./pages/BlogCategory";
 import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Cookies from "./pages/Cookies";
 import NotFound from "./pages/NotFound";
+import TenantLogin from "./pages/TenantLogin";
+import TenantDashboard from "./pages/TenantDashboard";
 
 const queryClient = new QueryClient();
 
@@ -41,10 +44,13 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/help" element={<Help />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/category/:category" element={<BlogCategory />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/cookies" element={<Cookies />} />
+          <Route path="/tenant/login" element={<TenantLogin />} />
+          <Route path="/tenant/dashboard" element={<TenantDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

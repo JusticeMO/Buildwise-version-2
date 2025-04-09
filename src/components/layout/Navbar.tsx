@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Home, Briefcase, User, Users, Sofa, Lamp, Package } from 'lucide-react';
+import { Menu, X, ChevronDown, Home, Briefcase, User, Users, Sofa, Lamp, Package, Building } from 'lucide-react';
 import Button from '../shared/Button';
 import { cn } from '@/lib/utils';
 
@@ -82,6 +82,17 @@ const Navbar = () => {
                 For Businesses
               </Button>
             </NavLink>
+            <NavLink to="/tenant/login">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="font-medium"
+                icon={<Building size={16} />}
+                iconPosition="left"
+              >
+                Tenant Portal
+              </Button>
+            </NavLink>
             <Button 
               variant="ghost" 
               size="sm"
@@ -132,6 +143,13 @@ const Navbar = () => {
               className="px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium bg-secondary hover:bg-secondary/80 smooth-transition"
             >
               For Businesses
+            </NavLink>
+            <NavLink 
+              to="/tenant/login"
+              className="px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium bg-secondary hover:bg-secondary/80 smooth-transition"
+            >
+              <Building size={16} />
+              Tenant Portal
             </NavLink>
             <div className="pt-2 mt-2 border-t grid grid-cols-2 gap-2">
               <Button 
