@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -90,31 +89,15 @@ const Index = () => {
             </div>
             
             <div className="flex justify-center">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    size="lg"
-                    icon={<Briefcase size={18} />}
-                    iconPosition="left"
-                  >
-                    Apply for Financing
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="bg-white w-56 shadow-lg border border-gray-200 z-[100]">
-                  {bankAgents.map((bank, index) => (
-                    <DropdownMenuItem key={index} asChild className="cursor-pointer hover:bg-gray-100">
-                      <a 
-                        href={bank.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="w-full px-3 py-2 text-sm"
-                      >
-                        {bank.name}
-                      </a>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Link to="/financing">
+                <Button
+                  size="lg"
+                  icon={<Briefcase size={18} />}
+                  iconPosition="left"
+                >
+                  Apply for Financing
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

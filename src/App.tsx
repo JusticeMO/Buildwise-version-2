@@ -23,6 +23,7 @@ import Cookies from "./pages/Cookies";
 import NotFound from "./pages/NotFound";
 import TenantLogin from "./pages/TenantLogin";
 import TenantDashboard from "./pages/TenantDashboard";
+import BankFinancing from "./pages/BankFinancing";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/tenant/login" element={<TenantLogin />} />
           <Route path="/tenant/dashboard" element={<TenantDashboard />} />
+          <Route path="/financing" element={<BankFinancing />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
