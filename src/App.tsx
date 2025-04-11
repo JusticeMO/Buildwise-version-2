@@ -24,6 +24,7 @@ import NotFound from "./pages/NotFound";
 import TenantLogin from "./pages/TenantLogin";
 import TenantDashboard from "./pages/TenantDashboard";
 import BankFinancing from "./pages/BankFinancing";
+import MortgageCalculator from "./pages/MortgageCalculator";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
           <Route path="/tenant/login" element={<TenantLogin />} />
           <Route path="/tenant/dashboard" element={<TenantDashboard />} />
           <Route path="/financing" element={<BankFinancing />} />
+          <Route path="/mortgage-calculator" element={<MortgageCalculator />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
