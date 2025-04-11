@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import Button from '@/components/shared/Button';
 import { Menu, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ import TenantHistory from '../components/tenant/tabs/TenantHistory';
 const TenantDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [drawerOpen, setDrawerOpen] = useState(false);
   
   const handleLogout = () => {
     toast.success("Logged out successfully");
@@ -30,17 +31,22 @@ const TenantDashboard = () => {
   
   return (
     <div className="min-h-screen flex">
-      {/* Mobile Navigation - Made more opaque */}
-      <Sheet>
-        <SheetTrigger asChild className="fixed bottom-4 right-4 lg:hidden z-50">
+      {/* Mobile Navigation - Using Drawer for better mobile experience */}
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <DrawerTrigger asChild className="fixed bottom-4 right-4 lg:hidden z-50">
           <Button size="lg" variant="outline" className="rounded-full h-12 w-12 shadow-lg bg-white">
             <Menu />
           </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-64 p-0 bg-white border-r shadow-xl">
-          <TenantSidebar onLogout={handleLogout} onNavChange={setActiveTab} activeTab={activeTab} />
-        </SheetContent>
-      </Sheet>
+        </DrawerTrigger>
+        <DrawerContent className="bg-white p-0">
+          <div className="h-[80vh] overflow-auto">
+            <TenantSidebar onLogout={handleLogout} onNavChange={(tab) => {
+              setActiveTab(tab);
+              setDrawerOpen(false);
+            }} activeTab={activeTab} />
+          </div>
+        </DrawerContent>
+      </Drawer>
       
       {/* Desktop Sidebar */}
       <div className="hidden lg:block w-64 bg-white border-r min-h-screen">

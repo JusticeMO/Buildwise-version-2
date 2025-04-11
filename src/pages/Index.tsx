@@ -100,7 +100,7 @@ const Index = () => {
                     Apply for Financing
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="bg-white w-56 shadow-lg border border-gray-200">
+                <DropdownMenuContent align="center" className="bg-white w-56 shadow-lg border border-gray-200 z-[100]">
                   {bankAgents.map((bank, index) => (
                     <DropdownMenuItem key={index} asChild className="cursor-pointer hover:bg-gray-100">
                       <a 

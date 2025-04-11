@@ -1,11 +1,16 @@
 
 import React, { useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, Navigate } from 'react-router-dom';
 import Button from '@/components/shared/Button';
 import { Home, ArrowLeft, AlertCircle } from 'lucide-react';
 
 const NotFound = () => {
   const location = useLocation();
+  
+  // Check if this is a tenant portal route to redirect appropriately
+  if (location.pathname.startsWith('/tenant/') && location.pathname !== '/tenant/login') {
+    return <Navigate to="/tenant/dashboard" replace />;
+  }
 
   useEffect(() => {
     console.error(

@@ -42,7 +42,7 @@ const Navbar = () => {
       <nav 
         className={cn(
           'fixed top-0 left-0 w-full z-50 transition-all duration-300 px-4 lg:px-8',
-          isScrolled ? 'py-2 glass shadow-sm backdrop-blur-md bg-background/80' : 'py-4 bg-background/80 backdrop-blur-md'
+          isScrolled ? 'py-2 glass shadow-sm backdrop-blur-md bg-background/90' : 'py-4 bg-background/90 backdrop-blur-md'
         )}
       >
         <div className="container mx-auto">
@@ -118,11 +118,11 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Improved opacity */}
         <div 
           className={cn(
-            'md:hidden absolute top-full left-0 w-full glass shadow-md overflow-hidden transition-all duration-300 ease-in-out',
-            isMobileMenuOpen ? 'max-h-[500px] border-t' : 'max-h-0'
+            'md:hidden absolute top-full left-0 w-full transition-all duration-300 ease-in-out',
+            isMobileMenuOpen ? 'max-h-[500px] border-t bg-white shadow-md' : 'max-h-0'
           )}
         >
           <div className="container mx-auto py-4 px-4">
