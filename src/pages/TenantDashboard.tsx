@@ -30,10 +30,10 @@ const TenantDashboard = () => {
   
   return (
     <div className="min-h-screen flex">
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Made more opaque */}
       <Sheet>
         <SheetTrigger asChild className="fixed bottom-4 right-4 lg:hidden z-50">
-          <Button size="lg" variant="outline" className="rounded-full h-12 w-12 shadow-lg">
+          <Button size="lg" variant="outline" className="rounded-full h-12 w-12 shadow-lg bg-white">
             <Menu />
           </Button>
         </SheetTrigger>
@@ -63,7 +63,7 @@ const TenantDashboard = () => {
                     <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center">3</Badge>
                   </button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="bg-white sm:max-w-md">
                   <DialogTitle>Notifications</DialogTitle>
                   <div className="space-y-3 mt-4">
                     <div className="bg-secondary/20 p-3 rounded-lg">
@@ -107,7 +107,7 @@ const TenantDashboard = () => {
           </div>
         </header>
         
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {activeTab === 'overview' && <TenantOverview />}
           {activeTab === 'payments' && <TenantPayments />}
           {activeTab === 'messages' && <TenantMessages />}

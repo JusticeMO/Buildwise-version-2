@@ -30,7 +30,7 @@ const TenantSidebar = ({ onLogout, onNavChange, activeTab }: TenantSidebarProps)
         <p className="text-xs text-muted-foreground mt-1">Tenant Portal</p>
       </div>
       
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 p-4 overflow-y-auto">
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.id}>

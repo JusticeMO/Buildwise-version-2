@@ -11,11 +11,14 @@ const HeroSection = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (!heroRef.current) return;
-      const scrollY = window.scrollY;
-      const opacity = 1 - scrollY / 500;
-      const translateY = scrollY * 0.5;
       
-      heroRef.current.style.opacity = `${Math.max(opacity, 0)}`;
+      // Reduce the fade effect by increasing the divisor (from 500 to 1000)
+      // This makes the dashboard stay visible longer as you scroll
+      const scrollY = window.scrollY;
+      const opacity = 1 - scrollY / 1000;
+      const translateY = scrollY * 0.3; // Reduced from 0.5 to 0.3 for less movement
+      
+      heroRef.current.style.opacity = `${Math.max(opacity, 0.2)}`; // Set a minimum opacity of 0.2
       heroRef.current.style.transform = `translateY(${translateY}px)`;
     };
     
@@ -34,7 +37,7 @@ const HeroSection = () => {
       
       <div 
         ref={heroRef}
-        className="container px-4 pt-20 pb-16 flex flex-col items-center text-center z-10 transition-all duration-300 ease-out"
+        className="container px-4 pt-16 sm:pt-20 pb-16 flex flex-col items-center text-center z-10 transition-all duration-300 ease-out"
       >
         <div className="inline-block bg-secondary/80 backdrop-blur-sm px-4 py-1.5 rounded-full mb-6 animate-fade-in">
           <span className="text-sm font-medium text-muted-foreground">
@@ -42,29 +45,30 @@ const HeroSection = () => {
           </span>
         </div>
         
-        <h1 className="text-4xl md:text-6xl xl:text-7xl font-bold mb-6 tracking-tight max-w-4xl animate-fade-in">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 tracking-tight max-w-4xl animate-fade-in">
           Manage your <span className="text-kenya-red">construction projects</span> back home with <span className="text-kenya-green">confidence</span>
         </h1>
         
-        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8 animate-fade-in stagger-1">
+        <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mb-8 animate-fade-in stagger-1">
           Connect with verified contractors, track your projects in real-time, and ensure your funds are used transparently on your construction projects in Kenya.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in stagger-2">
-          <Link to="/projects/create">
+        <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in stagger-2 w-full sm:w-auto">
+          <Link to="/projects/create" className="w-full sm:w-auto">
             <Button 
               size="lg"
-              className="group"
+              className="group w-full sm:w-auto"
               icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />}
               iconPosition="right"
             >
               Start your project
             </Button>
           </Link>
-          <Link to="/contractors">
+          <Link to="/contractors" className="w-full sm:w-auto">
             <Button 
               variant="outline" 
               size="lg"
+              className="w-full sm:w-auto"
             >
               Find contractors
             </Button>

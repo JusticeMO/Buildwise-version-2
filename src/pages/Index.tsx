@@ -100,10 +100,15 @@ const Index = () => {
                     Apply for Financing
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="bg-white w-56">
+                <DropdownMenuContent align="center" className="bg-white w-56 shadow-lg border border-gray-200">
                   {bankAgents.map((bank, index) => (
-                    <DropdownMenuItem key={index} asChild className="cursor-pointer">
-                      <a href={bank.url} target="_blank" rel="noopener noreferrer" className="w-full">
+                    <DropdownMenuItem key={index} asChild className="cursor-pointer hover:bg-gray-100">
+                      <a 
+                        href={bank.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="w-full px-3 py-2 text-sm"
+                      >
                         {bank.name}
                       </a>
                     </DropdownMenuItem>
@@ -128,10 +133,10 @@ const Index = () => {
                 projects back home in Kenya with complete transparency and peace of mind.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                <Link to="/projects/create">
+                <Link to="/projects/create" className="w-full sm:w-auto">
                   <Button 
                     size="lg"
-                    className="group"
+                    className="group w-full sm:w-auto"
                     icon={<ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />}
                     iconPosition="right"
                   >
@@ -141,6 +146,7 @@ const Index = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
+                  className="w-full sm:w-auto"
                 >
                   Book a demo
                 </Button>
