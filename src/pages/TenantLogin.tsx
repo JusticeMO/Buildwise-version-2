@@ -4,25 +4,39 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Input } from '@/components/ui/input';
 import Button from '@/components/shared/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, Building, Lock } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 const TenantLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Demo login for testing
-    if (email && password) {
-      toast.success("Login successful!");
-      navigate('/tenant/dashboard');
-    } else {
+    if (!email || !password) {
       toast.error("Please fill in all fields");
+      return;
+    }
+    
+    try {
+      setIsLoading(true);
+      await login(email, password);
+      toast.success("Login successful!");
+      // For tenants, specifically navigate to tenant dashboard
+      navigate('/tenant/dashboard', { replace: true });
+    } catch (error) {
+      toast.error("Login failed. Please check your credentials.");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -55,6 +69,7 @@ const TenantLogin = () => {
                       className="pl-10"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -77,6 +92,7 @@ const TenantLogin = () => {
                       className="pl-10"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
                     />
                     <button
                       type="button"
@@ -88,8 +104,8 @@ const TenantLogin = () => {
                   </div>
                 </div>
                 
-                <Button type="submit" className="w-full">
-                  Login
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </form>
               
