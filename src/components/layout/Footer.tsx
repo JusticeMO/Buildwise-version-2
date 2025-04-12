@@ -14,8 +14,8 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-1">
             <div className="mb-4">
               <Link to="/" className="text-xl font-bold flex items-center gap-2">
-                <span className="text-kenya-red">Build</span>
-                <span className="text-kenya-green">Wise</span>
+                <span className="text-kenya-red">Jenga</span>
+                <span className="text-kenya-green">Safe</span>
               </Link>
             </div>
             <p className="text-muted-foreground mb-4">
@@ -131,7 +131,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <Mail size={20} className="text-muted-foreground mt-0.5" />
                 <span className="text-muted-foreground">
-                  info@buildwise-trustflow.com
+                  info@jengasafe.com
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -153,7 +153,7 @@ const Footer = () => {
         <div className="pt-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-muted-foreground text-sm">
-              © {currentYear} BuildWise TrustFlow. All rights reserved.
+              © {currentYear} Jenga Safe. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link 

@@ -4,7 +4,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoute from "./components/guards/PrivateRoute";
+
 import Index from "./pages/Index";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import ProjectCreate from "./pages/ProjectCreate";
 import Contractors from "./pages/Contractors";
@@ -34,30 +39,38 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/projects/create" element={<ProjectCreate />} />
-          <Route path="/contractors" element={<Contractors />} />
-          <Route path="/furniture" element={<Furniture />} />
-          <Route path="/finishings" element={<Finishings />} />
-          <Route path="/materials" element={<Materials />} />
-          <Route path="/vendor-application" element={<VendorApplication />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/category/:category" element={<BlogCategory />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/cookies" element={<Cookies />} />
-          <Route path="/tenant/login" element={<TenantLogin />} />
-          <Route path="/tenant/dashboard" element={<TenantDashboard />} />
-          <Route path="/financing" element={<BankFinancing />} />
-          <Route path="/mortgage-calculator" element={<MortgageCalculator />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/tenant/login" element={<TenantLogin />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/category/:category" element={<BlogCategory />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/cookies" element={<Cookies />} />
+            
+            {/* Protected routes */}
+            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            <Route path="/projects/create" element={<PrivateRoute><ProjectCreate /></PrivateRoute>} />
+            <Route path="/contractors" element={<PrivateRoute><Contractors /></PrivateRoute>} />
+            <Route path="/furniture" element={<PrivateRoute><Furniture /></PrivateRoute>} />
+            <Route path="/finishings" element={<PrivateRoute><Finishings /></PrivateRoute>} />
+            <Route path="/materials" element={<PrivateRoute><Materials /></PrivateRoute>} />
+            <Route path="/vendor-application" element={<PrivateRoute><VendorApplication /></PrivateRoute>} />
+            <Route path="/tenant/dashboard" element={<PrivateRoute><TenantDashboard /></PrivateRoute>} />
+            <Route path="/financing" element={<PrivateRoute><BankFinancing /></PrivateRoute>} />
+            <Route path="/mortgage-calculator" element={<PrivateRoute><MortgageCalculator /></PrivateRoute>} />
+            
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,4 +1,5 @@
-# Welcome to your Lovable project
+
+# Welcome to your Jenga Safe project
 
 ## Project info
 
@@ -52,7 +53,7 @@ npm run dev
 
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
 - Vite
 - TypeScript
@@ -67,3 +68,4 @@ Simply open [Lovable](https://lovable.dev/projects/9ea9d0fe-5184-4f5f-a112-eb8a4
 ## I want to use a custom domain - is that possible?
 
 We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+

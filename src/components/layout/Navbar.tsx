@@ -52,8 +52,8 @@ const Navbar = () => {
               to="/" 
               className="text-xl font-bold flex items-center gap-2"
             >
-              <span className="text-kenya-red">Build</span>
-              <span className="text-kenya-green">Wise</span>
+              <span className="text-kenya-red">Jenga</span>
+              <span className="text-kenya-green">Safe</span>
             </NavLink>
 
             {/* Desktop Navigation */}
@@ -97,14 +97,18 @@ const Navbar = () => {
                   Tenant Portal
                 </Button>
               </NavLink>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                className="font-medium"
-              >
-                Log in
-              </Button>
-              <Button size="sm">Sign up</Button>
+              <NavLink to="/login">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="font-medium"
+                >
+                  Log in
+                </Button>
+              </NavLink>
+              <NavLink to="/signup">
+                <Button size="sm">Sign up</Button>
+              </NavLink>
             </div>
 
             {/* Mobile Menu Button */}
@@ -118,7 +122,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu - Fixed implementation with proper opacity */}
+        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full border-t bg-white shadow-md">
             <div className="container mx-auto py-4 px-4">
@@ -152,13 +156,17 @@ const Navbar = () => {
                   Tenant Portal
                 </NavLink>
                 <div className="pt-2 mt-2 border-t grid grid-cols-2 gap-2">
-                  <Button 
-                    variant="outline" 
-                    fullWidth
-                  >
-                    Log in
-                  </Button>
-                  <Button fullWidth>Sign up</Button>
+                  <NavLink to="/login">
+                    <Button 
+                      variant="outline" 
+                      fullWidth
+                    >
+                      Log in
+                    </Button>
+                  </NavLink>
+                  <NavLink to="/signup">
+                    <Button fullWidth>Sign up</Button>
+                  </NavLink>
                 </div>
               </div>
             </div>

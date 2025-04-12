@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import Button from '@/components/shared/Button';
 import { Menu, Bell } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -33,11 +33,11 @@ const TenantDashboard = () => {
     <div className="min-h-screen flex">
       {/* Mobile Navigation - Using Drawer for better mobile experience */}
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerTrigger asChild className="fixed bottom-4 right-4 lg:hidden z-50">
-          <Button size="lg" variant="outline" className="rounded-full h-12 w-12 shadow-lg bg-white">
+        <div className="fixed top-4 right-4 lg:hidden z-50">
+          <Button size="lg" variant="outline" className="rounded-full h-12 w-12 shadow-lg bg-white" onClick={() => setDrawerOpen(!drawerOpen)}>
             <Menu />
           </Button>
-        </DrawerTrigger>
+        </div>
         <DrawerContent className="bg-white p-0">
           <div className="h-[80vh] overflow-auto">
             <TenantSidebar onLogout={handleLogout} onNavChange={(tab) => {
