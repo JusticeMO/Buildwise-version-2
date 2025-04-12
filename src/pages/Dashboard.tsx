@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -16,6 +15,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 // Mock projects data
 const mockProjects = [
@@ -118,6 +118,7 @@ const ProgressBar = ({ progress }: { progress: number }) => {
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
+  const navigate = useNavigate();
   
   // Filter projects based on search term and status filter
   const filteredProjects = mockProjects.filter(project => {
@@ -126,6 +127,10 @@ const Dashboard = () => {
     const matchesStatus = filterStatus ? project.status === filterStatus : true;
     return matchesSearch && matchesStatus;
   });
+  
+  const handleNewProject = () => {
+    navigate('/projects/create');
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -141,6 +146,7 @@ const Dashboard = () => {
             </div>
             <Button 
               icon={<Plus size={18} />}
+              onClick={handleNewProject}
             >
               New Project
             </Button>
@@ -305,6 +311,7 @@ const Dashboard = () => {
                     variant="outline" 
                     size="sm"
                     icon={<Plus size={16} />}
+                    onClick={handleNewProject}
                   >
                     Create a new project
                   </Button>
