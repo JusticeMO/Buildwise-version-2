@@ -118,55 +118,52 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu - Improved opacity */}
-        <div 
-          className={cn(
-            'md:hidden absolute top-full left-0 w-full transition-all duration-300 ease-in-out',
-            isMobileMenuOpen ? 'max-h-[500px] border-t bg-white shadow-md' : 'max-h-0'
-          )}
-        >
-          <div className="container mx-auto py-4 px-4">
-            <div className="flex flex-col space-y-2">
-              {navLinks.map((link) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  className={({ isActive }) => cn(
-                    'px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium smooth-transition',
-                    isActive 
-                      ? 'bg-accent text-accent-foreground' 
-                      : 'hover:bg-accent/50'
-                  )}
+        {/* Mobile Menu - Fixed implementation with proper opacity */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 w-full border-t bg-white shadow-md">
+            <div className="container mx-auto py-4 px-4">
+              <div className="flex flex-col space-y-2">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    className={({ isActive }) => cn(
+                      'px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium smooth-transition',
+                      isActive 
+                        ? 'bg-accent text-accent-foreground' 
+                        : 'hover:bg-accent/50'
+                    )}
+                  >
+                    {link.icon}
+                    {link.name}
+                  </NavLink>
+                ))}
+                <NavLink 
+                  to="/vendor-application"
+                  className="px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium bg-secondary hover:bg-secondary/80 smooth-transition"
                 >
-                  {link.icon}
-                  {link.name}
+                  For Businesses
                 </NavLink>
-              ))}
-              <NavLink 
-                to="/vendor-application"
-                className="px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium bg-secondary hover:bg-secondary/80 smooth-transition"
-              >
-                For Businesses
-              </NavLink>
-              <NavLink 
-                to="/tenant/login"
-                className="px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium bg-secondary hover:bg-secondary/80 smooth-transition"
-              >
-                <Building size={16} />
-                Tenant Portal
-              </NavLink>
-              <div className="pt-2 mt-2 border-t grid grid-cols-2 gap-2">
-                <Button 
-                  variant="outline" 
-                  fullWidth
+                <NavLink 
+                  to="/tenant/login"
+                  className="px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium bg-secondary hover:bg-secondary/80 smooth-transition"
                 >
-                  Log in
-                </Button>
-                <Button fullWidth>Sign up</Button>
+                  <Building size={16} />
+                  Tenant Portal
+                </NavLink>
+                <div className="pt-2 mt-2 border-t grid grid-cols-2 gap-2">
+                  <Button 
+                    variant="outline" 
+                    fullWidth
+                  >
+                    Log in
+                  </Button>
+                  <Button fullWidth>Sign up</Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </nav>
     </>
   );
