@@ -28,6 +28,8 @@ import Cookies from "./pages/Cookies";
 import NotFound from "./pages/NotFound";
 import TenantLogin from "./pages/TenantLogin";
 import TenantDashboard from "./pages/TenantDashboard";
+import LandlordLogin from "./pages/LandlordLogin";
+import LandlordDashboard from "./pages/LandlordDashboard";
 import BankFinancing from "./pages/BankFinancing";
 import MortgageCalculator from "./pages/MortgageCalculator";
 
@@ -46,6 +48,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/tenant/login" element={<TenantLogin />} />
+            <Route path="/landlord/login" element={<LandlordLogin />} />
             <Route path="/about" element={<About />} />
             <Route path="/help" element={<Help />} />
             <Route path="/blog" element={<Blog />} />
@@ -64,6 +67,7 @@ const App = () => (
             <Route path="/materials" element={<PrivateRoute><Materials /></PrivateRoute>} />
             <Route path="/vendor-application" element={<PrivateRoute><VendorApplication /></PrivateRoute>} />
             <Route path="/tenant/dashboard" element={<PrivateRoute><TenantDashboard /></PrivateRoute>} />
+            <Route path="/landlord/dashboard" element={<PrivateRoute><LandlordDashboard /></PrivateRoute>} />
             <Route path="/financing" element={<PrivateRoute><BankFinancing /></PrivateRoute>} />
             <Route path="/mortgage-calculator" element={<PrivateRoute><MortgageCalculator /></PrivateRoute>} />
             
