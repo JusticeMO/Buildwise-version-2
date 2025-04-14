@@ -17,6 +17,7 @@ import TenantWaterUsage from '../components/tenant/tabs/TenantWaterUsage';
 import TenantGarbageServices from '../components/tenant/tabs/TenantGarbageServices';
 import TenantComplaints from '../components/tenant/tabs/TenantComplaints';
 import TenantHistory from '../components/tenant/tabs/TenantHistory';
+import TenantEmergencyServices from '../components/tenant/tabs/TenantEmergencyServices';
 
 // Tenant Dashboard component
 const TenantDashboard = () => {
@@ -119,6 +120,7 @@ const TenantDashboard = () => {
           {activeTab === 'messages' && <TenantMessages />}
           {activeTab === 'water' && <TenantWaterUsage />}
           {activeTab === 'garbage' && <TenantGarbageServices />}
+          {activeTab === 'emergency' && <TenantEmergencyServices />}
           {activeTab === 'complaints' && <TenantComplaints />}
           {activeTab === 'history' && <TenantHistory />}
         </div>
