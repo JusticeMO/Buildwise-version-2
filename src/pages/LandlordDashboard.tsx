@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import Button from '@/components/shared/Button';
@@ -11,6 +10,18 @@ import { toast } from "sonner";
 // Import components
 import LandlordSidebar from '../components/landlord/LandlordSidebar';
 import LandlordOverview from '../components/landlord/tabs/LandlordOverview';
+import LandlordProperties from '../components/landlord/tabs/LandlordProperties';
+import LandlordTenants from '../components/landlord/tabs/LandlordTenants';
+import LandlordPayments from '../components/landlord/tabs/LandlordPayments';
+import LandlordReports from '../components/landlord/tabs/LandlordReports';
+
+// Placeholder component for tabs that don't have dedicated components yet
+const PlaceholderTab = ({ title }: { title: string }) => (
+  <div className="p-6 bg-white rounded-lg shadow-sm">
+    <h2 className="text-2xl font-bold mb-4">{title}</h2>
+    <p className="text-muted-foreground">This section is currently under development. Check back soon for updates!</p>
+  </div>
+);
 
 // Landlord Dashboard component
 const LandlordDashboard = () => {
@@ -21,6 +32,30 @@ const LandlordDashboard = () => {
   const handleLogout = () => {
     toast.success("Logged out successfully");
     navigate('/landlord/login');
+  };
+  
+  // Render the active tab content
+  const renderTabContent = () => {
+    switch(activeTab) {
+      case 'overview':
+        return <LandlordOverview />;
+      case 'properties':
+        return <LandlordProperties />;
+      case 'tenants':
+        return <LandlordTenants />;
+      case 'payments':
+        return <LandlordPayments />;
+      case 'reports':
+        return <LandlordReports />;
+      case 'messages':
+        return <PlaceholderTab title="Messages" />;
+      case 'documents':
+        return <PlaceholderTab title="Documents" />;
+      case 'settings':
+        return <PlaceholderTab title="Settings" />;
+      default:
+        return <LandlordOverview />;
+    }
   };
   
   return (
@@ -108,8 +143,7 @@ const LandlordDashboard = () => {
         </header>
         
         <div className="p-4 sm:p-6">
-          {activeTab === 'overview' && <LandlordOverview />}
-          {/* More tabs will be added later */}
+          {renderTabContent()}
         </div>
       </div>
     </div>

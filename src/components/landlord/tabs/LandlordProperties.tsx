@@ -1,0 +1,162 @@
+
+import React from 'react';
+import { Card } from '@/components/ui/card';
+import { Building2, Home, Users, Plus } from 'lucide-react';
+import Button from '@/components/shared/Button';
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent
+} from '@/components/ui/chart';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Legend
+} from 'recharts';
+
+const LandlordProperties = () => {
+  // Mock data for properties
+  const properties = [
+    { id: 1, name: 'Riverside Apartments', units: 12, occupiedUnits: 10, vacantUnits: 2, rentCollected: 250000, rentDue: 50000 },
+    { id: 2, name: 'Green Gardens Estate', units: 8, occupiedUnits: 7, vacantUnits: 1, rentCollected: 175000, rentDue: 25000 },
+    { id: 3, name: 'Sunrise Towers', units: 15, occupiedUnits: 12, vacantUnits: 3, rentCollected: 320000, rentDue: 60000 },
+  ];
+
+  // Chart data for occupancy rates
+  const occupancyData = properties.map(property => ({
+    name: property.name,
+    Occupied: property.occupiedUnits,
+    Vacant: property.vacantUnits
+  }));
+
+  // Chart configuration
+  const chartConfig = {
+    Occupied: {
+      label: "Occupied Units",
+      color: "#4ade80"
+    },
+    Vacant: {
+      label: "Vacant Units",
+      color: "#f87171"
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Properties</h2>
+        <Button 
+          variant="default" 
+          size="sm"
+          icon={<Plus size={16} />}
+          iconPosition="left"
+        >
+          Add New Property
+        </Button>
+      </div>
+
+      {/* Property Statistics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card className="p-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Total Properties</p>
+              <p className="text-2xl font-bold mt-1">{properties.length}</p>
+            </div>
+            <div className="bg-blue-100 p-2 rounded-md">
+              <Building2 className="text-blue-600" size={20} />
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">Manage all your real estate</p>
+        </Card>
+        
+        <Card className="p-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Total Units</p>
+              <p className="text-2xl font-bold mt-1">{properties.reduce((sum, prop) => sum + prop.units, 0)}</p>
+            </div>
+            <div className="bg-green-100 p-2 rounded-md">
+              <Home className="text-green-600" size={20} />
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">Across all properties</p>
+        </Card>
+        
+        <Card className="p-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Total Occupancy</p>
+              <p className="text-2xl font-bold mt-1">
+                {Math.round((properties.reduce((sum, prop) => sum + prop.occupiedUnits, 0) / 
+                  properties.reduce((sum, prop) => sum + prop.units, 0)) * 100)}%
+              </p>
+            </div>
+            <div className="bg-purple-100 p-2 rounded-md">
+              <Users className="text-purple-600" size={20} />
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">Current occupancy rate</p>
+        </Card>
+      </div>
+
+      {/* Occupancy Chart */}
+      <Card className="p-6">
+        <h3 className="text-lg font-semibold mb-6">Property Occupancy</h3>
+        <div className="h-80">
+          <ChartContainer config={chartConfig}>
+            <BarChart data={occupancyData} stackOffset="expand" layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+              <XAxis type="number" tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
+              <YAxis type="category" dataKey="name" width={120} />
+              <Tooltip content={<ChartTooltipContent />} />
+              <Legend />
+              <Bar dataKey="Occupied" stackId="a" fill="#4ade80" />
+              <Bar dataKey="Vacant" stackId="a" fill="#f87171" />
+            </BarChart>
+          </ChartContainer>
+        </div>
+      </Card>
+
+      {/* Properties List */}
+      <Card className="p-6">
+        <h3 className="text-lg font-semibold mb-4">Your Properties</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-secondary/20">
+              <tr>
+                <th className="px-4 py-2 text-left text-sm font-medium">Property</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Units</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Occupancy</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Collected</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Due</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {properties.map((property) => (
+                <tr key={property.id} className="border-b">
+                  <td className="px-4 py-3">{property.name}</td>
+                  <td className="px-4 py-3">{property.units} units</td>
+                  <td className="px-4 py-3">{property.occupiedUnits}/{property.units} ({Math.round((property.occupiedUnits / property.units) * 100)}%)</td>
+                  <td className="px-4 py-3">KES {property.rentCollected.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-red-600">KES {property.rentDue.toLocaleString()}</td>
+                  <td className="px-4 py-3">
+                    <Button variant="outline" size="sm">View Details</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  );
+};
+
+export default LandlordProperties;
