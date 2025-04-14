@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -14,11 +14,6 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   // Special handling for tenant routes
   if (location.pathname.startsWith('/tenant/') && location.pathname !== '/tenant/login') {
     return location.pathname === '/tenant/dashboard' ? children : <Navigate to="/tenant/dashboard" replace />;
-  }
-
-  // Special handling for landlord routes
-  if (location.pathname.startsWith('/landlord/') && location.pathname !== '/landlord/login') {
-    return location.pathname === '/landlord/dashboard' ? children : <Navigate to="/landlord/dashboard" replace />;
   }
 
   // For all other routes, check if authenticated
