@@ -11,9 +11,13 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
   
-  // Special handling for tenant routes
+  // Special handling for tenant/landlord routes
   if (location.pathname.startsWith('/tenant/') && location.pathname !== '/tenant/login') {
     return location.pathname === '/tenant/dashboard' ? children : <Navigate to="/tenant/dashboard" replace />;
+  }
+
+  if (location.pathname.startsWith('/landlord/') && location.pathname !== '/landlord/login') {
+    return location.pathname === '/landlord/dashboard' ? children : <Navigate to="/landlord/dashboard" replace />;
   }
 
   // For all other routes, check if authenticated
