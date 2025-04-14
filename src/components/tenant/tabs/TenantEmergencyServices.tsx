@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Phone, Ambulance, Flame, Shield, Hospital, ActivitySquare, AlertTriangle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
