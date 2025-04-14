@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Phone, Ambulance, Flame, Police, Hospital, First, Shield } from 'lucide-react';
+import { Phone, Ambulance, Flame, Shield, Hospital, ActivitySquare, AlertTriangle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +23,7 @@ const TenantEmergencyServices = () => {
     {
       name: "Police",
       number: "999",
-      icon: <Police size={24} />,
+      icon: <Shield size={24} />,
       color: "bg-blue-100 text-blue-700",
       description: "For crime reporting and emergency police assistance"
     },
@@ -37,14 +37,14 @@ const TenantEmergencyServices = () => {
     {
       name: "First Aid",
       number: "0787-654321",
-      icon: <First size={24} />,
+      icon: <ActivitySquare size={24} />,
       color: "bg-amber-100 text-amber-700",
       description: "For minor injuries and first aid assistance"
     },
     {
       name: "Security Company",
       number: "0723-111222",
-      icon: <Shield size={24} />,
+      icon: <AlertTriangle size={24} />,
       color: "bg-purple-100 text-purple-700",
       description: "Property security company for safety concerns"
     }
