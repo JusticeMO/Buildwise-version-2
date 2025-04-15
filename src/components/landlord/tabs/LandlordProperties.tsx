@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Building2, Home, Users, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Building2, Home, Users, Plus } from 'lucide-react';
 import {
   ChartContainer,
   ChartTooltip,
@@ -60,7 +59,7 @@ const LandlordProperties = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Properties</h2>
         <Button 
-          variant="primary" 
+          variant="secondary" 
           size="sm"
           onClick={handleAddProperty}
         >
