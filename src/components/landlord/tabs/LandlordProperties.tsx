@@ -20,11 +20,10 @@ import {
 } from 'recharts';
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-// Import the PropertyDetails component
-import PropertyDetails from './PropertyDetails';
-
-const LandlordProperties = () => {
+// Function component for LandlordProperties
+const LandlordProperties = ({ onViewPropertyDetails }) => {
   const navigate = useNavigate();
   
   // Mock data for properties
@@ -57,8 +56,11 @@ const LandlordProperties = () => {
     toast.info("Add property functionality will be implemented soon");
   };
 
-  const handleViewDetails = (propertyId) => {
-    toast.info(`Viewing details for property ${propertyId}`);
+  const handleViewDetails = (propertyId, propertyName) => {
+    toast.info(`Viewing details for ${propertyName}`);
+    if (onViewPropertyDetails) {
+      onViewPropertyDetails(propertyName);
+    }
   };
 
   return (
@@ -124,17 +126,17 @@ const LandlordProperties = () => {
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Property Occupancy</h3>
         <div className="h-64">
-          <ChartContainer config={chartConfig}>
+          <ResponsiveContainer width="100%" height="100%">
             <BarChart data={occupancyData} stackOffset="expand" layout="vertical">
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
               <XAxis type="number" tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
-              <YAxis type="category" dataKey="name" width={110} />
+              <YAxis type="category" dataKey="name" width={140} />
               <Tooltip content={<ChartTooltipContent />} />
               <Legend />
               <Bar dataKey="Occupied" stackId="a" fill="#4ade80" />
               <Bar dataKey="Vacant" stackId="a" fill="#f87171" />
             </BarChart>
-          </ChartContainer>
+          </ResponsiveContainer>
         </div>
       </Card>
 
@@ -142,43 +144,40 @@ const LandlordProperties = () => {
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Your Properties</h3>
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-secondary/20">
-              <tr>
-                <th className="px-4 py-2 text-left text-sm font-medium">Property</th>
-                <th className="px-4 py-2 text-left text-sm font-medium">Units</th>
-                <th className="px-4 py-2 text-left text-sm font-medium">Occupancy</th>
-                <th className="px-4 py-2 text-left text-sm font-medium">Collected</th>
-                <th className="px-4 py-2 text-left text-sm font-medium">Due</th>
-                <th className="px-4 py-2 text-left text-sm font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Property</TableHead>
+                <TableHead>Units</TableHead>
+                <TableHead>Occupancy</TableHead>
+                <TableHead>Collected</TableHead>
+                <TableHead>Due</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {properties.map((property) => (
-                <tr key={property.id} className="border-b">
-                  <td className="px-4 py-3">{property.name}</td>
-                  <td className="px-4 py-3">{property.units} units</td>
-                  <td className="px-4 py-3">{property.occupiedUnits}/{property.units} ({Math.round((property.occupiedUnits / property.units) * 100)}%)</td>
-                  <td className="px-4 py-3">KES {property.rentCollected.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-red-600">KES {property.rentDue.toLocaleString()}</td>
-                  <td className="px-4 py-3">
+                <TableRow key={property.id} className="border-b">
+                  <TableCell className="font-medium">{property.name}</TableCell>
+                  <TableCell>{property.units} units</TableCell>
+                  <TableCell>{property.occupiedUnits}/{property.units} ({Math.round((property.occupiedUnits / property.units) * 100)}%)</TableCell>
+                  <TableCell>KES {property.rentCollected.toLocaleString()}</TableCell>
+                  <TableCell className="text-red-600">KES {property.rentDue.toLocaleString()}</TableCell>
+                  <TableCell>
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      onClick={() => handleViewDetails(property.id)}
+                      onClick={() => handleViewDetails(property.id, property.name)}
                     >
-                      View Details
+                      View Details <ArrowRight size={14} className="ml-1" />
                     </Button>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </Card>
-
-      {/* Property & Tenant Details Section */}
-      <PropertyDetails />
     </div>
   );
 };

@@ -1,300 +1,314 @@
 
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Building2, Users, MessageSquare, AlertTriangle, CheckCircle, Clock, X, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Building2, Users, MessageCircle, AlertCircle, CreditCard, CheckCircle, XCircle, ChevronRight } from 'lucide-react';
-import { toast } from 'sonner';
-
-// Define property data types
-interface Tenant {
-  id: number;
-  name: string;
-  unit: string;
-  phone: string;
-  email: string;
-  moveInDate: string;
-  leaseEnd: string;
-  rentStatus: 'paid' | 'pending' | 'overdue';
-  complaints: number;
-  lastPaymentAmount: number;
-  lastPaymentDate: string;
-}
-
-interface Property {
-  id: number;
-  name: string;
-  address: string;
-  units: number;
-  occupiedUnits: number;
-  vacantUnits: number;
-  rentCollected: number;
-  rentDue: number;
-  tenants: Tenant[];
-}
+import { Badge } from '@/components/ui/badge';
+import { useLocation } from 'react-router-dom';
+import { toast } from "sonner";
 
 const PropertyDetails = () => {
-  const [activeProperty, setActiveProperty] = useState<number>(1);
+  const location = useLocation();
+  const [selectedProperty, setSelectedProperty] = useState('Riverside Apartments');
   
-  // Sample properties data
-  const properties: Property[] = [
-    {
+  // If a property was passed via navigation state, use it
+  React.useEffect(() => {
+    if (location.state?.property) {
+      setSelectedProperty(location.state.property);
+    }
+  }, [location.state]);
+
+  // Mock data for properties
+  const properties = [
+    { 
       id: 1, 
-      name: 'Riverside Apartments',
-      address: '123 River Road, Nairobi',
+      name: 'Riverside Apartments', 
+      address: '123 River Lane, Nairobi', 
       units: 12, 
       occupiedUnits: 10, 
       vacantUnits: 2, 
       rentCollected: 250000, 
       rentDue: 50000,
-      tenants: [
-        { id: 1, name: 'John Doe', unit: 'A1', phone: '0712345678', email: 'john@example.com', moveInDate: '2023-01-15', leaseEnd: '2024-01-15', rentStatus: 'paid', complaints: 0, lastPaymentAmount: 25000, lastPaymentDate: '2023-12-05' },
-        { id: 2, name: 'Jane Smith', unit: 'A2', phone: '0723456789', email: 'jane@example.com', moveInDate: '2022-08-10', leaseEnd: '2023-12-31', rentStatus: 'pending', complaints: 1, lastPaymentAmount: 25000, lastPaymentDate: '2023-11-30' },
-        { id: 3, name: 'Robert Johnson', unit: 'B1', phone: '0734567890', email: 'robert@example.com', moveInDate: '2022-11-01', leaseEnd: '2023-12-31', rentStatus: 'overdue', complaints: 2, lastPaymentAmount: 22000, lastPaymentDate: '2023-10-18' },
-        { id: 4, name: 'Lisa Wong', unit: 'B2', phone: '0745678901', email: 'lisa@example.com', moveInDate: '2023-05-01', leaseEnd: '2024-05-01', rentStatus: 'paid', complaints: 0, lastPaymentAmount: 25000, lastPaymentDate: '2023-12-01' },
-      ]
+      maintenanceRequests: 3,
+      complaints: 2,
+      manager: 'John Mwangi',
+      yearBuilt: 2018,
+      description: 'Modern apartment complex with river views, featuring spacious units with balconies and modern amenities.'
     },
-    {
-      id: 2,
-      name: 'Green Gardens Estate',
-      address: '456 Garden Lane, Nairobi',
-      units: 8,
-      occupiedUnits: 7,
-      vacantUnits: 1,
-      rentCollected: 175000,
+    { 
+      id: 2, 
+      name: 'Green Gardens Estate', 
+      address: '45 Forest Road, Nairobi', 
+      units: 8, 
+      occupiedUnits: 7, 
+      vacantUnits: 1, 
+      rentCollected: 175000, 
       rentDue: 25000,
-      tenants: [
-        { id: 5, name: 'Michael Brown', unit: 'G1', phone: '0756789012', email: 'michael@example.com', moveInDate: '2023-03-15', leaseEnd: '2024-03-15', rentStatus: 'paid', complaints: 0, lastPaymentAmount: 30000, lastPaymentDate: '2023-12-02' },
-        { id: 6, name: 'Sarah Kimani', unit: 'G2', phone: '0767890123', email: 'sarah@example.com', moveInDate: '2023-02-01', leaseEnd: '2024-02-01', rentStatus: 'paid', complaints: 1, lastPaymentAmount: 30000, lastPaymentDate: '2023-12-03' },
-        { id: 7, name: 'David Ochieng', unit: 'G3', phone: '0778901234', email: 'david@example.com', moveInDate: '2022-12-15', leaseEnd: '2023-12-15', rentStatus: 'pending', complaints: 0, lastPaymentAmount: 30000, lastPaymentDate: '2023-11-28' },
-      ]
+      maintenanceRequests: 1,
+      complaints: 0,
+      manager: 'Sarah Kamau',
+      yearBuilt: 2020,
+      description: 'Eco-friendly townhouse development with private gardens, solar power, and high-efficiency appliances.'
     },
-    {
-      id: 3,
-      name: 'Sunrise Towers',
-      address: '789 Sunrise Avenue, Nairobi',
-      units: 15,
-      occupiedUnits: 12,
-      vacantUnits: 3,
-      rentCollected: 320000,
+    { 
+      id: 3, 
+      name: 'Sunrise Towers', 
+      address: '78 Eastlands Way, Nairobi', 
+      units: 15, 
+      occupiedUnits: 12, 
+      vacantUnits: 3, 
+      rentCollected: 320000, 
       rentDue: 60000,
-      tenants: [
-        { id: 8, name: 'James Mwangi', unit: 'S1', phone: '0789012345', email: 'james@example.com', moveInDate: '2023-06-01', leaseEnd: '2024-06-01', rentStatus: 'paid', complaints: 0, lastPaymentAmount: 28000, lastPaymentDate: '2023-12-01' },
-        { id: 9, name: 'Mary Wanjiku', unit: 'S2', phone: '0790123456', email: 'mary@example.com', moveInDate: '2023-01-15', leaseEnd: '2024-01-15', rentStatus: 'overdue', complaints: 3, lastPaymentAmount: 28000, lastPaymentDate: '2023-10-20' },
-        { id: 10, name: 'Peter Njoroge', unit: 'S3', phone: '0701234567', email: 'peter@example.com', moveInDate: '2023-04-01', leaseEnd: '2024-04-01', rentStatus: 'paid', complaints: 1, lastPaymentAmount: 28000, lastPaymentDate: '2023-12-05' },
-        { id: 11, name: 'Agnes Wairimu', unit: 'S4', phone: '0712345678', email: 'agnes@example.com', moveInDate: '2022-09-15', leaseEnd: '2023-12-15', rentStatus: 'pending', complaints: 0, lastPaymentAmount: 28000, lastPaymentDate: '2023-11-28' },
-        { id: 12, name: 'Stephen Kamau', unit: 'S5', phone: '0723456789', email: 'stephen@example.com', moveInDate: '2023-07-01', leaseEnd: '2024-07-01', rentStatus: 'paid', complaints: 0, lastPaymentAmount: 28000, lastPaymentDate: '2023-12-03' },
-      ]
-    }
+      maintenanceRequests: 5,
+      complaints: 3,
+      manager: 'David Ochieng',
+      yearBuilt: 2015,
+      description: 'High-rise apartment building with panoramic city views, featuring a rooftop garden and modern security system.'
+    },
   ];
 
-  const handleViewTenantDetails = (tenantId: number) => {
-    toast.info(`Viewing details for tenant ID: ${tenantId}`);
+  // Mock data for tenants
+  const tenantsByProperty = {
+    'Riverside Apartments': [
+      { id: 1, name: 'Mary Njeri', unit: '1A', rentStatus: 'paid', moveInDate: '2022-03-15', rentAmount: 25000, complaints: 0, contact: '+254 712 345 678', email: 'mary.n@example.com' },
+      { id: 2, name: 'James Kimani', unit: '1B', rentStatus: 'paid', moveInDate: '2021-07-22', rentAmount: 25000, complaints: 1, contact: '+254 723 456 789', email: 'james.k@example.com' },
+      { id: 3, name: 'Alice Wanjiku', unit: '2A', rentStatus: 'late', moveInDate: '2022-01-05', rentAmount: 28000, complaints: 0, contact: '+254 734 567 890', email: 'alice.w@example.com' },
+      { id: 4, name: 'Robert Mutua', unit: '2B', rentStatus: 'paid', moveInDate: '2023-04-10', rentAmount: 28000, complaints: 0, contact: '+254 745 678 901', email: 'robert.m@example.com' },
+      { id: 5, name: 'Jane Adhiambo', unit: '3A', rentStatus: 'pending', moveInDate: '2022-11-17', rentAmount: 25000, complaints: 1, contact: '+254 756 789 012', email: 'jane.a@example.com' },
+      { id: 6, name: 'Michael Otieno', unit: '3B', rentStatus: 'paid', moveInDate: '2022-09-30', rentAmount: 25000, complaints: 0, contact: '+254 767 890 123', email: 'michael.o@example.com' },
+      { id: 7, name: 'Grace Muthoni', unit: '4A', rentStatus: 'paid', moveInDate: '2023-02-14', rentAmount: 30000, complaints: 0, contact: '+254 778 901 234', email: 'grace.m@example.com' },
+      { id: 8, name: 'Daniel Kipchoge', unit: '4B', rentStatus: 'overdue', moveInDate: '2022-05-25', rentAmount: 30000, complaints: 2, contact: '+254 789 012 345', email: 'daniel.k@example.com' },
+      { id: 9, name: 'Faith Wangari', unit: '5A', rentStatus: 'paid', moveInDate: '2023-01-08', rentAmount: 25000, complaints: 0, contact: '+254 790 123 456', email: 'faith.w@example.com' },
+      { id: 10, name: 'Peter Omondi', unit: '5B', rentStatus: 'paid', moveInDate: '2021-12-03', rentAmount: 25000, complaints: 1, contact: '+254 701 234 567', email: 'peter.o@example.com' }
+    ],
+    'Green Gardens Estate': [
+      { id: 11, name: 'Elizabeth Maina', unit: 'Unit 1', rentStatus: 'paid', moveInDate: '2022-02-10', rentAmount: 35000, complaints: 0, contact: '+254 712 987 654', email: 'elizabeth.m@example.com' },
+      { id: 12, name: 'Samuel Ndung\'u', unit: 'Unit 2', rentStatus: 'paid', moveInDate: '2022-08-15', rentAmount: 35000, complaints: 0, contact: '+254 723 876 543', email: 'samuel.n@example.com' },
+      { id: 13, name: 'Christine Wairimu', unit: 'Unit 3', rentStatus: 'overdue', moveInDate: '2021-11-20', rentAmount: 35000, complaints: 1, contact: '+254 734 765 432', email: 'christine.w@example.com' },
+      { id: 14, name: 'Brian Ochieng', unit: 'Unit 4', rentStatus: 'paid', moveInDate: '2023-03-05', rentAmount: 35000, complaints: 0, contact: '+254 745 654 321', email: 'brian.o@example.com' },
+      { id: 15, name: 'Florence Akinyi', unit: 'Unit 5', rentStatus: 'paid', moveInDate: '2022-07-12', rentAmount: 32000, complaints: 0, contact: '+254 756 543 210', email: 'florence.a@example.com' },
+      { id: 16, name: 'George Kamau', unit: 'Unit 6', rentStatus: 'late', moveInDate: '2022-10-08', rentAmount: 32000, complaints: 1, contact: '+254 767 432 109', email: 'george.k@example.com' },
+      { id: 17, name: 'Nancy Wambui', unit: 'Unit 7', rentStatus: 'paid', moveInDate: '2023-01-15', rentAmount: 32000, complaints: 0, contact: '+254 778 321 098', email: 'nancy.w@example.com' }
+    ],
+    'Sunrise Towers': [
+      { id: 18, name: 'Paul Njoroge', unit: 'Apt 101', rentStatus: 'paid', moveInDate: '2022-04-18', rentAmount: 28000, complaints: 0, contact: '+254 789 210 987', email: 'paul.n@example.com' },
+      { id: 19, name: 'Monica Wanjiru', unit: 'Apt 102', rentStatus: 'paid', moveInDate: '2022-06-22', rentAmount: 28000, complaints: 1, contact: '+254 790 109 876', email: 'monica.w@example.com' },
+      { id: 20, name: 'Richard Kipkoech', unit: 'Apt 103', rentStatus: 'overdue', moveInDate: '2021-09-14', rentAmount: 28000, complaints: 2, contact: '+254 701 098 765', email: 'richard.k@example.com' },
+      { id: 21, name: 'Esther Moraa', unit: 'Apt 201', rentStatus: 'paid', moveInDate: '2022-12-05', rentAmount: 30000, complaints: 0, contact: '+254 712 987 654', email: 'esther.m@example.com' },
+      { id: 22, name: 'Joseph Onyango', unit: 'Apt 202', rentStatus: 'late', moveInDate: '2023-02-20', rentAmount: 30000, complaints: 1, contact: '+254 723 876 543', email: 'joseph.o@example.com' },
+      { id: 23, name: 'Catherine Nyambura', unit: 'Apt 203', rentStatus: 'paid', moveInDate: '2022-08-10', rentAmount: 30000, complaints: 0, contact: '+254 734 765 432', email: 'catherine.n@example.com' },
+      { id: 24, name: 'Victor Kibet', unit: 'Apt 301', rentStatus: 'paid', moveInDate: '2022-11-12', rentAmount: 32000, complaints: 0, contact: '+254 745 654 321', email: 'victor.k@example.com' },
+      { id: 25, name: 'Rebecca Atieno', unit: 'Apt 302', rentStatus: 'paid', moveInDate: '2023-01-25', rentAmount: 32000, complaints: 0, contact: '+254 756 543 210', email: 'rebecca.a@example.com' },
+      { id: 26, name: 'Stephen Muriithi', unit: 'Apt 303', rentStatus: 'pending', moveInDate: '2022-07-30', rentAmount: 32000, complaints: 1, contact: '+254 767 432 109', email: 'stephen.m@example.com' },
+      { id: 27, name: 'Sandra Chebet', unit: 'Apt 401', rentStatus: 'paid', moveInDate: '2022-10-15', rentAmount: 35000, complaints: 0, contact: '+254 778 321 098', email: 'sandra.c@example.com' },
+      { id: 28, name: 'Kevin Mwangi', unit: 'Apt 402', rentStatus: 'overdue', moveInDate: '2021-12-18', rentAmount: 35000, complaints: 3, contact: '+254 789 210 987', email: 'kevin.m@example.com' },
+      { id: 29, name: 'Linda Akoth', unit: 'Apt 403', rentStatus: 'paid', moveInDate: '2022-05-22', rentAmount: 35000, complaints: 0, contact: '+254 790 109 876', email: 'linda.a@example.com' }
+    ]
   };
 
-  const handleContactTenant = (tenantId: number) => {
-    toast.info(`Contacting tenant ID: ${tenantId}`);
+  // Find the selected property
+  const selectedPropertyData = properties.find(p => p.name === selectedProperty);
+  const tenants = tenantsByProperty[selectedProperty] || [];
+
+  // Get counts for different statuses
+  const paidCount = tenants.filter(t => t.rentStatus === 'paid').length;
+  const pendingCount = tenants.filter(t => t.rentStatus === 'pending').length;
+  const lateCount = tenants.filter(t => t.rentStatus === 'late').length;
+  const overdueCount = tenants.filter(t => t.rentStatus === 'overdue').length;
+
+  const handlePropertySelect = (propertyName) => {
+    setSelectedProperty(propertyName);
   };
 
-  const handleViewComplaints = (tenantId: number) => {
-    toast.info(`Viewing complaints for tenant ID: ${tenantId}`);
+  const handleContactTenant = (tenant) => {
+    toast.info(`Contacting ${tenant.name}...`);
+  };
+
+  const handleViewComplaints = (tenant) => {
+    if (tenant.complaints > 0) {
+      toast.info(`Viewing ${tenant.complaints} complaint(s) from ${tenant.name}`);
+    } else {
+      toast.info(`No complaints from ${tenant.name}`);
+    }
+  };
+
+  const getRentStatusBadge = (status) => {
+    switch (status) {
+      case 'paid':
+        return <Badge className="bg-green-500">Paid</Badge>;
+      case 'pending':
+        return <Badge className="bg-amber-500">Pending</Badge>;
+      case 'late':
+        return <Badge className="bg-amber-600">Late</Badge>;
+      case 'overdue':
+        return <Badge className="bg-red-500">Overdue</Badge>;
+      default:
+        return <Badge>Unknown</Badge>;
+    }
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Property & Tenant Details</h2>
+      <h2 className="text-2xl font-bold">Property Details</h2>
       
-      <Tabs defaultValue={properties[0].id.toString()} onValueChange={(val) => setActiveProperty(parseInt(val))}>
-        <TabsList className="mb-4 bg-white">
+      {/* Property Selection Tabs */}
+      <Tabs defaultValue={selectedProperty} onValueChange={handlePropertySelect} value={selectedProperty}>
+        <TabsList className="bg-muted/50 w-full flex overflow-x-auto">
           {properties.map(property => (
-            <TabsTrigger key={property.id} value={property.id.toString()} className="px-4 py-2">
+            <TabsTrigger 
+              key={property.id} 
+              value={property.name}
+              className="data-[state=active]:bg-primary data-[state=active]:text-white"
+            >
               {property.name}
             </TabsTrigger>
           ))}
         </TabsList>
         
         {properties.map(property => (
-          <TabsContent key={property.id} value={property.id.toString()} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="p-4">
-                <div className="flex items-start justify-between">
+          <TabsContent key={property.id} value={property.name} className="mt-6">
+            {/* Property Overview Card */}
+            {property.name === selectedProperty && selectedPropertyData && (
+              <Card className="mb-6 p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <p className="text-sm text-muted-foreground">Address</p>
-                    <p className="text-md font-medium mt-1">{property.address}</p>
-                  </div>
-                  <div className="bg-purple-100 p-2 rounded-md">
-                    <Building2 className="text-purple-600" size={20} />
-                  </div>
-                </div>
-              </Card>
-              
-              <Card className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Total Units</p>
-                    <p className="text-2xl font-bold mt-1">{property.units}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
-                      <span className="text-xs">{property.occupiedUnits}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 rounded-full bg-gray-300 mr-1"></div>
-                      <span className="text-xs">{property.vacantUnits}</span>
+                    <h3 className="text-xl font-semibold mb-2">{selectedPropertyData.name}</h3>
+                    <p className="text-muted-foreground mb-4">{selectedPropertyData.address}</p>
+                    <p className="mb-4">{selectedPropertyData.description}</p>
+                    <div className="flex flex-wrap gap-4">
+                      <div className="flex items-center gap-2">
+                        <Building2 size={16} className="text-primary" />
+                        <span className="text-sm">Year built: {selectedPropertyData.yearBuilt}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users size={16} className="text-primary" />
+                        <span className="text-sm">Property Manager: {selectedPropertyData.manager}</span>
+                      </div>
                     </div>
                   </div>
+                  <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <Card className="p-3 bg-muted/20">
+                        <p className="text-xs text-muted-foreground">Total Units</p>
+                        <p className="text-xl font-bold">{selectedPropertyData.units}</p>
+                      </Card>
+                      <Card className="p-3 bg-muted/20">
+                        <p className="text-xs text-muted-foreground">Occupancy</p>
+                        <p className="text-xl font-bold">{Math.round((selectedPropertyData.occupiedUnits / selectedPropertyData.units) * 100)}%</p>
+                      </Card>
+                      <Card className="p-3 bg-muted/20">
+                        <p className="text-xs text-muted-foreground">Rent Collected</p>
+                        <p className="text-xl font-bold">KES {selectedPropertyData.rentCollected.toLocaleString()}</p>
+                      </Card>
+                      <Card className="p-3 bg-muted/20">
+                        <p className="text-xs text-muted-foreground">Rent Due</p>
+                        <p className="text-xl font-bold text-red-500">KES {selectedPropertyData.rentDue.toLocaleString()}</p>
+                      </Card>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle size={16} className="text-amber-500" />
+                        <span className="text-sm">{selectedPropertyData.maintenanceRequests} maintenance requests</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MessageSquare size={16} className="text-red-500" />
+                        <span className="text-sm">{selectedPropertyData.complaints} complaints</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-xs text-muted-foreground mt-4">
-                  {Math.round((property.occupiedUnits / property.units) * 100)}% occupancy rate
-                </p>
               </Card>
-              
-              <Card className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Rent Collected</p>
-                    <p className="text-2xl font-bold mt-1">KES {property.rentCollected.toLocaleString()}</p>
-                  </div>
-                  <div className="bg-green-100 p-2 rounded-md">
-                    <CheckCircle className="text-green-600" size={20} />
-                  </div>
-                </div>
-                <p className="text-xs text-green-600 mt-4">Current month</p>
-              </Card>
-              
-              <Card className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Rent Due</p>
-                    <p className="text-2xl font-bold mt-1">KES {property.rentDue.toLocaleString()}</p>
-                  </div>
-                  <div className="bg-red-100 p-2 rounded-md">
-                    <XCircle className="text-red-600" size={20} />
-                  </div>
-                </div>
-                <p className="text-xs text-red-600 mt-4">Outstanding balance</p>
-              </Card>
-            </div>
+            )}
             
-            <Card className="p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Tenant List ({property.tenants.length})</h3>
+            {/* Tenant Information */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Tenants</h3>
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span className="text-xs">Paid</span>
+                  <div className="flex items-center gap-1">
+                    <CheckCircle size={16} className="text-green-500" />
+                    <span className="text-sm">{paidCount} Paid</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                    <span className="text-xs">Pending</span>
+                  <div className="flex items-center gap-1">
+                    <Clock size={16} className="text-amber-500" />
+                    <span className="text-sm">{pendingCount + lateCount} Pending/Late</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <span className="text-xs">Overdue</span>
+                  <div className="flex items-center gap-1">
+                    <X size={16} className="text-red-500" />
+                    <span className="text-sm">{overdueCount} Overdue</span>
                   </div>
                 </div>
               </div>
               
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Unit</TableHead>
-                      <TableHead>Tenant</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Lease Period</TableHead>
-                      <TableHead>Rent Status</TableHead>
-                      <TableHead>Last Payment</TableHead>
-                      <TableHead>Complaints</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {property.tenants.map(tenant => (
-                      <TableRow key={tenant.id}>
-                        <TableCell className="font-medium">{tenant.unit}</TableCell>
-                        <TableCell>{tenant.name}</TableCell>
-                        <TableCell>
-                          <div>
-                            <div className="flex items-center text-xs">
-                              <span className="mr-2">📱</span> {tenant.phone}
-                            </div>
-                            <div className="flex items-center text-xs mt-1">
-                              <span className="mr-2">📧</span> {tenant.email}
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="text-xs">
-                            <div>From: {tenant.moveInDate}</div>
-                            <div>To: {tenant.leaseEnd}</div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center">
-                            <div className={`w-3 h-3 rounded-full mr-2 ${
-                              tenant.rentStatus === 'paid' ? 'bg-green-500' :
-                              tenant.rentStatus === 'pending' ? 'bg-amber-500' : 'bg-red-500'
-                            }`}></div>
-                            <span className="capitalize">{tenant.rentStatus}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="text-xs">
-                            <div>KES {tenant.lastPaymentAmount.toLocaleString()}</div>
-                            <div className="text-muted-foreground">{tenant.lastPaymentDate}</div>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center">
+              <Card className="overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Unit</TableHead>
+                        <TableHead>Move In</TableHead>
+                        <TableHead>Rent Amount</TableHead>
+                        <TableHead>Rent Status</TableHead>
+                        <TableHead>Complaints</TableHead>
+                        <TableHead>Contact</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {tenants.map((tenant) => (
+                        <TableRow key={tenant.id}>
+                          <TableCell className="font-medium">{tenant.name}</TableCell>
+                          <TableCell>{tenant.unit}</TableCell>
+                          <TableCell>{new Date(tenant.moveInDate).toLocaleDateString()}</TableCell>
+                          <TableCell>KES {tenant.rentAmount.toLocaleString()}</TableCell>
+                          <TableCell>{getRentStatusBadge(tenant.rentStatus)}</TableCell>
+                          <TableCell>
                             {tenant.complaints > 0 ? (
-                              <div className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium flex items-center">
-                                <AlertCircle size={12} className="mr-1" />
+                              <Badge variant="outline" className="bg-red-50 text-red-500 hover:bg-red-100">
                                 {tenant.complaints}
-                              </div>
+                              </Badge>
                             ) : (
-                              <span className="text-green-600 text-xs">None</span>
+                              <Check size={16} className="text-green-500" />
                             )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="h-8 px-2 text-xs"
-                              onClick={() => handleViewTenantDetails(tenant.id)}
-                            >
-                              Details
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="icon"
-                              className="h-8 w-8" 
-                              onClick={() => handleContactTenant(tenant.id)}
-                            >
-                              <MessageCircle size={15} />
-                            </Button>
-                            {tenant.complaints > 0 && (
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">{tenant.contact}</TableCell>
+                          <TableCell>
+                            <div className="flex gap-2">
                               <Button 
                                 variant="ghost" 
-                                size="icon" 
-                                className="h-8 w-8 text-red-600"
-                                onClick={() => handleViewComplaints(tenant.id)}
+                                size="sm" 
+                                onClick={() => handleContactTenant(tenant)}
+                                className="text-xs h-7"
                               >
-                                <AlertCircle size={15} />
+                                Contact
                               </Button>
-                            )}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </Card>
+                              <Button 
+                                variant={tenant.complaints > 0 ? "outline" : "ghost"} 
+                                size="sm" 
+                                onClick={() => handleViewComplaints(tenant)}
+                                className={`text-xs h-7 ${tenant.complaints > 0 ? "border-red-200 text-red-500 hover:bg-red-50" : ""}`}
+                              >
+                                {tenant.complaints > 0 ? "View Issues" : "No Issues"}
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </Card>
+            </div>
           </TabsContent>
         ))}
       </Tabs>

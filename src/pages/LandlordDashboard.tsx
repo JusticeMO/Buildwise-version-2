@@ -1,9 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import Button from '@/components/shared/Button';
 import { Menu, Bell } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from "sonner";
@@ -28,12 +28,30 @@ const PlaceholderTab = ({ title }: { title: string }) => (
 // Landlord Dashboard component
 const LandlordDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('overview');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  
+  // Check if location state has a tab to display
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
   
   const handleLogout = () => {
     toast.success("Logged out successfully");
     navigate('/landlord/login');
+  };
+  
+  // Handle navigation to property details
+  const handlePropertyDetails = (propertyName) => {
+    setActiveTab('property-details');
+    // Pass the property name via state
+    navigate('/landlord/dashboard', { 
+      state: { activeTab: 'property-details', property: propertyName },
+      replace: true 
+    });
   };
   
   // Render the active tab content
@@ -42,7 +60,7 @@ const LandlordDashboard = () => {
       case 'overview':
         return <LandlordOverview />;
       case 'properties':
-        return <LandlordProperties />;
+        return <LandlordProperties onViewPropertyDetails={handlePropertyDetails} />;
       case 'tenants':
         return <LandlordTenants />;
       case 'payments':

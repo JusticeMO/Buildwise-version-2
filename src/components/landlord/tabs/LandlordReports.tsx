@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Download, Filter, ChartPieIcon, BarChart3 } from 'lucide-react';
+import { Download, Filter, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   ChartContainer,
@@ -24,38 +24,41 @@ import {
   ComposedChart
 } from 'recharts';
 import { toast } from "sonner";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useNavigate } from "react-router-dom";
 
 const LandlordReports = () => {
+  const navigate = useNavigate();
   const [reportPeriod, setReportPeriod] = useState('year');
   
-  // Revenue data by period
+  // Revenue data by period with more realistic figures
   const monthlyRevenueData = [
-    { month: 'Week 1', revenue: 350000, expenses: 140000, profit: 210000 },
-    { month: 'Week 2', revenue: 340000, expenses: 135000, profit: 205000 },
-    { month: 'Week 3', revenue: 360000, expenses: 142000, profit: 218000 },
-    { month: 'Week 4', revenue: 355000, expenses: 138000, profit: 217000 },
+    { month: 'Week 1', revenue: 85000, expenses: 32000, profit: 53000 },
+    { month: 'Week 2', revenue: 82000, expenses: 30000, profit: 52000 },
+    { month: 'Week 3', revenue: 87000, expenses: 33500, profit: 53500 },
+    { month: 'Week 4', revenue: 84000, expenses: 31000, profit: 53000 },
   ];
 
   const quarterlyRevenueData = [
-    { month: 'Jan', revenue: 1050000, expenses: 350000, profit: 700000 },
-    { month: 'Feb', revenue: 1100000, expenses: 320000, profit: 780000 },
-    { month: 'Mar', revenue: 1080000, expenses: 330000, profit: 750000 },
+    { month: 'Jan', revenue: 245000, expenses: 92000, profit: 153000 },
+    { month: 'Feb', revenue: 260000, expenses: 95000, profit: 165000 },
+    { month: 'Mar', revenue: 252000, expenses: 94000, profit: 158000 },
   ];
   
-  // Full year revenue data
+  // Full year revenue data with more realistic figures
   const yearlyRevenueData = [
-    { month: 'Jan', revenue: 1050000, expenses: 350000, profit: 700000 },
-    { month: 'Feb', revenue: 1100000, expenses: 320000, profit: 780000 },
-    { month: 'Mar', revenue: 1080000, expenses: 330000, profit: 750000 },
-    { month: 'Apr', revenue: 1120000, expenses: 340000, profit: 780000 },
-    { month: 'May', revenue: 1100000, expenses: 350000, profit: 750000 },
-    { month: 'Jun', revenue: 1150000, expenses: 360000, profit: 790000 },
-    { month: 'Jul', revenue: 1250000, expenses: 380000, profit: 870000 },
-    { month: 'Aug', revenue: 1280000, expenses: 400000, profit: 880000 },
-    { month: 'Sep', revenue: 1300000, expenses: 410000, profit: 890000 },
-    { month: 'Oct', revenue: 1350000, expenses: 420000, profit: 930000 },
-    { month: 'Nov', revenue: 1400000, expenses: 430000, profit: 970000 },
-    { month: 'Dec', revenue: 1450000, expenses: 450000, profit: 1000000 },
+    { month: 'Jan', revenue: 245000, expenses: 92000, profit: 153000 },
+    { month: 'Feb', revenue: 260000, expenses: 95000, profit: 165000 },
+    { month: 'Mar', revenue: 252000, expenses: 94000, profit: 158000 },
+    { month: 'Apr', revenue: 258000, expenses: 96000, profit: 162000 },
+    { month: 'May', revenue: 255000, expenses: 94500, profit: 160500 },
+    { month: 'Jun', revenue: 262000, expenses: 97000, profit: 165000 },
+    { month: 'Jul', revenue: 275000, expenses: 100000, profit: 175000 },
+    { month: 'Aug', revenue: 280000, expenses: 102000, profit: 178000 },
+    { month: 'Sep', revenue: 285000, expenses: 103000, profit: 182000 },
+    { month: 'Oct', revenue: 290000, expenses: 105000, profit: 185000 },
+    { month: 'Nov', revenue: 295000, expenses: 106000, profit: 189000 },
+    { month: 'Dec', revenue: 305000, expenses: 110000, profit: 195000 },
   ];
 
   // Get the appropriate revenue data based on the selected period
@@ -72,21 +75,21 @@ const LandlordReports = () => {
   
   const revenueData = getRevenueData();
 
-  // Property performance data
+  // Property performance data with realistic figures
   const propertyPerformanceData = [
-    { name: 'Riverside Apartments', revenue: 750000, expenses: 220000, occupancy: 83 },
-    { name: 'Green Gardens Estate', revenue: 420000, expenses: 150000, occupancy: 88 },
-    { name: 'Sunrise Towers', revenue: 680000, expenses: 200000, occupancy: 80 },
+    { name: 'Riverside Apartments', revenue: 120000, expenses: 45000, occupancy: 83, units: 12 },
+    { name: 'Green Gardens Estate', revenue: 95000, expenses: 35000, occupancy: 88, units: 8 },
+    { name: 'Sunrise Towers', revenue: 142000, expenses: 52000, occupancy: 80, units: 15 },
   ];
 
-  // Expenses breakdown
+  // Expenses breakdown with realistic figures
   const expensesData = [
-    { name: 'Maintenance', value: 180000, color: '#3B82F6' },
-    { name: 'Utilities', value: 95000, color: '#10B981' },
-    { name: 'Insurance', value: 65000, color: '#F59E0B' },
-    { name: 'Property Tax', value: 120000, color: '#8B5CF6' },
-    { name: 'Management', value: 85000, color: '#EC4899' },
-    { name: 'Other', value: 45000, color: '#6B7280' },
+    { name: 'Maintenance', value: 42000, color: '#3B82F6' },
+    { name: 'Utilities', value: 23000, color: '#10B981' },
+    { name: 'Insurance', value: 18000, color: '#F59E0B' },
+    { name: 'Property Tax', value: 35000, color: '#8B5CF6' },
+    { name: 'Management', value: 21000, color: '#EC4899' },
+    { name: 'Other', value: 12000, color: '#6B7280' },
   ];
 
   // Occupancy trend
@@ -164,9 +167,14 @@ const LandlordReports = () => {
     toast.info(`Report period changed to ${period}`);
   };
 
+  const handleViewPropertyDetails = (propertyName) => {
+    toast.info(`Viewing details for ${propertyName}`);
+    navigate('/landlord/dashboard', { state: { activeTab: 'property-details', property: propertyName } });
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-2">
         <h2 className="text-2xl font-bold">Financial Reports</h2>
         <div className="flex items-center gap-2">
           <div className="border rounded-md overflow-hidden flex">
@@ -227,9 +235,9 @@ const LandlordReports = () => {
         </Card>
       </div>
 
-      {/* Revenue vs Expenses Chart */}
+      {/* Revenue vs Expenses Chart - FIXED HEIGHT AND LAYOUT */}
       <Card className="p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Revenue vs Expenses</h3>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" onClick={handleFilter}>
@@ -238,13 +246,13 @@ const LandlordReports = () => {
             </Button>
           </div>
         </div>
-        <div className="h-72">
-          <ChartContainer config={areaChartConfig}>
+        <div className="h-[280px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
-              <YAxis tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
-              <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
+              <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
+              <Tooltip content={<ChartTooltipContent />} />
               <Legend />
               <Area 
                 type="monotone" 
@@ -268,38 +276,69 @@ const LandlordReports = () => {
                 dot={{ r: 2 }}
               />
             </ComposedChart>
-          </ChartContainer>
+          </ResponsiveContainer>
         </div>
       </Card>
 
+      {/* Property Performance and Expenses side by side */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Property Performance */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Property Performance</h3>
-          <div className="h-60">
-            <ChartContainer config={{}}>
+          <div className="h-[240px]">
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={propertyPerformanceData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                <YAxis type="category" dataKey="name" width={100} />
+                <YAxis type="category" dataKey="name" width={140} />
                 <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
                 <Legend />
                 <Bar dataKey="revenue" fill="#8B5CF6" name="Revenue" />
                 <Bar dataKey="expenses" fill="#F87171" name="Expenses" />
               </BarChart>
-            </ChartContainer>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-4">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Property</TableHead>
+                  <TableHead>Units</TableHead>
+                  <TableHead>Occupancy</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {propertyPerformanceData.map((property) => (
+                  <TableRow key={property.name}>
+                    <TableCell className="font-medium">{property.name}</TableCell>
+                    <TableCell>{property.units}</TableCell>
+                    <TableCell>{property.occupancy}%</TableCell>
+                    <TableCell>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleViewPropertyDetails(property.name)}
+                      >
+                        Details <ArrowRight size={14} className="ml-1" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </Card>
 
         {/* Expenses Breakdown */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Expenses Breakdown</h3>
-          <div className="h-60">
+          <div className="h-[240px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={expensesData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                <YAxis type="category" dataKey="name" width={90} />
+                <YAxis type="category" dataKey="name" width={100} />
                 <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
                 <Bar dataKey="value" name="Amount">
                   {expensesData.map((entry, index) => (
@@ -309,23 +348,23 @@ const LandlordReports = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-6 border-t pt-4">
             {expensesData.map((item) => (
               <div key={item.name} className="flex items-center">
                 <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: item.color }}></div>
-                <span className="text-xs">{item.name}</span>
+                <span className="text-xs">{item.name}: {formatKES(item.value)}</span>
               </div>
             ))}
           </div>
         </Card>
       </div>
 
-      {/* Occupancy Trend */}
+      {/* Occupancy Trend - FIXED HEIGHT AND MARGIN */}
       <Card className="p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">Occupancy Trend</h3>
-        <div className="h-48">
+        <div className="h-[200px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={occupancyTrendData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <AreaChart data={occupancyTrendData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis domain={[70, 100]} tickFormatter={(value) => `${value}%`} />
