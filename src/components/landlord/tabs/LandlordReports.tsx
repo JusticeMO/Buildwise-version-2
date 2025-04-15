@@ -143,6 +143,20 @@ const LandlordReports = () => {
     }
   };
 
+  const expensesChartConfig = {
+    value: {
+      label: "Amount",
+      color: "#8B5CF6"
+    }
+  };
+
+  const occupancyChartConfig = {
+    occupancy: {
+      label: "Occupancy Rate",
+      color: "#3B82F6"
+    }
+  };
+
   // Format number to KES
   const formatKES = (value) => {
     if (value >= 1000000) {
@@ -235,7 +249,7 @@ const LandlordReports = () => {
         </Card>
       </div>
 
-      {/* Revenue vs Expenses Chart - FIXED HEIGHT AND LAYOUT */}
+      {/* Revenue vs Expenses Chart */}
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Revenue vs Expenses</h3>
@@ -246,36 +260,38 @@ const LandlordReports = () => {
             </Button>
           </div>
         </div>
-        <div className="h-[280px] w-full">
+        <div className="h-[320px] w-full">
           <ChartContainer config={areaChartConfig}>
-            <ComposedChart data={revenueData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-              <Tooltip content={<ChartTooltipContent />} />
-              <Legend />
-              <Area 
-                type="monotone" 
-                dataKey="revenue" 
-                fill="#8B5CF6" 
-                stroke="#8B5CF6"
-                fillOpacity={0.2}
-              />
-              <Area 
-                type="monotone" 
-                dataKey="expenses" 
-                fill="#F87171" 
-                stroke="#F87171"
-                fillOpacity={0.2}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="profit" 
-                stroke="#10B981" 
-                strokeWidth={2}
-                dot={{ r: 2 }}
-              />
-            </ComposedChart>
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={revenueData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
+                <Tooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Area 
+                  type="monotone" 
+                  dataKey="revenue" 
+                  fill="#8B5CF6" 
+                  stroke="#8B5CF6"
+                  fillOpacity={0.2}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="expenses" 
+                  fill="#F87171" 
+                  stroke="#F87171"
+                  fillOpacity={0.2}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="profit" 
+                  stroke="#10B981" 
+                  strokeWidth={2}
+                  dot={{ r: 2 }}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
           </ChartContainer>
         </div>
       </Card>
@@ -285,17 +301,19 @@ const LandlordReports = () => {
         {/* Property Performance */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Property Performance</h3>
-          <div className="h-[240px]">
+          <div className="h-[280px]">
             <ChartContainer config={{}}>
-              <BarChart data={propertyPerformanceData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                <YAxis type="category" dataKey="name" width={140} />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Legend />
-                <Bar dataKey="revenue" fill="#8B5CF6" name="Revenue" />
-                <Bar dataKey="expenses" fill="#F87171" name="Expenses" />
-              </BarChart>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={propertyPerformanceData} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
+                  <YAxis type="category" dataKey="name" width={140} />
+                  <Tooltip content={<ChartTooltipContent />} />
+                  <Legend />
+                  <Bar dataKey="revenue" fill="#8B5CF6" name="Revenue" />
+                  <Bar dataKey="expenses" fill="#F87171" name="Expenses" />
+                </BarChart>
+              </ResponsiveContainer>
             </ChartContainer>
           </div>
           <div className="mt-4">
@@ -333,19 +351,21 @@ const LandlordReports = () => {
         {/* Expenses Breakdown */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Expenses Breakdown</h3>
-          <div className="h-[240px]">
-            <ChartContainer config={{}}>
-              <BarChart data={expensesData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                <YAxis type="category" dataKey="name" width={100} />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="value" name="Amount">
-                  {expensesData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
+          <div className="h-[280px]">
+            <ChartContainer config={expensesChartConfig}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={expensesData} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
+                  <YAxis type="category" dataKey="name" width={100} />
+                  <Tooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="value" name="Amount">
+                    {expensesData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </ChartContainer>
           </div>
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-6 border-t pt-4">
@@ -359,24 +379,26 @@ const LandlordReports = () => {
         </Card>
       </div>
 
-      {/* Occupancy Trend - FIXED HEIGHT AND MARGIN */}
+      {/* Occupancy Trend */}
       <Card className="p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">Occupancy Trend</h3>
-        <div className="h-[200px]">
-          <ChartContainer config={{}}>
-            <AreaChart data={occupancyTrendData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis domain={[70, 100]} tickFormatter={(value) => `${value}%`} />
-              <Tooltip content={<ChartTooltipContent />} />
-              <Area 
-                type="monotone" 
-                dataKey="occupancy" 
-                stroke="#3B82F6" 
-                fill="#93C5FD" 
-                fillOpacity={0.3} 
-              />
-            </AreaChart>
+        <div className="h-[240px]">
+          <ChartContainer config={occupancyChartConfig}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={occupancyTrendData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis domain={[70, 100]} tickFormatter={(value) => `${value}%`} />
+                <Tooltip content={<ChartTooltipContent />} />
+                <Area 
+                  type="monotone" 
+                  dataKey="occupancy" 
+                  stroke="#3B82F6" 
+                  fill="#93C5FD" 
+                  fillOpacity={0.3} 
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </ChartContainer>
         </div>
       </Card>

@@ -167,24 +167,26 @@ const LandlordTenants = () => {
         {/* Tenant Demographics Chart */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-6">Tenant Demographics</h3>
-          <div className="h-64">
+          <div className="h-72">
             <ChartContainer config={demographicChartConfig}>
-              <PieChart>
-                <Pie
-                  data={tenantDemographics}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  dataKey="value"
-                  labelLine={false}
-                  label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                >
-                  {tenantDemographics.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip content={<ChartTooltipContent />} />
-              </PieChart>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={tenantDemographics}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    dataKey="value"
+                    labelLine={false}
+                    label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {tenantDemographics.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<ChartTooltipContent />} />
+                </PieChart>
+              </ResponsiveContainer>
             </ChartContainer>
           </div>
           <div className="flex flex-wrap justify-center gap-4 mt-4">
@@ -200,19 +202,21 @@ const LandlordTenants = () => {
         {/* Lease Expiry Chart */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-6">Lease Expiry Timeline</h3>
-          <div className="h-64">
+          <div className="h-72">
             <ChartContainer config={leaseExpiryConfig}>
-              <BarChart data={leaseExpiryData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="tenants">
-                  {leaseExpiryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={leaseExpiryData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="tenants">
+                    {leaseExpiryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </ChartContainer>
           </div>
         </Card>

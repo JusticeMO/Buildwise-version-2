@@ -5,7 +5,6 @@ import { CreditCard, TrendingUp, ArrowUpRight, Calendar, AlertTriangle } from 'l
 import Button from '@/components/shared/Button';
 import {
   ChartContainer,
-  ChartTooltip,
   ChartTooltipContent
 } from '@/components/ui/chart';
 import {
@@ -63,6 +62,21 @@ const LandlordPayments = () => {
     expected: {
       label: "Expected",
       color: "#94A3B8"
+    }
+  };
+
+  const pieChartConfig = {
+    Paid: {
+      label: "Paid",
+      color: "#4ade80"
+    },
+    Pending: {
+      label: "Pending",
+      color: "#facc15"
+    },
+    Overdue: {
+      label: "Overdue", 
+      color: "#f87171"
     }
   };
 
@@ -157,29 +171,31 @@ const LandlordPayments = () => {
         <h3 className="text-lg font-semibold mb-6">Monthly Payment Trends</h3>
         <div className="h-80">
           <ChartContainer config={lineChartConfig}>
-            <LineChart data={monthlyPayments}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
-              <Tooltip content={<ChartTooltipContent />} />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="collected" 
-                stroke="#8B5CF6"
-                strokeWidth={2}
-                dot={{ r: 3 }}
-                activeDot={{ r: 5 }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="expected" 
-                stroke="#94A3B8"
-                strokeWidth={2}
-                strokeDasharray="5 5"
-                dot={{ r: 3 }}
-              />
-            </LineChart>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthlyPayments}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
+                <Tooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Line 
+                  type="monotone" 
+                  dataKey="collected" 
+                  stroke="#8B5CF6"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  activeDot={{ r: 5 }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="expected" 
+                  stroke="#94A3B8"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={{ r: 3 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </ChartContainer>
         </div>
       </Card>
@@ -189,8 +205,8 @@ const LandlordPayments = () => {
         <Card className="p-6 col-span-1">
           <h3 className="text-lg font-semibold mb-6">Payment Status</h3>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <ChartContainer config={{}}>
+            <ChartContainer config={pieChartConfig}>
+              <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={paymentStatus}
@@ -208,8 +224,8 @@ const LandlordPayments = () => {
                   </Pie>
                   <Tooltip content={<ChartTooltipContent />} />
                 </PieChart>
-              </ChartContainer>
-            </ResponsiveContainer>
+              </ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="flex justify-around mt-4">
             {paymentStatus.map((status) => (
