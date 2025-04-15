@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Users, UserPlus, Calendar, Phone, Mail, Search, Home } from 'lucide-react';
@@ -55,6 +56,33 @@ const LandlordTenants = () => {
     { id: 5, name: 'Michael Brown', unit: 'B1 - Green Gardens', phone: '0756789012', email: 'michael@example.com', moveInDate: '2023-05-01', leaseEnd: '2024-05-01', status: 'active' },
     { id: 6, name: 'Sarah Kimani', unit: 'A2 - Riverside', phone: '0767890123', email: 'sarah@example.com', moveInDate: '2023-08-01', leaseEnd: '2024-08-01', status: 'active' },
   ];
+
+  // Chart configs
+  const demographicChartConfig = {
+    Families: {
+      label: "Families",
+      color: "#8B5CF6"
+    },
+    Singles: {
+      label: "Singles",
+      color: "#3B82F6"
+    },
+    Couples: {
+      label: "Couples",
+      color: "#10B981"
+    },
+    Students: {
+      label: "Students",
+      color: "#F59E0B"
+    }
+  };
+  
+  const leaseExpiryConfig = {
+    tenants: {
+      label: "Tenants",
+      color: "#60A5FA"
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -140,7 +168,7 @@ const LandlordTenants = () => {
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-6">Tenant Demographics</h3>
           <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer config={demographicChartConfig}>
               <PieChart>
                 <Pie
                   data={tenantDemographics}
@@ -155,9 +183,9 @@ const LandlordTenants = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => [`${value} tenants`, undefined]} />
+                <Tooltip content={<ChartTooltipContent />} />
               </PieChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="flex flex-wrap justify-center gap-4 mt-4">
             {tenantDemographics.map((demographic) => (
@@ -173,7 +201,7 @@ const LandlordTenants = () => {
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-6">Lease Expiry Timeline</h3>
           <div className="h-64">
-            <ChartContainer config={{}}>
+            <ChartContainer config={leaseExpiryConfig}>
               <BarChart data={leaseExpiryData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />

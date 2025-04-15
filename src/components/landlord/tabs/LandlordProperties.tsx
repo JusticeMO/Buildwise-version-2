@@ -126,7 +126,7 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Property Occupancy</h3>
         <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
+          <ChartContainer config={chartConfig}>
             <BarChart data={occupancyData} stackOffset="expand" layout="vertical">
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
               <XAxis type="number" tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
@@ -136,7 +136,7 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
               <Bar dataKey="Occupied" stackId="a" fill="#4ade80" />
               <Bar dataKey="Vacant" stackId="a" fill="#f87171" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </div>
       </Card>
 

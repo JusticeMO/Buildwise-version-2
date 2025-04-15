@@ -247,7 +247,7 @@ const LandlordReports = () => {
           </div>
         </div>
         <div className="h-[280px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
+          <ChartContainer config={areaChartConfig}>
             <ComposedChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
@@ -276,7 +276,7 @@ const LandlordReports = () => {
                 dot={{ r: 2 }}
               />
             </ComposedChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </div>
       </Card>
 
@@ -286,17 +286,17 @@ const LandlordReports = () => {
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Property Performance</h3>
           <div className="h-[240px]">
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer config={{}}>
               <BarChart data={propertyPerformanceData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
                 <YAxis type="category" dataKey="name" width={140} />
-                <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
+                <Tooltip content={<ChartTooltipContent />} />
                 <Legend />
                 <Bar dataKey="revenue" fill="#8B5CF6" name="Revenue" />
                 <Bar dataKey="expenses" fill="#F87171" name="Expenses" />
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="mt-4">
             <Table>
@@ -334,19 +334,19 @@ const LandlordReports = () => {
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Expenses Breakdown</h3>
           <div className="h-[240px]">
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer config={{}}>
               <BarChart data={expensesData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
                 <YAxis type="category" dataKey="name" width={100} />
-                <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
+                <Tooltip content={<ChartTooltipContent />} />
                 <Bar dataKey="value" name="Amount">
                   {expensesData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Bar>
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-6 border-t pt-4">
             {expensesData.map((item) => (
@@ -363,12 +363,12 @@ const LandlordReports = () => {
       <Card className="p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">Occupancy Trend</h3>
         <div className="h-[200px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <ChartContainer config={{}}>
             <AreaChart data={occupancyTrendData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis domain={[70, 100]} tickFormatter={(value) => `${value}%`} />
-              <Tooltip formatter={(value) => [`${value}%`, 'Occupancy Rate']} />
+              <Tooltip content={<ChartTooltipContent />} />
               <Area 
                 type="monotone" 
                 dataKey="occupancy" 
@@ -377,7 +377,7 @@ const LandlordReports = () => {
                 fillOpacity={0.3} 
               />
             </AreaChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </div>
       </Card>
     </div>

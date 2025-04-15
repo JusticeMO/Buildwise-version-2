@@ -161,7 +161,7 @@ const LandlordPayments = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
-              <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
+              <Tooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line 
                 type="monotone" 
@@ -190,23 +190,25 @@ const LandlordPayments = () => {
           <h3 className="text-lg font-semibold mb-6">Payment Status</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={paymentStatus}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                  label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                >
-                  {paymentStatus.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value, name) => [`${value} tenants`, name]} />
-              </PieChart>
+              <ChartContainer config={{}}>
+                <PieChart>
+                  <Pie
+                    data={paymentStatus}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                    label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {paymentStatus.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<ChartTooltipContent />} />
+                </PieChart>
+              </ChartContainer>
             </ResponsiveContainer>
           </div>
           <div className="flex justify-around mt-4">
