@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Download, Filter, ArrowRight } from 'lucide-react';
@@ -260,15 +259,18 @@ const LandlordReports = () => {
             </Button>
           </div>
         </div>
-        <div className="h-[320px] w-full">
+        <div className="h-[240px] w-full">
           <ChartContainer config={areaChartConfig}>
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={revenueData}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="month" />
-                <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
+                <YAxis 
+                  tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} 
+                  domain={[0, 'dataMax + 50000']} 
+                />
                 <Tooltip content={<ChartTooltipContent />} />
-                <Legend />
+                <Legend verticalAlign="top" height={36} />
                 <Area 
                   type="monotone" 
                   dataKey="revenue" 
