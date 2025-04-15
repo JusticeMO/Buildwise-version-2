@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Building2, Home, Users, Plus } from 'lucide-react';
-import Button from '@/components/shared/Button';
+import { Button } from '@/components/ui/button';
 import {
   ChartContainer,
   ChartTooltip,
@@ -17,6 +18,7 @@ import {
   Tooltip,
   Legend
 } from 'recharts';
+import { toast } from "sonner";
 
 const LandlordProperties = () => {
   // Mock data for properties
@@ -45,6 +47,14 @@ const LandlordProperties = () => {
     }
   };
 
+  const handleAddProperty = () => {
+    toast.info("Add property functionality will be implemented soon");
+  };
+
+  const handleViewDetails = (propertyId) => {
+    toast.info(`Viewing details for property ${propertyId}`);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -52,9 +62,9 @@ const LandlordProperties = () => {
         <Button 
           variant="primary" 
           size="sm"
-          icon={<Plus size={16} />}
-          iconPosition="left"
+          onClick={handleAddProperty}
         >
+          <Plus size={16} className="mr-1" />
           Add New Property
         </Button>
       </div>
@@ -106,13 +116,13 @@ const LandlordProperties = () => {
 
       {/* Occupancy Chart */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-6">Property Occupancy</h3>
-        <div className="h-80">
+        <h3 className="text-lg font-semibold mb-4">Property Occupancy</h3>
+        <div className="h-64">
           <ChartContainer config={chartConfig}>
             <BarChart data={occupancyData} stackOffset="expand" layout="vertical">
               <CartesianGrid strokeDasharray="3 3" horizontal={false} />
               <XAxis type="number" tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
-              <YAxis type="category" dataKey="name" width={120} />
+              <YAxis type="category" dataKey="name" width={110} />
               <Tooltip content={<ChartTooltipContent />} />
               <Legend />
               <Bar dataKey="Occupied" stackId="a" fill="#4ade80" />
@@ -146,7 +156,13 @@ const LandlordProperties = () => {
                   <td className="px-4 py-3">KES {property.rentCollected.toLocaleString()}</td>
                   <td className="px-4 py-3 text-red-600">KES {property.rentDue.toLocaleString()}</td>
                   <td className="px-4 py-3">
-                    <Button variant="outline" size="sm">View Details</Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleViewDetails(property.id)}
+                    >
+                      View Details
+                    </Button>
                   </td>
                 </tr>
               ))}

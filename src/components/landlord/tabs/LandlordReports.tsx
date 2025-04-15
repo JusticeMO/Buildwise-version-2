@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Download, Filter, ChartPieIcon, BarChart3 } from 'lucide-react';
-import Button from '@/components/shared/Button';
+import { Button } from '@/components/ui/button';
 import {
   ChartContainer,
   ChartTooltipContent
@@ -23,6 +23,7 @@ import {
   Cell,
   ComposedChart
 } from 'recharts';
+import { toast } from "sonner";
 
 const LandlordReports = () => {
   const [reportPeriod, setReportPeriod] = useState('year');
@@ -107,6 +108,20 @@ const LandlordReports = () => {
     return `KES ${value}`;
   };
 
+  // Handle button clicks
+  const handleExport = () => {
+    toast.success("Report exported successfully");
+  };
+
+  const handleFilter = () => {
+    toast.info("Filter options opened");
+  };
+
+  const handlePeriodChange = (period) => {
+    setReportPeriod(period);
+    toast.info(`Report period changed to ${period}`);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -115,19 +130,19 @@ const LandlordReports = () => {
           <div className="border rounded-md overflow-hidden flex">
             <button 
               className={`px-4 py-1.5 text-sm ${reportPeriod === 'month' ? 'bg-primary text-white' : 'bg-white'}`}
-              onClick={() => setReportPeriod('month')}
+              onClick={() => handlePeriodChange('month')}
             >
               Month
             </button>
             <button 
               className={`px-4 py-1.5 text-sm ${reportPeriod === 'quarter' ? 'bg-primary text-white' : 'bg-white'}`}
-              onClick={() => setReportPeriod('quarter')}
+              onClick={() => handlePeriodChange('quarter')}
             >
               Quarter
             </button>
             <button 
               className={`px-4 py-1.5 text-sm ${reportPeriod === 'year' ? 'bg-primary text-white' : 'bg-white'}`}
-              onClick={() => setReportPeriod('year')}
+              onClick={() => handlePeriodChange('year')}
             >
               Year
             </button>
@@ -135,9 +150,9 @@ const LandlordReports = () => {
           <Button 
             variant="outline" 
             size="sm"
-            icon={<Download size={16} />}
-            iconPosition="left"
+            onClick={handleExport}
           >
+            <Download size={16} className="mr-1" />
             Export
           </Button>
         </div>
@@ -175,10 +190,13 @@ const LandlordReports = () => {
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-semibold">Revenue vs Expenses</h3>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" icon={<Filter size={14} />}>Filter</Button>
+            <Button variant="ghost" size="sm" onClick={handleFilter}>
+              <Filter size={14} className="mr-1" /> 
+              Filter
+            </Button>
           </div>
         </div>
-        <div className="h-80">
+        <div className="h-64">
           <ChartContainer config={areaChartConfig}>
             <ComposedChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -205,7 +223,7 @@ const LandlordReports = () => {
                 dataKey="profit" 
                 stroke="#10B981" 
                 strokeWidth={2}
-                dot={{ r: 3 }}
+                dot={{ r: 2 }}
               />
             </ComposedChart>
           </ChartContainer>
@@ -215,13 +233,13 @@ const LandlordReports = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Property Performance */}
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-6">Property Performance</h3>
-          <div className="h-80">
+          <h3 className="text-lg font-semibold mb-4">Property Performance</h3>
+          <div className="h-56">
             <ChartContainer config={{}}>
               <BarChart data={propertyPerformanceData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                <YAxis type="category" dataKey="name" width={120} />
+                <YAxis type="category" dataKey="name" width={100} />
                 <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
                 <Legend />
                 <Bar dataKey="revenue" fill="#8B5CF6" name="Revenue" />
@@ -233,13 +251,13 @@ const LandlordReports = () => {
 
         {/* Expenses Breakdown */}
         <Card className="p-6">
-          <h3 className="text-lg font-semibold mb-6">Expenses Breakdown</h3>
-          <div className="h-80 flex flex-col">
+          <h3 className="text-lg font-semibold mb-4">Expenses Breakdown</h3>
+          <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={expensesData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                <YAxis type="category" dataKey="name" width={100} />
+                <YAxis type="category" dataKey="name" width={90} />
                 <Tooltip formatter={(value) => [`KES ${value.toLocaleString()}`, undefined]} />
                 <Bar dataKey="value" name="Amount">
                   {expensesData.map((entry, index) => (
@@ -248,22 +266,22 @@ const LandlordReports = () => {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-4">
-              {expensesData.map((item) => (
-                <div key={item.name} className="flex items-center">
-                  <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: item.color }}></div>
-                  <span className="text-xs">{item.name}</span>
-                </div>
-              ))}
-            </div>
+          </div>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2">
+            {expensesData.map((item) => (
+              <div key={item.name} className="flex items-center">
+                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: item.color }}></div>
+                <span className="text-xs">{item.name}</span>
+              </div>
+            ))}
           </div>
         </Card>
       </div>
 
       {/* Occupancy Trend */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-6">Occupancy Trend</h3>
-        <div className="h-64">
+        <h3 className="text-lg font-semibold mb-4">Occupancy Trend</h3>
+        <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={occupancyTrendData}>
               <CartesianGrid strokeDasharray="3 3" />
