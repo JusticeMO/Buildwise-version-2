@@ -28,8 +28,22 @@ import { toast } from "sonner";
 const LandlordReports = () => {
   const [reportPeriod, setReportPeriod] = useState('year');
   
-  // Revenue data by month
-  const revenueData = [
+  // Revenue data by period
+  const monthlyRevenueData = [
+    { month: 'Week 1', revenue: 350000, expenses: 140000, profit: 210000 },
+    { month: 'Week 2', revenue: 340000, expenses: 135000, profit: 205000 },
+    { month: 'Week 3', revenue: 360000, expenses: 142000, profit: 218000 },
+    { month: 'Week 4', revenue: 355000, expenses: 138000, profit: 217000 },
+  ];
+
+  const quarterlyRevenueData = [
+    { month: 'Jan', revenue: 1050000, expenses: 350000, profit: 700000 },
+    { month: 'Feb', revenue: 1100000, expenses: 320000, profit: 780000 },
+    { month: 'Mar', revenue: 1080000, expenses: 330000, profit: 750000 },
+  ];
+  
+  // Full year revenue data
+  const yearlyRevenueData = [
     { month: 'Jan', revenue: 1050000, expenses: 350000, profit: 700000 },
     { month: 'Feb', revenue: 1100000, expenses: 320000, profit: 780000 },
     { month: 'Mar', revenue: 1080000, expenses: 330000, profit: 750000 },
@@ -43,6 +57,20 @@ const LandlordReports = () => {
     { month: 'Nov', revenue: 1400000, expenses: 430000, profit: 970000 },
     { month: 'Dec', revenue: 1450000, expenses: 450000, profit: 1000000 },
   ];
+
+  // Get the appropriate revenue data based on the selected period
+  const getRevenueData = () => {
+    switch(reportPeriod) {
+      case 'month':
+        return monthlyRevenueData;
+      case 'quarter':
+        return quarterlyRevenueData;
+      default:
+        return yearlyRevenueData;
+    }
+  };
+  
+  const revenueData = getRevenueData();
 
   // Property performance data
   const propertyPerformanceData = [
@@ -77,10 +105,24 @@ const LandlordReports = () => {
     { month: 'Dec', occupancy: 86 },
   ];
 
-  // Calculate total values
+  // Calculate total values based on the selected period
   const totalRevenue = revenueData.reduce((sum, item) => sum + item.revenue, 0);
   const totalExpenses = revenueData.reduce((sum, item) => sum + item.expenses, 0);
   const totalProfit = revenueData.reduce((sum, item) => sum + item.profit, 0);
+
+  // Calculate percentage change from previous period
+  const getChangePercentage = () => {
+    switch(reportPeriod) {
+      case 'month':
+        return { revenue: 3.2, expenses: 2.4, profit: 4.1 };
+      case 'quarter':
+        return { revenue: 5.8, expenses: 3.6, profit: 7.5 };
+      default:
+        return { revenue: 8.2, expenses: 5.4, profit: 10.1 };
+    }
+  };
+  
+  const changePercentage = getChangePercentage();
 
   // Chart configuration
   const areaChartConfig = {
@@ -162,25 +204,25 @@ const LandlordReports = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Total Revenue</p>
-          <p className="text-2xl font-bold mt-1">KES {(totalRevenue / 1000000).toFixed(2)}M</p>
+          <p className="text-2xl font-bold mt-1">{formatKES(totalRevenue)}</p>
           <div className="flex items-center text-xs text-green-600 mt-2">
-            <span>+8.2% from previous {reportPeriod}</span>
+            <span>+{changePercentage.revenue}% from previous {reportPeriod}</span>
           </div>
         </Card>
         
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Total Expenses</p>
-          <p className="text-2xl font-bold mt-1">KES {(totalExpenses / 1000000).toFixed(2)}M</p>
+          <p className="text-2xl font-bold mt-1">{formatKES(totalExpenses)}</p>
           <div className="flex items-center text-xs text-amber-600 mt-2">
-            <span>+5.4% from previous {reportPeriod}</span>
+            <span>+{changePercentage.expenses}% from previous {reportPeriod}</span>
           </div>
         </Card>
         
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Net Profit</p>
-          <p className="text-2xl font-bold mt-1">KES {(totalProfit / 1000000).toFixed(2)}M</p>
+          <p className="text-2xl font-bold mt-1">{formatKES(totalProfit)}</p>
           <div className="flex items-center text-xs text-green-600 mt-2">
-            <span>+10.1% from previous {reportPeriod}</span>
+            <span>+{changePercentage.profit}% from previous {reportPeriod}</span>
           </div>
         </Card>
       </div>
@@ -196,7 +238,7 @@ const LandlordReports = () => {
             </Button>
           </div>
         </div>
-        <div className="h-64">
+        <div className="h-72">
           <ChartContainer config={areaChartConfig}>
             <ComposedChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -234,7 +276,7 @@ const LandlordReports = () => {
         {/* Property Performance */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Property Performance</h3>
-          <div className="h-56">
+          <div className="h-60">
             <ChartContainer config={{}}>
               <BarChart data={propertyPerformanceData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
@@ -252,7 +294,7 @@ const LandlordReports = () => {
         {/* Expenses Breakdown */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Expenses Breakdown</h3>
-          <div className="h-56">
+          <div className="h-60">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={expensesData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
@@ -279,11 +321,11 @@ const LandlordReports = () => {
       </div>
 
       {/* Occupancy Trend */}
-      <Card className="p-6">
+      <Card className="p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">Occupancy Trend</h3>
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={occupancyTrendData}>
+            <AreaChart data={occupancyTrendData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis domain={[70, 100]} tickFormatter={(value) => `${value}%`} />

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import Button from '@/components/shared/Button';
@@ -14,6 +15,7 @@ import LandlordProperties from '../components/landlord/tabs/LandlordProperties';
 import LandlordTenants from '../components/landlord/tabs/LandlordTenants';
 import LandlordPayments from '../components/landlord/tabs/LandlordPayments';
 import LandlordReports from '../components/landlord/tabs/LandlordReports';
+import PropertyDetails from '../components/landlord/tabs/PropertyDetails';
 
 // Placeholder component for tabs that don't have dedicated components yet
 const PlaceholderTab = ({ title }: { title: string }) => (
@@ -47,6 +49,8 @@ const LandlordDashboard = () => {
         return <LandlordPayments />;
       case 'reports':
         return <LandlordReports />;
+      case 'property-details':
+        return <PropertyDetails />;
       case 'messages':
         return <PlaceholderTab title="Messages" />;
       case 'documents':

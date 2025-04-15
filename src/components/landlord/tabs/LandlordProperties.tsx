@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Building2, Home, Users, Plus } from 'lucide-react';
+import { Building2, Home, Users, Plus, ArrowRight } from 'lucide-react';
 import {
   ChartContainer,
   ChartTooltip,
@@ -18,8 +19,14 @@ import {
   Legend
 } from 'recharts';
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+
+// Import the PropertyDetails component
+import PropertyDetails from './PropertyDetails';
 
 const LandlordProperties = () => {
+  const navigate = useNavigate();
+  
   // Mock data for properties
   const properties = [
     { id: 1, name: 'Riverside Apartments', units: 12, occupiedUnits: 10, vacantUnits: 2, rentCollected: 250000, rentDue: 50000 },
@@ -169,6 +176,9 @@ const LandlordProperties = () => {
           </table>
         </div>
       </Card>
+
+      {/* Property & Tenant Details Section */}
+      <PropertyDetails />
     </div>
   );
 };
