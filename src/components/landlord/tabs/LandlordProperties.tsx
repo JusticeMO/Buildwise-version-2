@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Building2, Home, Users, Plus } from 'lucide-react';
@@ -51,7 +50,7 @@ const LandlordProperties = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Properties</h2>
         <Button 
-          variant="default" 
+          variant="primary" 
           size="sm"
           icon={<Plus size={16} />}
           iconPosition="left"

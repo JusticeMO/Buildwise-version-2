@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Users, UserPlus, Calendar, Phone, Mail, Search } from 'lucide-react';
+import { Users, UserPlus, Calendar, Phone, Mail, Search, Home } from 'lucide-react';
 import Button from '@/components/shared/Button';
 import {
   ChartContainer,
@@ -71,7 +70,7 @@ const LandlordTenants = () => {
             />
           </div>
           <Button 
-            variant="default" 
+            variant="primary" 
             size="sm"
             icon={<UserPlus size={16} />}
             iconPosition="left"
@@ -248,8 +247,5 @@ const LandlordTenants = () => {
     </div>
   );
 };
-
-// Fix missing Home icon import
-import { Home } from 'lucide-react';
 
 export default LandlordTenants;
