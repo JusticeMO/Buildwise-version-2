@@ -2,22 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Building2, Home, Users, Plus, ArrowRight } from 'lucide-react';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  Legend
-} from 'recharts';
+import { Building2, Home, Users, Plus, ArrowRight, Check, X } from 'lucide-react';
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -32,25 +17,6 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
     { id: 2, name: 'Green Gardens Estate', units: 8, occupiedUnits: 7, vacantUnits: 1, rentCollected: 175000, rentDue: 25000 },
     { id: 3, name: 'Sunrise Towers', units: 15, occupiedUnits: 12, vacantUnits: 3, rentCollected: 320000, rentDue: 60000 },
   ];
-
-  // Chart data for occupancy rates
-  const occupancyData = properties.map(property => ({
-    name: property.name,
-    Occupied: property.occupiedUnits,
-    Vacant: property.vacantUnits
-  }));
-
-  // Chart configuration
-  const chartConfig = {
-    Occupied: {
-      label: "Occupied Units",
-      color: "#4ade80"
-    },
-    Vacant: {
-      label: "Vacant Units",
-      color: "#f87171"
-    }
-  };
 
   const handleAddProperty = () => {
     toast.info("Add property functionality will be implemented soon");
@@ -122,23 +88,50 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
         </Card>
       </div>
 
-      {/* Occupancy Chart */}
+      {/* Property Occupancy Table (Replacing Chart) */}
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Property Occupancy</h3>
-        <div className="h-80 w-full">
-          <ChartContainer config={chartConfig}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={occupancyData} stackOffset="expand" layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                <XAxis type="number" tickFormatter={(value) => `${(value * 100).toFixed(0)}%`} />
-                <YAxis type="category" dataKey="name" width={140} />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Legend />
-                <Bar dataKey="Occupied" stackId="a" fill="#4ade80" />
-                <Bar dataKey="Vacant" stackId="a" fill="#f87171" />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Property</TableHead>
+                <TableHead>Total Units</TableHead>
+                <TableHead>Occupied</TableHead>
+                <TableHead>Vacant</TableHead>
+                <TableHead>Occupancy Rate</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {properties.map((property) => (
+                <TableRow key={property.id}>
+                  <TableCell className="font-medium">{property.name}</TableCell>
+                  <TableCell>{property.units}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <Check size={16} className="text-green-500 mr-1" /> {property.occupiedUnits}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <X size={16} className="text-red-500 mr-1" /> {property.vacantUnits}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div 
+                          className="bg-green-500 h-2.5 rounded-full" 
+                          style={{ width: `${Math.round((property.occupiedUnits / property.units) * 100)}%` }}
+                        ></div>
+                      </div>
+                      <span>{Math.round((property.occupiedUnits / property.units) * 100)}%</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </Card>
 

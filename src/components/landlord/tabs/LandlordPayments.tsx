@@ -1,25 +1,9 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { CreditCard, TrendingUp, ArrowUpRight, Calendar, AlertTriangle } from 'lucide-react';
+import { CreditCard, TrendingUp, ArrowUpRight, Calendar, AlertTriangle, Circle } from 'lucide-react';
 import Button from '@/components/shared/Button';
-import {
-  ChartContainer,
-  ChartTooltipContent
-} from '@/components/ui/chart';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
-} from 'recharts';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 
 const LandlordPayments = () => {
   // Mock data for payments summary
@@ -53,33 +37,6 @@ const LandlordPayments = () => {
     { name: 'Overdue', value: 5, color: '#f87171' },
   ];
 
-  // Chart configuration
-  const lineChartConfig = {
-    collected: {
-      label: "Collected",
-      color: "#8B5CF6"
-    },
-    expected: {
-      label: "Expected",
-      color: "#94A3B8"
-    }
-  };
-
-  const pieChartConfig = {
-    Paid: {
-      label: "Paid",
-      color: "#4ade80"
-    },
-    Pending: {
-      label: "Pending",
-      color: "#facc15"
-    },
-    Overdue: {
-      label: "Overdue", 
-      color: "#f87171"
-    }
-  };
-
   // Recent payments
   const recentPayments = [
     { id: 1, tenant: 'John Doe', unit: 'A1 - Riverside', amount: 35000, date: '2023-11-01', status: 'completed' },
@@ -92,6 +49,11 @@ const LandlordPayments = () => {
   // Format number to KES
   const formatKES = (value) => {
     return `KES ${value.toLocaleString()}`;
+  };
+
+  // Calculate collection rate for each month
+  const calculateCollectionRate = (collected, expected) => {
+    return Math.round((collected / expected) * 100);
   };
 
   return (
@@ -166,66 +128,120 @@ const LandlordPayments = () => {
         </Card>
       </div>
 
-      {/* Monthly Payment Trends */}
+      {/* Monthly Payment Trends Table (Replacing Chart) */}
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-6">Monthly Payment Trends</h3>
-        <div className="h-80">
-          <ChartContainer config={lineChartConfig}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={monthlyPayments}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="collected" 
-                  stroke="#8B5CF6"
-                  strokeWidth={2}
-                  dot={{ r: 3 }}
-                  activeDot={{ r: 5 }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="expected" 
-                  stroke="#94A3B8"
-                  strokeWidth={2}
-                  strokeDasharray="5 5"
-                  dot={{ r: 3 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Month</TableHead>
+                <TableHead>Collected</TableHead>
+                <TableHead>Expected</TableHead>
+                <TableHead>Collection Rate</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {monthlyPayments.map((payment) => (
+                <TableRow key={payment.month}>
+                  <TableCell className="font-medium">{payment.month}</TableCell>
+                  <TableCell>{formatKES(payment.collected)}</TableCell>
+                  <TableCell>{formatKES(payment.expected)}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div 
+                          className={`h-2.5 rounded-full ${calculateCollectionRate(payment.collected, payment.expected) >= 90 ? 'bg-green-500' : calculateCollectionRate(payment.collected, payment.expected) >= 75 ? 'bg-amber-500' : 'bg-red-500'}`} 
+                          style={{ width: `${calculateCollectionRate(payment.collected, payment.expected)}%` }}
+                        ></div>
+                      </div>
+                      <span>{calculateCollectionRate(payment.collected, payment.expected)}%</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Payment Status Chart */}
+        {/* Payment Status (Replacing Chart) */}
         <Card className="p-6 col-span-1">
           <h3 className="text-lg font-semibold mb-6">Payment Status</h3>
-          <div className="h-64">
-            <ChartContainer config={pieChartConfig}>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={paymentStatus}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                    label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  >
-                    {paymentStatus.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<ChartTooltipContent />} />
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Status</TableHead>
+                <TableHead>Units</TableHead>
+                <TableHead>Percentage</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {paymentStatus.map((status) => {
+                const total = paymentStatus.reduce((sum, item) => sum + item.value, 0);
+                const percentage = ((status.value / total) * 100).toFixed(1);
+                
+                return (
+                  <TableRow key={status.name}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: status.color }}></div>
+                        <span>{status.name}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{status.value}</TableCell>
+                    <TableCell>{percentage}%</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+          <div className="mt-6 flex justify-center">
+            <div className="relative inline-flex items-center justify-center w-32 h-32">
+              <svg className="w-full h-full" viewBox="0 0 100 100">
+                {paymentStatus.map((status, index) => {
+                  const total = paymentStatus.reduce((sum, item) => sum + item.value, 0);
+                  const percentage = (status.value / total) * 100;
+                  
+                  // Calculate start and end angles for the pie segment
+                  let startAngle = 0;
+                  for (let i = 0; i < index; i++) {
+                    startAngle += (paymentStatus[i].value / total) * 360;
+                  }
+                  const endAngle = startAngle + (percentage * 3.6);
+                  
+                  // Convert angles to radians and calculate path
+                  const startRad = (startAngle - 90) * Math.PI / 180;
+                  const endRad = (endAngle - 90) * Math.PI / 180;
+                  
+                  const x1 = 50 + 40 * Math.cos(startRad);
+                  const y1 = 50 + 40 * Math.sin(startRad);
+                  const x2 = 50 + 40 * Math.cos(endRad);
+                  const y2 = 50 + 40 * Math.sin(endRad);
+                  
+                  const largeArc = percentage > 50 ? 1 : 0;
+                  
+                  // Create SVG path
+                  const path = `M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z`;
+                  
+                  return (
+                    <path
+                      key={status.name}
+                      d={path}
+                      fill={status.color}
+                    />
+                  );
+                })}
+                <circle cx="50" cy="50" r="25" fill="white" />
+              </svg>
+              <div className="absolute">
+                <p className="text-xs text-center">Total Units</p>
+                <p className="text-xl font-bold text-center">
+                  {paymentStatus.reduce((sum, item) => sum + item.value, 0)}
+                </p>
+              </div>
+            </div>
           </div>
           <div className="flex justify-around mt-4">
             {paymentStatus.map((status) => (

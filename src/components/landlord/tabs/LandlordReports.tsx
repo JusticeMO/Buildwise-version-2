@@ -1,27 +1,8 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Download, Filter, ArrowRight } from 'lucide-react';
+import { Download, Filter, ArrowRight, TrendingUp, TrendingDown, Minus, ArrowUpRight, DollarSign, Building2, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  ChartContainer,
-  ChartTooltipContent
-} from '@/components/ui/chart';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  AreaChart,
-  Area,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell,
-  ComposedChart
-} from 'recharts';
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
@@ -126,36 +107,6 @@ const LandlordReports = () => {
   
   const changePercentage = getChangePercentage();
 
-  // Chart configuration
-  const areaChartConfig = {
-    revenue: {
-      label: "Revenue",
-      color: "#8B5CF6"
-    },
-    expenses: {
-      label: "Expenses",
-      color: "#F87171"
-    },
-    profit: {
-      label: "Profit",
-      color: "#10B981"
-    }
-  };
-
-  const expensesChartConfig = {
-    value: {
-      label: "Amount",
-      color: "#8B5CF6"
-    }
-  };
-
-  const occupancyChartConfig = {
-    occupancy: {
-      label: "Occupancy Rate",
-      color: "#3B82F6"
-    }
-  };
-
   // Format number to KES
   const formatKES = (value) => {
     if (value >= 1000000) {
@@ -183,6 +134,16 @@ const LandlordReports = () => {
   const handleViewPropertyDetails = (propertyName) => {
     toast.info(`Viewing details for ${propertyName}`);
     navigate('/landlord/dashboard', { state: { activeTab: 'property-details', property: propertyName } });
+  };
+
+  // Get change trend icon based on percentage
+  const getTrendIcon = (percentage) => {
+    if (percentage > 0) {
+      return <TrendingUp className="text-green-500" size={16} />;
+    } else if (percentage < 0) {
+      return <TrendingDown className="text-red-500" size={16} />;
+    }
+    return <Minus className="text-gray-500" size={16} />;
   };
 
   return (
@@ -248,53 +209,50 @@ const LandlordReports = () => {
         </Card>
       </div>
 
-      {/* Revenue vs Expenses Chart */}
+      {/* Revenue vs Expenses Table (Replaced Chart) */}
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Revenue vs Expenses</h3>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={handleFilter}>
-              <Filter size={14} className="mr-1" /> 
-              Filter
-            </Button>
-          </div>
+          <Button variant="ghost" size="sm" onClick={handleFilter}>
+            <Filter size={14} className="mr-1" /> 
+            Filter
+          </Button>
         </div>
-        <div className="h-[240px] w-full">
-          <ChartContainer config={areaChartConfig}>
-            <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={revenueData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="month" />
-                <YAxis 
-                  tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} 
-                  domain={[0, 'dataMax + 50000']} 
-                />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Legend verticalAlign="top" height={36} />
-                <Area 
-                  type="monotone" 
-                  dataKey="revenue" 
-                  fill="#8B5CF6" 
-                  stroke="#8B5CF6"
-                  fillOpacity={0.2}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="expenses" 
-                  fill="#F87171" 
-                  stroke="#F87171"
-                  fillOpacity={0.2}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="profit" 
-                  stroke="#10B981" 
-                  strokeWidth={2}
-                  dot={{ r: 2 }}
-                />
-              </ComposedChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Period</TableHead>
+                <TableHead>Revenue</TableHead>
+                <TableHead>Expenses</TableHead>
+                <TableHead>Profit</TableHead>
+                <TableHead>Trend</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {revenueData.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell className="font-medium">{item.month}</TableCell>
+                  <TableCell>{formatKES(item.revenue)}</TableCell>
+                  <TableCell>{formatKES(item.expenses)}</TableCell>
+                  <TableCell>{formatKES(item.profit)}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1">
+                      {index > 0 ? (
+                        item.profit > revenueData[index-1].profit ? (
+                          <ArrowUpRight className="text-green-500" size={16} />
+                        ) : (
+                          <ArrowUpRight className="text-red-500 rotate-180" size={16} />
+                        )
+                      ) : (
+                        <Minus size={16} />
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </Card>
 
@@ -303,20 +261,29 @@ const LandlordReports = () => {
         {/* Property Performance */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Property Performance</h3>
-          <div className="h-[280px]">
-            <ChartContainer config={{}}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={propertyPerformanceData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                  <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                  <YAxis type="category" dataKey="name" width={140} />
-                  <Tooltip content={<ChartTooltipContent />} />
-                  <Legend />
-                  <Bar dataKey="revenue" fill="#8B5CF6" name="Revenue" />
-                  <Bar dataKey="expenses" fill="#F87171" name="Expenses" />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Property</TableHead>
+                  <TableHead>Units</TableHead>
+                  <TableHead>Occupancy</TableHead>
+                  <TableHead>Revenue</TableHead>
+                  <TableHead>Expenses</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {propertyPerformanceData.map((property) => (
+                  <TableRow key={property.name}>
+                    <TableCell className="font-medium">{property.name}</TableCell>
+                    <TableCell>{property.units}</TableCell>
+                    <TableCell>{property.occupancy}%</TableCell>
+                    <TableCell>{formatKES(property.revenue)}</TableCell>
+                    <TableCell>{formatKES(property.expenses)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
           <div className="mt-4">
             <Table>
@@ -353,55 +320,76 @@ const LandlordReports = () => {
         {/* Expenses Breakdown */}
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Expenses Breakdown</h3>
-          <div className="h-[280px]">
-            <ChartContainer config={expensesChartConfig}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={expensesData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                  <XAxis type="number" tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`} />
-                  <YAxis type="category" dataKey="name" width={100} />
-                  <Tooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="value" name="Amount">
-                    {expensesData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </div>
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-6 border-t pt-4">
-            {expensesData.map((item) => (
-              <div key={item.name} className="flex items-center">
-                <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: item.color }}></div>
-                <span className="text-xs">{item.name}: {formatKES(item.value)}</span>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Percentage</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {expensesData.map((expense) => {
+                  const totalExpense = expensesData.reduce((sum, item) => sum + item.value, 0);
+                  const percentage = ((expense.value / totalExpense) * 100).toFixed(1);
+                  
+                  return (
+                    <TableRow key={expense.name}>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: expense.color }}></div>
+                          <span>{expense.name}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>{formatKES(expense.value)}</TableCell>
+                      <TableCell>{percentage}%</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
         </Card>
       </div>
 
-      {/* Occupancy Trend */}
+      {/* Occupancy Trend (Replaced Chart) */}
       <Card className="p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">Occupancy Trend</h3>
-        <div className="h-[240px]">
-          <ChartContainer config={occupancyChartConfig}>
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={occupancyTrendData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis domain={[70, 100]} tickFormatter={(value) => `${value}%`} />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Area 
-                  type="monotone" 
-                  dataKey="occupancy" 
-                  stroke="#3B82F6" 
-                  fill="#93C5FD" 
-                  fillOpacity={0.3} 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Month</TableHead>
+                <TableHead>Occupancy Rate</TableHead>
+                <TableHead>Change</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {occupancyTrendData.map((item, index) => {
+                const prevOccupancy = index > 0 ? occupancyTrendData[index-1].occupancy : item.occupancy;
+                const change = item.occupancy - prevOccupancy;
+                
+                return (
+                  <TableRow key={item.month}>
+                    <TableCell className="font-medium">{item.month}</TableCell>
+                    <TableCell>{item.occupancy}%</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        {change > 0 ? (
+                          <><TrendingUp className="text-green-500" size={16} /> <span className="text-green-500">+{change}%</span></>
+                        ) : change < 0 ? (
+                          <><TrendingDown className="text-red-500" size={16} /> <span className="text-red-500">{change}%</span></>
+                        ) : (
+                          <><Minus className="text-gray-500" size={16} /> <span className="text-gray-500">0%</span></>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </div>
       </Card>
     </div>
