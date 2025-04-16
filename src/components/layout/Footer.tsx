@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
@@ -137,7 +136,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <Phone size={20} className="text-muted-foreground mt-0.5" />
                 <span className="text-muted-foreground">
-                  +254 712 345 678
+                  0726709717
                 </span>
               </li>
               <li className="flex items-start gap-3">
