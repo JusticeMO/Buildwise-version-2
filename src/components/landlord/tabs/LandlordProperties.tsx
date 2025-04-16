@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Building2, Home, Users, Plus, ArrowRight, Check, X } from 'lucide-react';
+import { Building2, Home, Users, Plus, ArrowRight, Check, X, UserPlus } from 'lucide-react';
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -13,9 +13,18 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
   
   // Mock data for properties
   const properties = [
-    { id: 1, name: 'Riverside Apartments', units: 12, occupiedUnits: 10, vacantUnits: 2, rentCollected: 250000, rentDue: 50000 },
-    { id: 2, name: 'Green Gardens Estate', units: 8, occupiedUnits: 7, vacantUnits: 1, rentCollected: 175000, rentDue: 25000 },
-    { id: 3, name: 'Sunrise Towers', units: 15, occupiedUnits: 12, vacantUnits: 3, rentCollected: 320000, rentDue: 60000 },
+    { id: 1, name: 'Riverside Apartments', units: 12, occupiedUnits: 10, vacantUnits: 2, rentCollected: 250000, rentDue: 50000, tenants: 18 },
+    { id: 2, name: 'Green Gardens Estate', units: 8, occupiedUnits: 7, vacantUnits: 1, rentCollected: 175000, rentDue: 25000, tenants: 12 },
+    { id: 3, name: 'Sunrise Towers', units: 15, occupiedUnits: 12, vacantUnits: 3, rentCollected: 320000, rentDue: 60000, tenants: 20 },
+  ];
+
+  // Mock data for tenants
+  const tenants = [
+    { id: 1, name: 'John Doe', property: 'Riverside Apartments', unit: 'A1', status: 'active', leaseEnd: '2024-09-15', paymentStatus: 'paid' },
+    { id: 2, name: 'Jane Smith', property: 'Green Gardens Estate', unit: 'B3', status: 'active', leaseEnd: '2024-06-10', paymentStatus: 'paid' },
+    { id: 3, name: 'Robert Johnson', property: 'Sunrise Towers', unit: 'C2', status: 'expiring', leaseEnd: '2024-05-20', paymentStatus: 'overdue' },
+    { id: 4, name: 'Lisa Wong', property: 'Riverside Apartments', unit: 'A4', status: 'active', leaseEnd: '2025-01-15', paymentStatus: 'paid' },
+    { id: 5, name: 'Michael Brown', property: 'Green Gardens Estate', unit: 'B1', status: 'active', leaseEnd: '2024-12-01', paymentStatus: 'pending' },
   ];
 
   const handleAddProperty = () => {
@@ -27,6 +36,14 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
     if (onViewPropertyDetails) {
       onViewPropertyDetails(propertyName);
     }
+  };
+
+  const handleViewTenant = (tenantId, tenantName) => {
+    toast.info(`Viewing details for tenant: ${tenantName}`);
+  };
+
+  const handleAddTenant = () => {
+    toast.info("Add tenant functionality will be implemented soon");
   };
 
   return (
@@ -135,6 +152,75 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
         </div>
       </Card>
 
+      {/* Tenants List - Replacing Lease Section */}
+      <Card className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">Recent Tenants</h3>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={handleAddTenant}
+          >
+            <UserPlus size={16} className="mr-1" />
+            Add Tenant
+          </Button>
+        </div>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Tenant</TableHead>
+                <TableHead>Property</TableHead>
+                <TableHead>Unit</TableHead>
+                <TableHead>Lease Ends</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Payment</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {tenants.map((tenant) => (
+                <TableRow key={tenant.id}>
+                  <TableCell className="font-medium">{tenant.name}</TableCell>
+                  <TableCell>{tenant.property}</TableCell>
+                  <TableCell>{tenant.unit}</TableCell>
+                  <TableCell>{tenant.leaseEnd}</TableCell>
+                  <TableCell>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                      tenant.status === 'active' ? 'bg-green-100 text-green-800' :
+                      tenant.status === 'expiring' ? 'bg-amber-100 text-amber-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {tenant.status === 'active' ? 'Active' : 
+                       tenant.status === 'expiring' ? 'Expiring Soon' : 'Inactive'}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                      tenant.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' :
+                      tenant.paymentStatus === 'pending' ? 'bg-blue-100 text-blue-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {tenant.paymentStatus === 'paid' ? 'Paid' : 
+                       tenant.paymentStatus === 'pending' ? 'Pending' : 'Overdue'}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => handleViewTenant(tenant.id, tenant.name)}
+                    >
+                      View <ArrowRight size={14} className="ml-1" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+
       {/* Properties List */}
       <Card className="p-6">
         <h3 className="text-lg font-semibold mb-4">Your Properties</h3>
@@ -145,6 +231,7 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
                 <TableHead>Property</TableHead>
                 <TableHead>Units</TableHead>
                 <TableHead>Occupancy</TableHead>
+                <TableHead>Tenants</TableHead>
                 <TableHead>Collected</TableHead>
                 <TableHead>Due</TableHead>
                 <TableHead>Actions</TableHead>
@@ -156,6 +243,7 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
                   <TableCell className="font-medium">{property.name}</TableCell>
                   <TableCell>{property.units} units</TableCell>
                   <TableCell>{property.occupiedUnits}/{property.units} ({Math.round((property.occupiedUnits / property.units) * 100)}%)</TableCell>
+                  <TableCell>{property.tenants} tenants</TableCell>
                   <TableCell>KES {property.rentCollected.toLocaleString()}</TableCell>
                   <TableCell className="text-red-600">KES {property.rentDue.toLocaleString()}</TableCell>
                   <TableCell>
