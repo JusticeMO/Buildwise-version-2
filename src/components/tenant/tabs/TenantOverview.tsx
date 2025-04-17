@@ -2,9 +2,32 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import Button from '@/components/shared/Button';
-import { ChevronRight, CreditCard, Upload, MessageSquare, FileText, CheckCircle, Droplet, Bell } from 'lucide-react';
+import { CreditCard, Upload, MessageSquare, FileText, CheckCircle, Droplet, Bell } from 'lucide-react';
+import { useTenantData } from '@/hooks/useTenantData';
+import { format } from 'date-fns';
 
 const TenantOverview = () => {
+  const { lease, payments, isLoading } = useTenantData();
+
+  if (isLoading) {
+    return <div className="p-4">Loading...</div>;
+  }
+
+  if (!lease) {
+    return (
+      <div className="p-4">
+        <h2 className="text-2xl font-bold mb-6">No Active Lease</h2>
+        <p className="text-muted-foreground">You currently don't have an active lease.</p>
+      </div>
+    );
+  }
+
+  const currentRent = lease.rent_amount;
+  const latestPayment = payments?.[0];
+  const dueDate = new Date(lease.start_date);
+  dueDate.setDate(1); // Assuming rent is due on the 1st of each month
+  const isOverdue = new Date() > dueDate;
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
@@ -12,41 +35,45 @@ const TenantOverview = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow-sm">
           <p className="text-sm text-muted-foreground">Current Rent</p>
-          <p className="text-2xl font-bold">KES 25,000</p>
+          <p className="text-2xl font-bold">KES {currentRent.toLocaleString()}</p>
           <div className="mt-2 flex justify-between items-center text-sm">
-            <span>Due: July 1, 2023</span>
-            <Badge variant={new Date() > new Date('2023-07-01') ? 'destructive' : 'outline'}>
-              {new Date() > new Date('2023-07-01') ? 'Overdue' : '3 days left'}
+            <span>Due: {format(dueDate, 'MMM d, yyyy')}</span>
+            <Badge variant={isOverdue ? 'destructive' : 'outline'}>
+              {isOverdue ? 'Overdue' : '3 days left'}
             </Badge>
           </div>
         </div>
         
         <div className="bg-white p-4 rounded-lg shadow-sm">
-          <p className="text-sm text-muted-foreground">Water Bill</p>
-          <p className="text-2xl font-bold">KES 1,200</p>
+          <p className="text-sm text-muted-foreground">Unit Details</p>
+          <p className="text-2xl font-bold">{lease.unit.unit_number}</p>
           <div className="mt-2 flex justify-between items-center text-sm">
-            <span>Usage: 6 units</span>
-            <Badge variant="outline">Current Month</Badge>
+            <span>{lease.unit.property.title}</span>
+            <Badge variant="outline">Current</Badge>
           </div>
         </div>
         
         <div className="bg-white p-4 rounded-lg shadow-sm">
-          <p className="text-sm text-muted-foreground">Garbage Fee</p>
-          <p className="text-2xl font-bold">KES 500</p>
+          <p className="text-sm text-muted-foreground">Lease Status</p>
+          <p className="text-2xl font-bold">{lease.status}</p>
           <div className="mt-2 flex justify-between items-center text-sm">
-            <span>Monthly Fee</span>
-            <Badge variant="secondary" className="bg-green-100 text-green-800">Paid</Badge>
+            <span>Until: {format(new Date(lease.end_date), 'MMM d, yyyy')}</span>
+            <Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge>
           </div>
         </div>
         
         <div className="bg-white p-4 rounded-lg shadow-sm">
-          <p className="text-sm text-muted-foreground">Unread Messages</p>
-          <p className="text-2xl font-bold">2</p>
+          <p className="text-sm text-muted-foreground">Latest Payment</p>
+          <p className="text-2xl font-bold">
+            {latestPayment ? `KES ${latestPayment.amount.toLocaleString()}` : 'No payments'}
+          </p>
           <div className="mt-2 flex justify-between items-center text-sm">
-            <span>From: Property Manager</span>
-            <button className="text-primary hover:underline flex items-center gap-1">
-              View <ChevronRight size={14} />
-            </button>
+            <span>
+              {latestPayment ? format(new Date(latestPayment.payment_date), 'MMM d, yyyy') : 'N/A'}
+            </span>
+            {latestPayment && (
+              <Badge variant="outline" className="capitalize">{latestPayment.status}</Badge>
+            )}
           </div>
         </div>
       </div>

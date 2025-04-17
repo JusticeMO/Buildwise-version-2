@@ -9,7 +9,159 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      leases: {
+        Row: {
+          created_at: string | null
+          deposit_amount: number | null
+          end_date: string
+          id: string
+          rent_amount: number
+          start_date: string
+          status: Database["public"]["Enums"]["lease_status"] | null
+          tenant_id: string
+          unit_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          deposit_amount?: number | null
+          end_date: string
+          id?: string
+          rent_amount: number
+          start_date: string
+          status?: Database["public"]["Enums"]["lease_status"] | null
+          tenant_id: string
+          unit_id: string
+        }
+        Update: {
+          created_at?: string | null
+          deposit_amount?: number | null
+          end_date?: string
+          id?: string
+          rent_amount?: number
+          start_date?: string
+          status?: Database["public"]["Enums"]["lease_status"] | null
+          tenant_id?: string
+          unit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leases_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          lease_id: string
+          payment_date: string
+          payment_method: string | null
+          status: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          lease_id: string
+          payment_date: string
+          payment_method?: string | null
+          status?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          lease_id?: string
+          payment_date?: string
+          payment_method?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_lease_id_fkey"
+            columns: ["lease_id"]
+            isOneToOne: false
+            referencedRelation: "leases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      properties: {
+        Row: {
+          address: string
+          created_at: string | null
+          description: string | null
+          id: string
+          landlord_id: string
+          rent_amount: number
+          title: string
+          units_count: number | null
+        }
+        Insert: {
+          address: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          landlord_id: string
+          rent_amount: number
+          title: string
+          units_count?: number | null
+        }
+        Update: {
+          address?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          landlord_id?: string
+          rent_amount?: number
+          title?: string
+          units_count?: number | null
+        }
+        Relationships: []
+      }
+      units: {
+        Row: {
+          created_at: string | null
+          floor_plan: string | null
+          id: string
+          property_id: string
+          rent_amount: number
+          status: string | null
+          unit_number: string
+        }
+        Insert: {
+          created_at?: string | null
+          floor_plan?: string | null
+          id?: string
+          property_id: string
+          rent_amount: number
+          status?: string | null
+          unit_number: string
+        }
+        Update: {
+          created_at?: string | null
+          floor_plan?: string | null
+          id?: string
+          property_id?: string
+          rent_amount?: number
+          status?: string | null
+          unit_number?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "units_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +170,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      lease_status: "active" | "pending" | "ended"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +285,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      lease_status: ["active", "pending", "ended"],
+    },
   },
 } as const
