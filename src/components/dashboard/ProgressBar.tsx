@@ -12,11 +12,14 @@ export const ProgressBar = ({ progress }: ProgressBarProps) => {
     return 'bg-green-500';
   };
   
+  // Ensure the progress is within 0-100 range
+  const safeProgress = Math.min(Math.max(progress, 0), 100);
+  
   return (
     <div className="w-full bg-gray-200 rounded-full h-2">
       <div 
-        className={`h-2 rounded-full ${getProgressColor(progress)}`} 
-        style={{ width: `${progress}%` }}
+        className={`h-2 rounded-full ${getProgressColor(safeProgress)}`} 
+        style={{ width: `${safeProgress}%` }}
       />
     </div>
   );

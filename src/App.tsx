@@ -33,6 +33,7 @@ import BankFinancing from "./pages/BankFinancing";
 import MortgageCalculator from "./pages/MortgageCalculator";
 import LandlordLogin from "./pages/LandlordLogin";
 import LandlordDashboard from "./pages/LandlordDashboard";
+import Cart from "./pages/Cart";
 
 // Create a new QueryClient instance outside the component to prevent re-creation on renders
 const queryClient = new QueryClient({
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="/landlord/dashboard" element={<PrivateRoute><LandlordDashboard /></PrivateRoute>} />
               <Route path="/financing" element={<PrivateRoute><BankFinancing /></PrivateRoute>} />
               <Route path="/mortgage-calculator" element={<PrivateRoute><MortgageCalculator /></PrivateRoute>} />
+              <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
               
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
