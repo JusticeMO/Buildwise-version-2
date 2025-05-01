@@ -1,17 +1,17 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import Card from '@/components/shared/Card';
-import { Briefcase, AlertCircle, CheckCircle2, Plus } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import ProjectFilters from '@/components/dashboard/ProjectFilters';
 import ProjectCard from '@/components/dashboard/ProjectCard';
+import StatsCards from '@/components/dashboard/StatsCards';
+import EmptyProjectsState from '@/components/dashboard/EmptyProjectsState';
 import { Project } from '@/types/project';
 
 // Mock projects data
-const mockProjects = [
+const mockProjects: Project[] = [
   {
     id: 1,
     name: "3-Bedroom House in Kileleshwa",
@@ -78,6 +78,11 @@ const Dashboard = () => {
     return matchesSearch && matchesStatus;
   });
   
+  // Calculate statistics
+  const activeProjects = mockProjects.filter(p => p.status === 'in-progress').length;
+  const pendingApprovals = 1; // Hardcoded for demo purposes
+  const completedProjects = mockProjects.filter(p => p.status === 'completed').length;
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -87,46 +92,11 @@ const Dashboard = () => {
           <DashboardHeader onNewProject={handleNewProject} />
           
           {/* Projects Overview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="animate-zoom-in" style={{ animationDelay: '100ms' }}>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                    <Briefcase size={20} />
-                  </div>
-                  <Badge variant="outline">In Progress</Badge>
-                </div>
-                <h3 className="text-2xl font-bold mb-1">2</h3>
-                <p className="text-muted-foreground">Active Projects</p>
-              </div>
-            </Card>
-            
-            <Card className="animate-zoom-in" style={{ animationDelay: '200ms' }}>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="p-2 bg-amber-100 text-amber-600 rounded-lg">
-                    <AlertCircle size={20} />
-                  </div>
-                  <p className="text-xs font-medium text-amber-600">Requires Attention</p>
-                </div>
-                <h3 className="text-2xl font-bold mb-1">1</h3>
-                <p className="text-muted-foreground">Pending Approvals</p>
-              </div>
-            </Card>
-            
-            <Card className="animate-zoom-in" style={{ animationDelay: '300ms' }}>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="p-2 bg-green-100 text-green-600 rounded-lg">
-                    <CheckCircle2 size={20} />
-                  </div>
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">Completed</Badge>
-                </div>
-                <h3 className="text-2xl font-bold mb-1">1</h3>
-                <p className="text-muted-foreground">Completed Projects</p>
-              </div>
-            </Card>
-          </div>
+          <StatsCards 
+            activeProjects={activeProjects}
+            pendingApprovals={pendingApprovals}
+            completedProjects={completedProjects}
+          />
           
           <ProjectFilters 
             searchTerm={searchTerm}
@@ -145,19 +115,7 @@ const Dashboard = () => {
                 />
               ))
             ) : (
-              <Card className="py-12">
-                <div className="text-center">
-                  <p className="text-muted-foreground mb-2">No projects found</p>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    icon={<Plus size={16} />}
-                    onClick={handleNewProject}
-                  >
-                    Create a new project
-                  </Button>
-                </div>
-              </Card>
+              <EmptyProjectsState onNewProject={handleNewProject} />
             )}
           </div>
         </div>

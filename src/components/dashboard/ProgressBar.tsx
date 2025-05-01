@@ -21,3 +21,5 @@ export const ProgressBar = ({ progress }: ProgressBarProps) => {
     </div>
   );
 };
+
+export default ProgressBar;
