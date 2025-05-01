@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ArrowRight, CheckCircle, AlertCircle, CalendarDays, Building, Home } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
@@ -65,7 +66,7 @@ const TenantOverview = () => {
   const leaseProgressPercent = Math.min(Math.max((daysElapsed / totalLeaseDays) * 100, 0), 100);
   
   // Calculate payment status for current month
-  const paymentStatus: PaymentStatus = "pending"; // Default to pending
+  const paymentStatus = "pending" as PaymentStatus; // Default to pending
   
   return (
     <div>
