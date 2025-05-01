@@ -8,6 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useTenantData } from '@/hooks/useTenantData';
 
+// Define possible payment status types
+type PaymentStatus = 'pending' | 'paid' | 'overdue';
+
 const TenantOverview = () => {
   const { lease, payments, isLoading } = useTenantData();
   
@@ -62,8 +65,8 @@ const TenantOverview = () => {
   const daysElapsed = Math.ceil((currentDate.getTime() - leaseStartDate.getTime()) / (1000 * 60 * 60 * 24));
   const leaseProgressPercent = Math.min(Math.max((daysElapsed / totalLeaseDays) * 100, 0), 100);
   
-  // Calculate payment status for current month
-  const paymentStatus = "active"; // Default to active, replace with actual status from lease data when available
+  // Calculate payment status for current month - changed to a compatible type
+  const paymentStatus: PaymentStatus = "pending"; // Default to pending, replace with actual status from lease data when available
   
   return (
     <div>
