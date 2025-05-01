@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight, CheckCircle, AlertCircle, CalendarDays, Building, Home } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
@@ -65,8 +64,8 @@ const TenantOverview = () => {
   const daysElapsed = Math.ceil((currentDate.getTime() - leaseStartDate.getTime()) / (1000 * 60 * 60 * 24));
   const leaseProgressPercent = Math.min(Math.max((daysElapsed / totalLeaseDays) * 100, 0), 100);
   
-  // Calculate payment status for current month - changed to a compatible type
-  const paymentStatus: PaymentStatus = "pending"; // Default to pending, replace with actual status from lease data when available
+  // Calculate payment status for current month
+  const paymentStatus: PaymentStatus = "pending"; // Default to pending
   
   return (
     <div>
