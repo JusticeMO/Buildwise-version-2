@@ -5,11 +5,12 @@ import Footer from '@/components/layout/Footer';
 import { Input } from '@/components/ui/input';
 import Button from '@/components/shared/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, Building, Lock } from 'lucide-react';
+import { Eye, EyeOff, Building, Lock, Home } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
 const LandlordLogin = () => {
+  const [building, setBuilding] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,7 @@ const LandlordLogin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!building || !email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -56,6 +57,24 @@ const LandlordLogin = () => {
               </div>
               
               <form onSubmit={handleLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="building" className="text-sm font-medium">
+                    Building/Property
+                  </label>
+                  <div className="relative">
+                    <Home className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                    <Input 
+                      id="building"
+                      type="text"
+                      placeholder="Enter your building or property name"
+                      className="pl-10"
+                      value={building}
+                      onChange={(e) => setBuilding(e.target.value)}
+                      disabled={isLoading}
+                    />
+                  </div>
+                </div>
+                
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-medium">
                     Email or Phone Number
@@ -121,7 +140,7 @@ const LandlordLogin = () => {
               <div className="mt-8 pt-6 border-t text-center">
                 <p className="text-sm">For demonstration purposes:</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Enter any email and password to access the landlord dashboard
+                  Enter any building name, email and password to access the landlord dashboard
                 </p>
               </div>
             </div>
