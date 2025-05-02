@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { LogOut, Home, CreditCard, MessageSquare, Droplet, Trash2, History, AlertOctagon, Siren } from 'lucide-react';
+import { LogOut, Home, CreditCard, MessageSquare, Droplet, Trash2, History, AlertOctagon, Siren, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface TenantSidebarProps {
@@ -14,6 +14,7 @@ const TenantSidebar = ({ onLogout, onNavChange, activeTab }: TenantSidebarProps)
     { id: 'overview', label: 'Dashboard', icon: <Home size={18} /> },
     { id: 'payments', label: 'Rent Payments', icon: <CreditCard size={18} /> },
     { id: 'messages', label: 'Messages', icon: <MessageSquare size={18} /> },
+    { id: 'chat', label: 'Tenant Chat', icon: <MessageCircle size={18} /> },
     { id: 'water', label: 'Water Usage', icon: <Droplet size={18} /> },
     { id: 'garbage', label: 'Garbage Services', icon: <Trash2 size={18} /> },
     { id: 'emergency', label: 'Emergency Services', icon: <Siren size={18} /> },

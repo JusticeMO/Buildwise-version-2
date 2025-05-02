@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight, CheckCircle, AlertCircle, CalendarDays, Building, Home } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
@@ -263,7 +262,7 @@ const TenantOverview = () => {
         </Button>
       </div>
       
-      {/* Recent Activity */}
+      {/* Recent Activity - Modified to remove Reply button */}
       <h3 className="text-lg font-medium mb-4">Recent Activity</h3>
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="p-4 flex justify-between items-center border-b">

@@ -13,6 +13,7 @@ import TenantSidebar from '../components/tenant/TenantSidebar';
 import TenantOverview from '../components/tenant/tabs/TenantOverview';
 import TenantPayments from '../components/tenant/tabs/TenantPayments';
 import TenantMessages from '../components/tenant/tabs/TenantMessages';
+import TenantChat from '../components/tenant/tabs/TenantChat';
 import TenantWaterUsage from '../components/tenant/tabs/TenantWaterUsage';
 import TenantGarbageServices from '../components/tenant/tabs/TenantGarbageServices';
 import TenantComplaints from '../components/tenant/tabs/TenantComplaints';
@@ -118,6 +119,7 @@ const TenantDashboard = () => {
           {activeTab === 'overview' && <TenantOverview />}
           {activeTab === 'payments' && <TenantPayments />}
           {activeTab === 'messages' && <TenantMessages />}
+          {activeTab === 'chat' && <TenantChat />}
           {activeTab === 'water' && <TenantWaterUsage />}
           {activeTab === 'garbage' && <TenantGarbageServices />}
           {activeTab === 'emergency' && <TenantEmergencyServices />}
