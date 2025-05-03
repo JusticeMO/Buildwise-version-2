@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Card from '@/components/shared/Card';
@@ -13,6 +14,7 @@ import { BuildingMaterial } from '@/types/buildingMaterial';
 
 const Materials = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const maxPrice = getMaxPrice();
@@ -55,6 +57,11 @@ const Materials = () => {
       duration: 3000,
     });
   };
+
+  // View cart handler
+  const handleViewCart = () => {
+    navigate('/cart');
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -78,7 +85,7 @@ const Materials = () => {
                   <ShoppingCart size={20} className="text-primary" />
                   <span className="font-medium">{cart.length} {cart.length === 1 ? 'item' : 'items'} in cart</span>
                 </div>
-                <Button>View Cart</Button>
+                <Button onClick={handleViewCart}>View Cart</Button>
               </div>
             </div>
           )}

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Trash, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface CartItemProps {
   id: string;
@@ -9,6 +10,8 @@ interface CartItemProps {
   price: number;
   quantity: number;
   image?: string;
+  type: 'service' | 'material';
+  supplier?: string;
   onIncrease: (id: string) => void;
   onDecrease: (id: string) => void;
   onRemove: (id: string) => void;
@@ -20,6 +23,8 @@ const CartItem = ({
   price, 
   quantity, 
   image, 
+  type,
+  supplier,
   onIncrease, 
   onDecrease, 
   onRemove 
@@ -31,12 +36,23 @@ const CartItem = ({
           {image ? (
             <img src={image} alt={name} className="h-12 w-12 object-contain" />
           ) : (
-            <div className="text-xl font-bold text-gray-300">Item</div>
+            <div className="text-xl font-bold text-gray-300">{name.substring(0, 1)}</div>
           )}
         </div>
         <div>
           <h3 className="font-medium">{name}</h3>
-          <p className="text-sm text-muted-foreground">KES {price.toLocaleString()}</p>
+          {supplier && (
+            <p className="text-xs text-muted-foreground">by {supplier}</p>
+          )}
+          <div className="flex items-center mt-1">
+            <p className="text-sm text-muted-foreground">KES {price.toLocaleString()}</p>
+            {type === 'material' && (
+              <Badge variant="outline" className="ml-2 text-xs">Material</Badge>
+            )}
+            {type === 'service' && (
+              <Badge variant="outline" className="ml-2 text-xs bg-primary/10 text-primary border-primary/20">Service</Badge>
+            )}
+          </div>
         </div>
       </div>
       

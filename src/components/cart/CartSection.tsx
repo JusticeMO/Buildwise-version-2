@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ShoppingCart, ChevronRight, MapPin, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,6 +14,8 @@ interface CartItem {
   price: number;
   quantity: number;
   image?: string;
+  type: 'service' | 'material';
+  supplier?: string;
 }
 
 const initialCartItems: CartItem[] = [
@@ -23,12 +24,23 @@ const initialCartItems: CartItem[] = [
     name: 'Monthly Garbage Collection',
     price: 500,
     quantity: 1,
+    type: 'service'
   },
   {
     id: '2',
     name: 'Water Bill Payment',
     price: 1200,
     quantity: 1,
+    type: 'service'
+  },
+  {
+    id: '3',
+    name: 'Portland Cement (50kg)',
+    price: 850,
+    quantity: 2,
+    image: 'https://placehold.co/200x200?text=Cement',
+    type: 'material',
+    supplier: 'Bamburi'
   }
 ];
 
@@ -73,6 +85,10 @@ const CartSection = () => {
     setCartItems([]);
   };
   
+  // Group cart items by type
+  const serviceItems = cartItems.filter(item => item.type === 'service');
+  const materialItems = cartItems.filter(item => item.type === 'material');
+  
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex items-center justify-between mb-6">
@@ -87,17 +103,39 @@ const CartSection = () => {
       
       {cartItems.length > 0 ? (
         <>
-          <div className="space-y-2">
-            {cartItems.map(item => (
-              <CartItem
-                key={item.id}
-                {...item}
-                onIncrease={handleIncreaseQuantity}
-                onDecrease={handleDecreaseQuantity}
-                onRemove={handleRemoveItem}
-              />
-            ))}
-          </div>
+          {materialItems.length > 0 && (
+            <div className="mb-4">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">Building Materials</h3>
+              <div className="space-y-2">
+                {materialItems.map(item => (
+                  <CartItem
+                    key={item.id}
+                    {...item}
+                    onIncrease={handleIncreaseQuantity}
+                    onDecrease={handleDecreaseQuantity}
+                    onRemove={handleRemoveItem}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {serviceItems.length > 0 && (
+            <div className="mb-4">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">Service Payments</h3>
+              <div className="space-y-2">
+                {serviceItems.map(item => (
+                  <CartItem
+                    key={item.id}
+                    {...item}
+                    onIncrease={handleIncreaseQuantity}
+                    onDecrease={handleDecreaseQuantity}
+                    onRemove={handleRemoveItem}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
           
           <div className="mt-6 pt-4 border-t">
             <div className="flex justify-between mb-2">
@@ -216,7 +254,7 @@ const CartSection = () => {
           </div>
           <h3 className="text-lg font-medium mb-1">Your cart is empty</h3>
           <p className="text-sm text-muted-foreground mb-4">Looks like you haven't added any items to your cart yet</p>
-          <Button>Browse Services</Button>
+          <Button onClick={() => window.location.href = '/materials'}>Browse Materials</Button>
         </div>
       )}
     </div>
