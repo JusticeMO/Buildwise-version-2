@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import PrivateRoute from "./components/guards/PrivateRoute";
 
@@ -45,6 +45,11 @@ const queryClient = new QueryClient({
   },
 });
 
+// Create an AuthProviderWithRouter component that gets the navigate function inside the Router context
+const AuthProviderWithRouter = ({ children }: { children: React.ReactNode }) => {
+  return <AuthProvider>{children}</AuthProvider>;
+};
+
 const App = () => (
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -52,7 +57,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AuthProvider>
+          <AuthProviderWithRouter>
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Index />} />
@@ -86,7 +91,7 @@ const App = () => (
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </AuthProvider>
+          </AuthProviderWithRouter>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
