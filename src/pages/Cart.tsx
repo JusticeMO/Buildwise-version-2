@@ -5,9 +5,11 @@ import { ArrowLeft, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import CartSection from '@/components/cart/CartSection';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Cart = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   
   return (
     <div className="min-h-screen bg-secondary/10">
@@ -27,16 +29,16 @@ const Cart = () => {
             <ShoppingBag className="text-primary h-7 w-7" />
             <h1 className="text-2xl font-bold">Your Cart</h1>
           </div>
-          <p className="text-muted-foreground mt-1">Review and manage your cart items before checkout</p>
+          <p className="text-muted-foreground mt-1 text-sm md:text-base">Review and manage your cart items before checkout</p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 order-2 lg:order-1">
             <CartSection />
           </div>
           
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
+          <div className="space-y-6 order-1 lg:order-2">
+            <div className="bg-white rounded-lg shadow p-4 md:p-6">
               <h2 className="font-bold mb-4">Order Summary</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
@@ -58,7 +60,7 @@ const Cart = () => {
               </Button>
             </div>
             
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-lg shadow p-4 md:p-6">
               <h2 className="font-bold mb-4">Need Help?</h2>
               <p className="text-sm text-muted-foreground mb-4">
                 If you're having trouble with your order or have any questions, our support team is here to help.

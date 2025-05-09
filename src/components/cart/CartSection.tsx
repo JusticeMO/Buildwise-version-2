@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import CartItem from './CartItem';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface CartItem {
   id: string;
@@ -48,6 +49,7 @@ const CartSection = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('delivery');
+  const isMobile = useIsMobile();
   
   const handleIncreaseQuantity = (id: string) => {
     setCartItems(prevItems =>
@@ -90,11 +92,11 @@ const CartSection = () => {
   const materialItems = cartItems.filter(item => item.type === 'material');
   
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-lg shadow p-4 md:p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
           <ShoppingCart className="text-primary" />
-          <h2 className="text-2xl font-bold">Your Cart</h2>
+          <h2 className="text-xl md:text-2xl font-bold">Your Cart</h2>
         </div>
         <span className="bg-primary text-white px-2 py-1 rounded-full text-xs">
           {cartItems.length} items
@@ -153,7 +155,7 @@ const CartSection = () => {
             
             <Button 
               className="w-full mt-4" 
-              size="lg"
+              size={isMobile ? "default" : "lg"}
               onClick={() => setIsCheckoutOpen(true)}
             >
               Proceed to Checkout
@@ -162,7 +164,7 @@ const CartSection = () => {
           </div>
           
           <Dialog open={isCheckoutOpen} onOpenChange={setIsCheckoutOpen}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw]' : 'sm:max-w-md'}`}>
               <DialogHeader>
                 <DialogTitle>Complete Your Order</DialogTitle>
                 <DialogDescription>
@@ -248,7 +250,7 @@ const CartSection = () => {
           </Dialog>
         </>
       ) : (
-        <div className="text-center py-12">
+        <div className="text-center py-8 md:py-12">
           <div className="mx-auto w-12 h-12 rounded-full bg-secondary/30 flex items-center justify-center mb-4">
             <ShoppingCart className="text-muted-foreground" size={20} />
           </div>

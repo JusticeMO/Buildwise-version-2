@@ -2,6 +2,7 @@
 import React from 'react';
 import { Search, X } from 'lucide-react';
 import Button from '@/components/shared/Button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MaterialsSearchFiltersProps {
   searchTerm: string;
@@ -26,9 +27,11 @@ const MaterialsSearchFilters = ({
   categories,
   clearFilters
 }: MaterialsSearchFiltersProps) => {
+  const isMobile = useIsMobile();
+  
   return (
-    <div className="bg-card rounded-lg border p-4 mb-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="bg-card rounded-lg border p-3 md:p-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
         {/* Search */}
         <div className="col-span-1 md:col-span-3">
           <div className="relative">
@@ -40,20 +43,20 @@ const MaterialsSearchFilters = ({
               placeholder="Search building materials..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm md:text-base"
             />
           </div>
         </div>
         
         {/* Category Filter */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-xs md:text-sm font-medium mb-1 md:mb-2">
             Category
           </label>
           <select
             value={categoryFilter || ''}
             onChange={(e) => onCategoryChange(e.target.value || null)}
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm"
           >
             <option value="">All Categories</option>
             {categories.map((category) => (
@@ -66,7 +69,7 @@ const MaterialsSearchFilters = ({
         
         {/* Price Range Filter */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="block text-xs md:text-sm font-medium mb-1 md:mb-2">
             Price Range: KES {priceRange[0]} - KES {priceRange[1]}
           </label>
           <div className="px-2">

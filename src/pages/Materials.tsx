@@ -11,10 +11,12 @@ import BuildingMaterialCard from '@/components/materials/BuildingMaterialCard';
 import MaterialsSearchFilters from '@/components/materials/MaterialsSearchFilters';
 import { mockBuildingMaterials, getUniqueCategories, getMaxPrice } from '@/data/buildingMaterials';
 import { BuildingMaterial } from '@/types/buildingMaterial';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Materials = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const maxPrice = getMaxPrice();
@@ -67,25 +69,25 @@ const Materials = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow pt-20 bg-secondary/50">
-        <div className="container px-4 py-8">
+      <main className="flex-grow pt-16 md:pt-20 bg-secondary/50">
+        <div className="container px-4 py-6 md:py-8">
           {/* Page Header */}
-          <div className="text-center max-w-3xl mx-auto mb-8">
-            <h1 className="text-3xl font-bold mb-4">Building Materials</h1>
-            <p className="text-muted-foreground">
+          <div className="text-center max-w-3xl mx-auto mb-6 md:mb-8">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">Building Materials</h1>
+            <p className="text-muted-foreground text-sm md:text-base">
               Quality construction materials for your projects - cement, sand, steel, blocks, and more at competitive prices
             </p>
           </div>
           
           {/* Cart Summary */}
           {cart.length > 0 && (
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6 animate-fade-in">
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 md:p-4 mb-6 animate-fade-in">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart size={20} className="text-primary" />
-                  <span className="font-medium">{cart.length} {cart.length === 1 ? 'item' : 'items'} in cart</span>
+                  <ShoppingCart size={isMobile ? 16 : 20} className="text-primary" />
+                  <span className="font-medium text-sm md:text-base">{cart.length} {cart.length === 1 ? 'item' : 'items'} in cart</span>
                 </div>
-                <Button onClick={handleViewCart}>View Cart</Button>
+                <Button onClick={handleViewCart} size={isMobile ? "sm" : "default"}>View Cart</Button>
               </div>
             </div>
           )}
@@ -104,7 +106,7 @@ const Materials = () => {
           />
           
           {/* Materials Grid */}
-          <div className="space-y-6 animate-fade-in stagger-1">
+          <div className="space-y-4 md:space-y-6 animate-fade-in stagger-1">
             {filteredMaterials.length > 0 ? (
               filteredMaterials.map((material) => (
                 <BuildingMaterialCard 
@@ -114,7 +116,7 @@ const Materials = () => {
                 />
               ))
             ) : (
-              <Card className="py-12 text-center">
+              <Card className="py-8 md:py-12 text-center">
                 <p className="text-muted-foreground mb-4">No building materials found matching your criteria</p>
                 <Button
                   variant="outline"

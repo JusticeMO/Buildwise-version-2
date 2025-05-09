@@ -3,6 +3,7 @@ import React from 'react';
 import { Trash, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface CartItemProps {
   id: string;
@@ -29,9 +30,11 @@ const CartItem = ({
   onDecrease, 
   onRemove 
 }: CartItemProps) => {
+  const isMobile = useIsMobile();
+  
   return (
-    <div className="flex items-center justify-between py-4 border-b">
-      <div className="flex items-center space-x-4">
+    <div className={`${isMobile ? 'flex flex-col' : 'flex items-center justify-between'} py-4 border-b`}>
+      <div className="flex items-center space-x-4 mb-3 md:mb-0">
         <div className="h-16 w-16 bg-secondary/20 rounded-md flex items-center justify-center">
           {image ? (
             <img src={image} alt={name} className="h-12 w-12 object-contain" />
@@ -56,7 +59,7 @@ const CartItem = ({
         </div>
       </div>
       
-      <div className="flex items-center space-x-2">
+      <div className={`${isMobile ? 'flex justify-between' : 'flex'} items-center space-x-2`}>
         <div className="flex items-center border rounded-md">
           <Button 
             variant="ghost" 
