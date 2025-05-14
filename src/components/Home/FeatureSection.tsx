@@ -9,7 +9,6 @@ import {
   UserCheck, 
   LineChart, 
   Camera, 
-  Map, 
   BookOpen, 
   Layers 
 } from 'lucide-react';
@@ -73,11 +72,6 @@ const FeatureSection = () => {
       icon: <CreditCard size={24} />,
       title: "Milestone-based Payments",
       description: "Release payments only when predefined project milestones are completed and verified by inspectors."
-    },
-    {
-      icon: <Map size={24} />,
-      title: "Land Verification",
-      description: "Verify land ownership and documentation through our integration with the Kenyan Ministry of Lands."
     },
     {
       icon: <BookOpen size={24} />,
