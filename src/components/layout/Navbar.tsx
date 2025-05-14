@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Home, Briefcase, User, Users, Sofa, Lamp, Package, Building } from 'lucide-react';
+import { Menu, X, ChevronDown, Home, Briefcase, User, Users, Sofa, Lamp, Package, Building, Hammer } from 'lucide-react';
 import Button from '../shared/Button';
 import { cn } from '@/lib/utils';
 
@@ -9,15 +9,12 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isRentalDropdownOpen, setIsRentalDropdownOpen] = useState(false);
+  const [isConstructionDropdownOpen, setIsConstructionDropdownOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
     { name: 'Home', path: '/', icon: <Home size={18} /> },
     { name: 'Projects', path: '/dashboard', icon: <Briefcase size={18} /> },
-    { name: 'Contractors', path: '/contractors', icon: <Users size={18} /> },
-    { name: 'Building Materials', path: '/materials', icon: <Package size={18} /> },
-    { name: 'Furniture', path: '/furniture', icon: <Sofa size={18} /> },
-    { name: 'Finishings', path: '/finishings', icon: <Lamp size={18} /> },
   ];
 
   useEffect(() => {
@@ -41,15 +38,25 @@ const Navbar = () => {
       if (isRentalDropdownOpen) {
         setIsRentalDropdownOpen(false);
       }
+      if (isConstructionDropdownOpen) {
+        setIsConstructionDropdownOpen(false);
+      }
     };
     
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [isRentalDropdownOpen]);
+  }, [isRentalDropdownOpen, isConstructionDropdownOpen]);
 
   const toggleRentalDropdown = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsRentalDropdownOpen(!isRentalDropdownOpen);
+    if (isConstructionDropdownOpen) setIsConstructionDropdownOpen(false);
+  };
+
+  const toggleConstructionDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsConstructionDropdownOpen(!isConstructionDropdownOpen);
+    if (isRentalDropdownOpen) setIsRentalDropdownOpen(false);
   };
 
   return (
@@ -91,6 +98,83 @@ const Navbar = () => {
                   {link.name}
                 </NavLink>
               ))}
+              
+              {/* Construction Services Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={toggleConstructionDropdown}
+                  className={cn(
+                    'px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium smooth-transition',
+                    (location.pathname.includes('/contractors') || 
+                     location.pathname.includes('/materials') || 
+                     location.pathname.includes('/furniture') || 
+                     location.pathname.includes('/finishings')) 
+                      ? 'bg-accent text-accent-foreground' 
+                      : 'hover:bg-accent/50'
+                  )}
+                >
+                  <Hammer size={18} />
+                  Construction Services
+                  <ChevronDown size={16} className={isConstructionDropdownOpen ? "transform rotate-180 transition-transform" : "transition-transform"} />
+                </button>
+                
+                {isConstructionDropdownOpen && (
+                  <div className="absolute top-full mt-1 left-0 bg-white rounded-md shadow-lg overflow-hidden z-20 min-w-[200px] border">
+                    <NavLink 
+                      to="/contractors" 
+                      className={({ isActive }) => cn(
+                        'block px-4 py-3 text-sm hover:bg-accent/50',
+                        isActive ? 'bg-accent/20' : ''
+                      )}
+                      onClick={() => setIsConstructionDropdownOpen(false)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Users size={16} />
+                        <span>Contractors</span>
+                      </div>
+                    </NavLink>
+                    <NavLink 
+                      to="/materials" 
+                      className={({ isActive }) => cn(
+                        'block px-4 py-3 text-sm hover:bg-accent/50',
+                        isActive ? 'bg-accent/20' : ''
+                      )}
+                      onClick={() => setIsConstructionDropdownOpen(false)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Package size={16} />
+                        <span>Building Materials</span>
+                      </div>
+                    </NavLink>
+                    <NavLink 
+                      to="/furniture" 
+                      className={({ isActive }) => cn(
+                        'block px-4 py-3 text-sm hover:bg-accent/50',
+                        isActive ? 'bg-accent/20' : ''
+                      )}
+                      onClick={() => setIsConstructionDropdownOpen(false)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Sofa size={16} />
+                        <span>Furniture</span>
+                      </div>
+                    </NavLink>
+                    <NavLink 
+                      to="/finishings" 
+                      className={({ isActive }) => cn(
+                        'block px-4 py-3 text-sm hover:bg-accent/50',
+                        isActive ? 'bg-accent/20' : ''
+                      )}
+                      onClick={() => setIsConstructionDropdownOpen(false)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Lamp size={16} />
+                        <span>Finishings</span>
+                      </div>
+                    </NavLink>
+                  </div>
+                )}
+              </div>
               
               {/* Rental Management Dropdown */}
               <div className="relative">
@@ -191,6 +275,51 @@ const Navbar = () => {
                     {link.name}
                   </NavLink>
                 ))}
+                
+                {/* Mobile Construction Services Section */}
+                <div className="border-t pt-2 mt-2">
+                  <p className="px-4 py-1 text-xs uppercase font-semibold text-muted-foreground">Construction Services</p>
+                  <NavLink 
+                    to="/contractors"
+                    className={({ isActive }) => cn(
+                      'px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium smooth-transition',
+                      isActive ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                    )}
+                  >
+                    <Users size={16} />
+                    Contractors
+                  </NavLink>
+                  <NavLink 
+                    to="/materials"
+                    className={({ isActive }) => cn(
+                      'px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium smooth-transition',
+                      isActive ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                    )}
+                  >
+                    <Package size={16} />
+                    Building Materials
+                  </NavLink>
+                  <NavLink 
+                    to="/furniture"
+                    className={({ isActive }) => cn(
+                      'px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium smooth-transition',
+                      isActive ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                    )}
+                  >
+                    <Sofa size={16} />
+                    Furniture
+                  </NavLink>
+                  <NavLink 
+                    to="/finishings"
+                    className={({ isActive }) => cn(
+                      'px-4 py-3 rounded-md flex items-center gap-2 text-sm font-medium smooth-transition',
+                      isActive ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                    )}
+                  >
+                    <Lamp size={16} />
+                    Finishings
+                  </NavLink>
+                </div>
                 
                 {/* Mobile Rental Management Section */}
                 <div className="border-t pt-2 mt-2">
