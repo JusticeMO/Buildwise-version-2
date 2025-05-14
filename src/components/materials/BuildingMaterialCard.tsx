@@ -54,7 +54,7 @@ const BuildingMaterialCard = ({ material, onAddToCart }: BuildingMaterialCardPro
                 <Button 
                   onClick={() => onAddToCart(material)}
                   icon={<ShoppingCart size={16} />}
-                  size={isMobile ? "sm" : "default"}
+                  size={isMobile ? "sm" : "md"}
                   className="w-full md:w-auto"
                 >
                   {isMobile ? "Add" : "Add to Cart"}

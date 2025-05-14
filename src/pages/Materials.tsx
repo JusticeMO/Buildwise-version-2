@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
@@ -87,7 +86,7 @@ const Materials = () => {
                   <ShoppingCart size={isMobile ? 16 : 20} className="text-primary" />
                   <span className="font-medium text-sm md:text-base">{cart.length} {cart.length === 1 ? 'item' : 'items'} in cart</span>
                 </div>
-                <Button onClick={handleViewCart} size={isMobile ? "sm" : "default"}>View Cart</Button>
+                <Button onClick={handleViewCart} size={isMobile ? "sm" : "md"}>View Cart</Button>
               </div>
             </div>
           )}
