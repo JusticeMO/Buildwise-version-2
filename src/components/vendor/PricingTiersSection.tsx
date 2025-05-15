@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { PricingPlan } from '@/types/vendor';
 import { CheckCircle2 } from 'lucide-react';
 import Button from '@/components/shared/Button';
@@ -86,6 +86,12 @@ const PricingTiersSection: React.FC<PricingTiersSectionProps> = ({
   formatPrice,
   calculateMonthlySavings
 }) => {
+  const [selectedVendorType, setSelectedVendorType] = useState<'all' | 'contractor' | 'supplier' | 'consultant'>('all');
+  
+  const filteredPlans = pricingPlans.filter(plan => 
+    selectedVendorType === 'all' || plan.vendorType === 'all' || plan.vendorType === selectedVendorType
+  );
+
   return (
     <section id="pricing" className="py-16 bg-secondary/30">
       <div className="container px-4">
@@ -132,10 +138,37 @@ const PricingTiersSection: React.FC<PricingTiersSectionProps> = ({
               3 Years <span className="text-xs text-emerald-500 ml-1">20% off</span>
             </button>
           </div>
+          
+          <div className="flex justify-center space-x-2 mb-8">
+            <button
+              onClick={() => setSelectedVendorType('all')}
+              className={`px-4 py-2 rounded-md ${selectedVendorType === 'all' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
+            >
+              All Vendors
+            </button>
+            <button
+              onClick={() => setSelectedVendorType('contractor')}
+              className={`px-4 py-2 rounded-md ${selectedVendorType === 'contractor' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
+            >
+              Contractors
+            </button>
+            <button
+              onClick={() => setSelectedVendorType('supplier')}
+              className={`px-4 py-2 rounded-md ${selectedVendorType === 'supplier' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
+            >
+              Suppliers
+            </button>
+            <button
+              onClick={() => setSelectedVendorType('consultant')}
+              className={`px-4 py-2 rounded-md ${selectedVendorType === 'consultant' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
+            >
+              Consultants
+            </button>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {pricingPlans.map((plan) => (
+          {filteredPlans.map((plan) => (
             <PricingTier 
               key={plan.id} 
               plan={plan} 

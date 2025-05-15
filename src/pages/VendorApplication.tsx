@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/layout/Navbar';
@@ -35,25 +34,27 @@ const VendorApplication = () => {
 
   // Pricing plans
   const pricingPlans: PricingPlan[] = [
+    // Contractor plans
     {
-      id: 'basic',
+      id: 'contractor-basic',
       name: 'Basic Listing',
       description: 'Get started with a simple listing to establish your presence',
-      monthlyPrice: 500, // Updated from 4999 to 500
-      yearlyPrice: 5000, // Updated from 49990 to 5000
+      monthlyPrice: 5000,
+      yearlyPrice: 50000,
       features: [
         'Business profile page',
         'Contact information display',
         'Basic analytics',
         'Appear in search results',
       ],
+      vendorType: 'contractor'
     },
     {
-      id: 'professional',
+      id: 'contractor-professional',
       name: 'Professional',
       description: 'Enhanced visibility and features for growing businesses',
-      monthlyPrice: 1000, // Updated from 9999 to 1000
-      yearlyPrice: 10000, // Updated from 99990 to 10000
+      monthlyPrice: 15000,
+      yearlyPrice: 150000,
       features: [
         'All Basic features',
         'Featured in category listings',
@@ -62,13 +63,14 @@ const VendorApplication = () => {
         'Priority customer support',
       ],
       recommended: true,
+      vendorType: 'contractor'
     },
     {
-      id: 'premium',
+      id: 'contractor-premium',
       name: 'Premium',
       description: 'Maximum exposure and exclusive features for established businesses',
-      monthlyPrice: 2000, // Updated from 19999 to 2000
-      yearlyPrice: 20000, // Updated from 199990 to 20000
+      monthlyPrice: 30000,
+      yearlyPrice: 300000,
       features: [
         'All Professional features',
         'Featured on homepage',
@@ -77,6 +79,101 @@ const VendorApplication = () => {
         'Monthly performance reports',
         'Direct quote requests',
       ],
+      vendorType: 'contractor'
+    },
+    // Supplier plans
+    {
+      id: 'supplier-basic',
+      name: 'Basic Listing',
+      description: 'Get started with a simple listing for your materials and supplies',
+      monthlyPrice: 3000,
+      yearlyPrice: 30000,
+      features: [
+        'Business profile page',
+        'Products listing (up to 10 items)',
+        'Basic analytics',
+        'Appear in search results',
+      ],
+      vendorType: 'supplier'
+    },
+    {
+      id: 'supplier-professional',
+      name: 'Professional',
+      description: 'Enhanced visibility for your supply business',
+      monthlyPrice: 8000,
+      yearlyPrice: 80000,
+      features: [
+        'All Basic features',
+        'Featured in category listings',
+        'Products listing (up to 50 items)',
+        'Verified badge',
+        'Priority customer support',
+      ],
+      recommended: true,
+      vendorType: 'supplier'
+    },
+    {
+      id: 'supplier-premium',
+      name: 'Premium',
+      description: 'Maximum exposure for established material suppliers',
+      monthlyPrice: 20000,
+      yearlyPrice: 200000,
+      features: [
+        'All Professional features',
+        'Featured on homepage',
+        'Unlimited product listings',
+        'Customer review management',
+        'Monthly performance reports',
+        'Priority in search results',
+      ],
+      vendorType: 'supplier'
+    },
+    // Consultant plans
+    {
+      id: 'consultant-basic',
+      name: 'Basic Listing',
+      description: 'Get started with a simple listing for your consulting services',
+      monthlyPrice: 4000,
+      yearlyPrice: 40000,
+      features: [
+        'Professional profile page',
+        'Service listing (up to 5 services)',
+        'Basic analytics',
+        'Appear in search results',
+      ],
+      vendorType: 'consultant'
+    },
+    {
+      id: 'consultant-professional',
+      name: 'Professional',
+      description: 'Enhanced visibility for your consulting business',
+      monthlyPrice: 10000,
+      yearlyPrice: 100000,
+      features: [
+        'All Basic features',
+        'Featured in category listings',
+        'Detailed portfolio showcase',
+        'Verified expert badge',
+        'Priority customer support',
+      ],
+      recommended: true,
+      vendorType: 'consultant'
+    },
+    {
+      id: 'consultant-premium',
+      name: 'Premium',
+      description: 'Maximum exposure for established consultants',
+      monthlyPrice: 25000,
+      yearlyPrice: 250000,
+      features: [
+        'All Professional features',
+        'Featured on homepage',
+        'Expert contributor status',
+        'Customer review management',
+        'Monthly performance reports',
+        'Direct consultation requests',
+      ],
+      vendorType: 'consultant'
     },
   ];
 
@@ -145,6 +242,16 @@ const VendorApplication = () => {
       specialization: '',
       aboutBusiness: '',
     });
+  };
+
+  // Filter plans based on selected business type
+  const getFilteredPlans = () => {
+    if (isPlanDialogOpen) {
+      return pricingPlans.filter(
+        plan => plan.vendorType === formData.businessType || plan.vendorType === 'all'
+      );
+    }
+    return pricingPlans;
   };
 
   return (
@@ -324,12 +431,12 @@ const VendorApplication = () => {
           <DialogHeader>
             <DialogTitle>Choose Your Plan</DialogTitle>
             <DialogDescription>
-              Select the plan that best suits your business needs
+              Select the plan that best suits your {formData.businessType} business
             </DialogDescription>
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
-            {pricingPlans.map((plan) => (
+            {getFilteredPlans().filter(plan => plan.vendorType === formData.businessType).map((plan) => (
               <button
                 key={plan.id}
                 className={`flex items-center justify-between p-4 rounded-lg border ${

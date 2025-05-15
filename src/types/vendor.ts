@@ -7,4 +7,5 @@ export interface PricingPlan {
   yearlyPrice: number;
   features: string[];
   recommended?: boolean;
+  vendorType?: 'contractor' | 'supplier' | 'consultant' | 'all';
 }
