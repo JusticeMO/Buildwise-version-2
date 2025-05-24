@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ import Button from '@/components/shared/Button';
 import { ShoppingCart } from 'lucide-react';
 import BuildingMaterialCard from '@/components/materials/BuildingMaterialCard';
 import MaterialsSearchFilters from '@/components/materials/MaterialsSearchFilters';
-import { mockBuildingMaterials, getUniqueCategories, getMaxPrice } from '@/data/buildingMaterials';
+import { mockBuildingMaterials, getUniqueCategories } from '@/data/buildingMaterials';
 import { BuildingMaterial } from '@/types/buildingMaterial';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -18,7 +19,7 @@ const Materials = () => {
   const isMobile = useIsMobile();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const maxPrice = getMaxPrice();
+  const maxPrice = 900000; // Set maximum price to 900,000
   const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
   const [cart, setCart] = useState<BuildingMaterial[]>([]);
   

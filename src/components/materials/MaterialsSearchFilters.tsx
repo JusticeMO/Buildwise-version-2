@@ -2,6 +2,7 @@
 import React from 'react';
 import { Search, X } from 'lucide-react';
 import Button from '@/components/shared/Button';
+import { Slider } from '@/components/ui/slider';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MaterialsSearchFiltersProps {
@@ -70,15 +71,15 @@ const MaterialsSearchFilters = ({
         {/* Price Range Filter */}
         <div>
           <label className="block text-xs md:text-sm font-medium mb-1 md:mb-2">
-            Price Range: KES {priceRange[0]} - KES {priceRange[1]}
+            Price Range: KES {priceRange[0].toLocaleString()} - KES {priceRange[1].toLocaleString()}
           </label>
-          <div className="px-2">
-            <input
-              type="range"
+          <div className="px-2 py-2">
+            <Slider
+              value={[priceRange[0], priceRange[1]]}
+              onValueChange={(value) => onPriceRangeChange([value[0], value[1]])}
+              max={900000}
               min={0}
-              max={maxPrice}
-              value={priceRange[1]}
-              onChange={(e) => onPriceRangeChange([priceRange[0], parseInt(e.target.value)])}
+              step={1000}
               className="w-full"
             />
           </div>
