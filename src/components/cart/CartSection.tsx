@@ -21,20 +21,6 @@ interface CartItem {
 
 const initialCartItems: CartItem[] = [
   {
-    id: '1',
-    name: 'Monthly Garbage Collection',
-    price: 500,
-    quantity: 1,
-    type: 'service'
-  },
-  {
-    id: '2',
-    name: 'Water Bill Payment',
-    price: 1200,
-    quantity: 1,
-    type: 'service'
-  },
-  {
     id: '3',
     name: 'Portland Cement (50kg)',
     price: 850,
