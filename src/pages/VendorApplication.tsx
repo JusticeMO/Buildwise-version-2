@@ -32,7 +32,7 @@ const VendorApplication = () => {
   const [selectedYears, setSelectedYears] = useState<1 | 2 | 3>(1);
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(null);
 
-  // Pricing plans
+  // Updated pricing plans with architect plans
   const pricingPlans: PricingPlan[] = [
     // Contractor plans
     {
@@ -175,6 +175,55 @@ const VendorApplication = () => {
       ],
       vendorType: 'consultant'
     },
+    // Architect plans
+    {
+      id: 'architect-basic',
+      name: 'Basic Listing',
+      description: 'Get started with a simple listing for your architectural services',
+      monthlyPrice: 6000,
+      yearlyPrice: 60000,
+      features: [
+        'Professional profile page',
+        'Project portfolio (up to 5 projects)',
+        'Basic analytics',
+        'Appear in search results',
+      ],
+      vendorType: 'architect'
+    },
+    {
+      id: 'architect-professional',
+      name: 'Professional',
+      description: 'Enhanced visibility for your architectural practice',
+      monthlyPrice: 18000,
+      yearlyPrice: 180000,
+      features: [
+        'All Basic features',
+        'Featured in category listings',
+        'Detailed project showcase (up to 20 projects)',
+        'Verified architect badge',
+        'Priority customer support',
+        'CAD file sharing capability',
+      ],
+      recommended: true,
+      vendorType: 'architect'
+    },
+    {
+      id: 'architect-premium',
+      name: 'Premium',
+      description: 'Maximum exposure for established architectural firms',
+      monthlyPrice: 35000,
+      yearlyPrice: 350000,
+      features: [
+        'All Professional features',
+        'Featured on homepage',
+        'Unlimited project showcase',
+        'Client review management',
+        'Monthly performance reports',
+        'Direct project requests',
+        '3D visualization tools',
+      ],
+      vendorType: 'architect'
+    },
   ];
 
   // Calculate total price based on plan, billing period and years
@@ -248,7 +297,7 @@ const VendorApplication = () => {
   const getFilteredPlans = () => {
     if (isPlanDialogOpen) {
       return pricingPlans.filter(
-        plan => plan.vendorType === formData.businessType || plan.vendorType === 'all'
+        plan => plan.vendorType === formData.businessType
       );
     }
     return pricingPlans;
@@ -380,6 +429,7 @@ const VendorApplication = () => {
                         <option value="contractor">Contractor</option>
                         <option value="supplier">Supplier / Vendor</option>
                         <option value="consultant">Consultant</option>
+                        <option value="architect">Architect</option>
                         <option value="other">Other</option>
                       </select>
                     </div>
@@ -436,21 +486,37 @@ const VendorApplication = () => {
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
-            {getFilteredPlans().filter(plan => plan.vendorType === formData.businessType).map((plan) => (
-              <button
-                key={plan.id}
-                className={`flex items-center justify-between p-4 rounded-lg border ${
-                  plan.recommended ? 'border-primary' : 'border-border'
-                } hover:bg-accent transition-colors`}
-                onClick={() => handlePlanSelect(plan)}
-              >
-                <div className="flex flex-col items-start">
-                  <span className="font-medium">{plan.name}</span>
-                  <span className="text-sm text-muted-foreground">{formatPrice(billingPeriod === 'monthly' ? plan.monthlyPrice : (plan.yearlyPrice / 12))}/month</span>
-                </div>
-                <BillingOptions billingPeriod={billingPeriod} selectedYears={selectedYears} />
-              </button>
-            ))}
+            {getFilteredPlans().filter(plan => plan.vendorType === formData.businessType).map((plan) => {
+              // Calculate discounted price
+              const basePrice = billingPeriod === 'monthly' ? plan.monthlyPrice : (plan.yearlyPrice / 12);
+              let discount = 0;
+              if (selectedYears === 2) discount = 0.1;
+              if (selectedYears === 3) discount = 0.2;
+              const discountedPrice = basePrice * (1 - discount);
+              
+              return (
+                <button
+                  key={plan.id}
+                  className={`flex items-center justify-between p-4 rounded-lg border ${
+                    plan.recommended ? 'border-primary' : 'border-border'
+                  } hover:bg-accent transition-colors`}
+                  onClick={() => handlePlanSelect(plan)}
+                >
+                  <div className="flex flex-col items-start">
+                    <span className="font-medium">{plan.name}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {formatPrice(discountedPrice)}/month
+                    </span>
+                    {discount > 0 && (
+                      <span className="text-xs text-emerald-600">
+                        {Math.round(discount * 100)}% discount applied
+                      </span>
+                    )}
+                  </div>
+                  <BillingOptions billingPeriod={billingPeriod} selectedYears={selectedYears} />
+                </button>
+              );
+            })}
           </div>
           
           <div className="border-t pt-4">

@@ -17,14 +17,27 @@ interface PricingTiersSectionProps {
 const PricingTier = ({ 
   plan, 
   billingPeriod, 
+  selectedYears,
   formatPrice, 
   calculateMonthlySavings 
 }: { 
   plan: PricingPlan, 
   billingPeriod: 'monthly' | 'yearly',
+  selectedYears: 1 | 2 | 3,
   formatPrice: (price: number) => string,
   calculateMonthlySavings: (plan: PricingPlan) => string
 }) => {
+  // Calculate discounted price based on years
+  const getDiscountedPrice = () => {
+    const basePrice = billingPeriod === 'monthly' ? plan.monthlyPrice : (plan.yearlyPrice / 12);
+    let discount = 0;
+    
+    if (selectedYears === 2) discount = 0.1; // 10% discount for 2 years
+    if (selectedYears === 3) discount = 0.2; // 20% discount for 3 years
+    
+    return basePrice * (1 - discount);
+  };
+
   return (
     <div 
       className={`flex flex-col justify-between relative rounded-lg border ${
@@ -45,13 +58,19 @@ const PricingTier = ({
         
         <div className="mb-6">
           <span className="text-3xl font-bold">
-            {formatPrice(billingPeriod === 'monthly' ? plan.monthlyPrice : (plan.yearlyPrice / 12))}
+            {formatPrice(getDiscountedPrice())}
           </span>
           <span className="text-muted-foreground">/month</span>
           
           {billingPeriod === 'yearly' && (
             <div className="text-sm text-emerald-600 mt-1">
               Save {calculateMonthlySavings(plan)}/month
+            </div>
+          )}
+          
+          {selectedYears > 1 && (
+            <div className="text-sm text-blue-600 mt-1">
+              {selectedYears === 2 ? '10%' : '20%'} discount for {selectedYears} years
             </div>
           )}
         </div>
@@ -86,10 +105,10 @@ const PricingTiersSection: React.FC<PricingTiersSectionProps> = ({
   formatPrice,
   calculateMonthlySavings
 }) => {
-  const [selectedVendorType, setSelectedVendorType] = useState<'all' | 'contractor' | 'supplier' | 'consultant'>('all');
+  const [selectedVendorType, setSelectedVendorType] = useState<'contractor' | 'supplier' | 'consultant' | 'architect'>('contractor');
   
   const filteredPlans = pricingPlans.filter(plan => 
-    selectedVendorType === 'all' || plan.vendorType === 'all' || plan.vendorType === selectedVendorType
+    plan.vendorType === selectedVendorType
   );
 
   return (
@@ -141,12 +160,6 @@ const PricingTiersSection: React.FC<PricingTiersSectionProps> = ({
           
           <div className="flex justify-center space-x-2 mb-8">
             <button
-              onClick={() => setSelectedVendorType('all')}
-              className={`px-4 py-2 rounded-md ${selectedVendorType === 'all' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
-            >
-              All Vendors
-            </button>
-            <button
               onClick={() => setSelectedVendorType('contractor')}
               className={`px-4 py-2 rounded-md ${selectedVendorType === 'contractor' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
             >
@@ -164,6 +177,12 @@ const PricingTiersSection: React.FC<PricingTiersSectionProps> = ({
             >
               Consultants
             </button>
+            <button
+              onClick={() => setSelectedVendorType('architect')}
+              className={`px-4 py-2 rounded-md ${selectedVendorType === 'architect' ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
+            >
+              Architects
+            </button>
           </div>
         </div>
         
@@ -172,7 +191,8 @@ const PricingTiersSection: React.FC<PricingTiersSectionProps> = ({
             <PricingTier 
               key={plan.id} 
               plan={plan} 
-              billingPeriod={billingPeriod} 
+              billingPeriod={billingPeriod}
+              selectedYears={selectedYears}
               formatPrice={formatPrice} 
               calculateMonthlySavings={calculateMonthlySavings} 
             />

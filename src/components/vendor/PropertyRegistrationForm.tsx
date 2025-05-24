@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Building2, CreditCard, Info } from 'lucide-react';
+import { Building2, CreditCard, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -33,7 +34,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const PropertyRegistrationForm = () => {
-  const [selectedPlan, setSelectedPlan] = useState<string>('basic');
+  const [selectedPlanIndex, setSelectedPlanIndex] = useState<number>(0);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -49,39 +50,83 @@ const PropertyRegistrationForm = () => {
   const numberOfUnits = watch('numberOfUnits');
   const paymentMethod = watch('paymentMethod');
   
-  const getPrice = () => {
-    const units = parseInt(numberOfUnits || '0', 10);
+  // New pricing calculation based on requirements
+  const calculatePrice = (units: number) => {
+    if (units <= 0) return 0;
     
-    if (units < 10) {
-      return 1000;
-    } else if (units <= 20) {
-      return 1500;
-    } else if (units <= 70) {
-      return 2500;
-    } else {
-      return 3500;
+    let totalPrice = 0;
+    let remainingUnits = units;
+    let tierPrice = 2500;
+    
+    while (remainingUnits > 0) {
+      const unitsInTier = Math.min(remainingUnits, 10);
+      totalPrice += tierPrice;
+      remainingUnits -= unitsInTier;
+      
+      // Reduce price by 500 for next tier, minimum 500
+      tierPrice = Math.max(tierPrice - 500, 500);
     }
+    
+    return totalPrice;
   };
 
-  const getPlanName = () => {
+  const getPrice = () => {
     const units = parseInt(numberOfUnits || '0', 10);
-    
-    if (units < 10) {
-      return 'Basic Plan';
-    } else if (units <= 20) {
-      return 'Standard Plan';
-    } else if (units <= 70) {
-      return 'Professional Plan';
-    } else {
-      return 'Enterprise Plan';
-    }
+    return calculatePrice(units);
   };
+
+  const getAllPlans = () => {
+    const units = parseInt(numberOfUnits || '0', 10);
+    const plans = [];
+    
+    // Generate plans for different unit ranges
+    const ranges = [
+      { min: 1, max: 10, name: 'Basic Plan' },
+      { min: 11, max: 20, name: 'Standard Plan' },
+      { min: 21, max: 50, name: 'Professional Plan' },
+      { min: 51, max: 100, name: 'Enterprise Plan' }
+    ];
+    
+    ranges.forEach(range => {
+      if (units >= range.min && units <= range.max) {
+        plans.push({
+          name: range.name,
+          price: calculatePrice(units),
+          units: units,
+          description: `For properties with ${units} units`
+        });
+      }
+    });
+    
+    // If no exact match, show the plan for current units
+    if (plans.length === 0) {
+      plans.push({
+        name: units <= 10 ? 'Basic Plan' : units <= 20 ? 'Standard Plan' : units <= 50 ? 'Professional Plan' : 'Enterprise Plan',
+        price: calculatePrice(units),
+        units: units,
+        description: `For properties with ${units} units`
+      });
+    }
+    
+    return plans;
+  };
+
+  const plans = getAllPlans();
+  const currentPlan = plans[selectedPlanIndex] || plans[0];
 
   const onSubmit = (data: FormValues) => {
     console.log('Form submitted:', data);
     toast.success('Property registered successfully!', {
       description: `${data.propertyName} has been registered with ${data.numberOfUnits} units.`
     });
+  };
+
+  const navigatePlan = (direction: 'prev' | 'next') => {
+    if (direction === 'prev' && selectedPlanIndex > 0) {
+      setSelectedPlanIndex(selectedPlanIndex - 1);
+    } else if (direction === 'next' && selectedPlanIndex < plans.length - 1) {
+      setSelectedPlanIndex(selectedPlanIndex + 1);
+    }
   };
 
   return (
@@ -98,6 +143,7 @@ const PropertyRegistrationForm = () => {
           <Card padding="lg">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                {/* Property Details Section */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <Building2 size={20} className="text-primary" />
@@ -169,25 +215,16 @@ const PropertyRegistrationForm = () => {
                           <Input 
                             type="number"
                             min="1"
-                            max="100"
+                            max="1000"
                             {...field}
                             onChange={(e) => {
                               field.onChange(e);
-                              const units = parseInt(e.target.value, 10);
-                              if (units < 10) {
-                                setSelectedPlan('basic');
-                              } else if (units <= 20) {
-                                setSelectedPlan('standard');
-                              } else if (units <= 70) {
-                                setSelectedPlan('professional');
-                              } else {
-                                setSelectedPlan('enterprise');
-                              }
+                              setSelectedPlanIndex(0); // Reset to first plan when units change
                             }}
                           />
                         </FormControl>
                         <FormDescription>
-                          This will determine your pricing plan
+                          Pricing: KSh 2,500 for first 10 units, then KSh 2,000 for next 10, and so on (minimum KSh 500 per tier)
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -213,6 +250,7 @@ const PropertyRegistrationForm = () => {
                   />
                 </div>
                 
+                {/* Contact Information Section */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold pt-2 border-t flex items-center gap-2">
                     <Info size={20} className="text-primary" />
@@ -264,6 +302,7 @@ const PropertyRegistrationForm = () => {
                   </div>
                 </div>
                 
+                {/* Payment Details Section */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold pt-2 border-t flex items-center gap-2">
                     <CreditCard size={20} className="text-primary" />
@@ -313,6 +352,7 @@ const PropertyRegistrationForm = () => {
                     )}
                   />
                   
+                  {/* Payment method specific fields */}
                   {paymentMethod === 'card' && (
                     <div className="space-y-4">
                       <FormField
@@ -426,25 +466,42 @@ const PropertyRegistrationForm = () => {
         <div>
           <div className="sticky top-4">
             <Card variant="outline" padding="lg" className="bg-secondary/10">
-              <h3 className="text-lg font-semibold mb-3">Your Selected Plan</h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-semibold">Your Selected Plan</h3>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigatePlan('prev')}
+                    disabled={selectedPlanIndex === 0}
+                    className="p-1 h-8 w-8"
+                  >
+                    <ChevronLeft size={16} />
+                  </Button>
+                  <span className="text-sm text-muted-foreground">
+                    {selectedPlanIndex + 1} of {plans.length}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigatePlan('next')}
+                    disabled={selectedPlanIndex === plans.length - 1}
+                    className="p-1 h-8 w-8"
+                  >
+                    <ChevronRight size={16} />
+                  </Button>
+                </div>
+              </div>
               
-              <div className={`p-4 rounded-md mb-4 border-2 ${
-                selectedPlan === 'basic' 
-                  ? 'border-primary bg-primary/5' 
-                  : selectedPlan === 'standard'
-                  ? 'border-amber-500 bg-amber-50'
-                  : selectedPlan === 'professional'
-                  ? 'border-emerald-500 bg-emerald-50'
-                  : 'border-purple-500 bg-purple-50'
-              }`}>
+              <div className="p-4 rounded-md mb-4 border-2 border-primary bg-primary/5">
                 <div className="font-bold text-xl mb-1">
-                  {getPlanName()}
+                  {currentPlan?.name || 'Basic Plan'}
                 </div>
                 <div className="text-2xl font-bold mb-2">
-                  KSh {getPrice().toLocaleString()}/month
+                  KSh {(currentPlan?.price || 0).toLocaleString()}/month
                 </div>
                 <div className="text-sm">
-                  For properties with {parseInt(numberOfUnits || '0', 10)} units
+                  {currentPlan?.description || `For properties with ${numberOfUnits || 0} units`}
                 </div>
               </div>
               
@@ -469,30 +526,12 @@ const PropertyRegistrationForm = () => {
                     </div>
                     Tenant communication portal
                   </li>
-                  {(selectedPlan === 'standard' || selectedPlan === 'professional' || selectedPlan === 'enterprise') && (
-                    <li className="flex items-start text-sm">
-                      <div className="rounded-full bg-emerald-500 text-white p-1 mr-2 mt-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                      </div>
-                      Advanced reporting
-                    </li>
-                  )}
-                  {(selectedPlan === 'professional' || selectedPlan === 'enterprise') && (
-                    <li className="flex items-start text-sm">
-                      <div className="rounded-full bg-emerald-500 text-white p-1 mr-2 mt-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                      </div>
-                      Financial analytics
-                    </li>
-                  )}
-                  {selectedPlan === 'enterprise' && (
-                    <li className="flex items-start text-sm">
-                      <div className="rounded-full bg-emerald-500 text-white p-1 mr-2 mt-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                      </div>
-                      API integrations
-                    </li>
-                  )}
+                  <li className="flex items-start text-sm">
+                    <div className="rounded-full bg-emerald-500 text-white p-1 mr-2 mt-0.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    Financial reporting & analytics
+                  </li>
                 </ul>
               </div>
               
