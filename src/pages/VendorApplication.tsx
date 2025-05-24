@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import Button from '@/components/shared/Button';
-import { BadgeCheck } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import VendorHeroSection from '@/components/vendor/VendorHeroSection';
+import VendorApplicationForm from '@/components/vendor/VendorApplicationForm';
+import PlanSelectionDialog from '@/components/vendor/PlanSelectionDialog';
 
 // Pricing plan type
 import { PricingPlan } from '@/types/vendor';
 import PricingTiersSection from '@/components/vendor/PricingTiersSection';
 import KeyBenefits from '@/components/vendor/KeyBenefits';
-import BillingOptions from '@/components/vendor/BillingOptions';
 import FAQSection from '@/components/vendor/FAQSection';
 import ECaretakerSection from '@/components/vendor/ECaretakerSection';
 
@@ -309,37 +306,7 @@ const VendorApplication = () => {
       
       <main className="flex-grow pt-20">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-primary/10 to-background py-16">
-          <div className="container px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">Grow Your Business with BuildWise</h1>
-              <p className="text-xl text-muted-foreground mb-8 animate-fade-in">
-                Join Kenya's leading construction marketplace and connect with thousands of potential clients
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 animate-fade-in">
-                <Button 
-                  size="lg" 
-                  onClick={() => document.getElementById('application-form')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Apply Now
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  View Pricing
-                </Button>
-              </div>
-              <div className="p-4 bg-secondary rounded-lg inline-block animate-fade-in">
-                <p className="font-medium text-sm">
-                  <BadgeCheck className="inline-block mr-2 text-primary" size={18} />
-                  Over 500+ vendors already trust BuildWise
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <VendorHeroSection />
         
         {/* Benefits Section */}
         <KeyBenefits />
@@ -359,173 +326,27 @@ const VendorApplication = () => {
         />
         
         {/* Application Form Section */}
-        <section id="application-form" className="py-16">
-          <div className="container px-4">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">Apply to Join BuildWise</h2>
-              
-              <div className="bg-card rounded-lg border p-8">
-                <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label htmlFor="companyName" className="block text-sm font-medium mb-2">Company Name *</label>
-                      <Input
-                        id="companyName"
-                        name="companyName"
-                        value={formData.companyName}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="Your company name"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="contactPerson" className="block text-sm font-medium mb-2">Contact Person *</label>
-                      <Input
-                        id="contactPerson"
-                        name="contactPerson"
-                        value={formData.contactPerson}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="Full name"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2">Email Address *</label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="you@example.com"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium mb-2">Phone Number *</label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="07XX XXX XXX"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="businessType" className="block text-sm font-medium mb-2">Business Type *</label>
-                      <select
-                        id="businessType"
-                        name="businessType"
-                        value={formData.businessType}
-                        onChange={handleInputChange}
-                        required
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                      >
-                        <option value="contractor">Contractor</option>
-                        <option value="supplier">Supplier / Vendor</option>
-                        <option value="consultant">Consultant</option>
-                        <option value="architect">Architect</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="specialization" className="block text-sm font-medium mb-2">Specialization *</label>
-                      <Input
-                        id="specialization"
-                        name="specialization"
-                        value={formData.specialization}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="e.g. Plumbing, Flooring, Architecture"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <label htmlFor="aboutBusiness" className="block text-sm font-medium mb-2">Tell us about your business *</label>
-                    <Textarea
-                      id="aboutBusiness"
-                      name="aboutBusiness"
-                      value={formData.aboutBusiness}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Share details about your services, experience, and why clients choose you"
-                      rows={5}
-                    />
-                  </div>
-                  
-                  <div className="flex justify-end">
-                    <Button type="submit" size="lg">
-                      Submit Application
-                    </Button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </section>
+        <VendorApplicationForm
+          formData={formData}
+          onInputChange={handleInputChange}
+          onSubmit={handleSubmit}
+        />
         
         {/* FAQ Section */}
         <FAQSection />
       </main>
       
       {/* Plan Selection Dialog */}
-      <Dialog open={isPlanDialogOpen} onOpenChange={setIsPlanDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Choose Your Plan</DialogTitle>
-            <DialogDescription>
-              Select the plan that best suits your {formData.businessType} business
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="grid gap-4 py-4">
-            {getFilteredPlans().filter(plan => plan.vendorType === formData.businessType).map((plan) => {
-              // Calculate discounted price
-              const basePrice = billingPeriod === 'monthly' ? plan.monthlyPrice : (plan.yearlyPrice / 12);
-              let discount = 0;
-              if (selectedYears === 2) discount = 0.1;
-              if (selectedYears === 3) discount = 0.2;
-              const discountedPrice = basePrice * (1 - discount);
-              
-              return (
-                <button
-                  key={plan.id}
-                  className={`flex items-center justify-between p-4 rounded-lg border ${
-                    plan.recommended ? 'border-primary' : 'border-border'
-                  } hover:bg-accent transition-colors`}
-                  onClick={() => handlePlanSelect(plan)}
-                >
-                  <div className="flex flex-col items-start">
-                    <span className="font-medium">{plan.name}</span>
-                    <span className="text-sm text-muted-foreground">
-                      {formatPrice(discountedPrice)}/month
-                    </span>
-                    {discount > 0 && (
-                      <span className="text-xs text-emerald-600">
-                        {Math.round(discount * 100)}% discount applied
-                      </span>
-                    )}
-                  </div>
-                  <BillingOptions billingPeriod={billingPeriod} selectedYears={selectedYears} />
-                </button>
-              );
-            })}
-          </div>
-          
-          <div className="border-t pt-4">
-            <p className="text-sm text-muted-foreground mb-2 flex items-center">
-              You'll be contacted to complete the payment after your application is approved
-            </p>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <PlanSelectionDialog
+        isOpen={isPlanDialogOpen}
+        onOpenChange={setIsPlanDialogOpen}
+        businessType={formData.businessType}
+        pricingPlans={pricingPlans}
+        billingPeriod={billingPeriod}
+        selectedYears={selectedYears}
+        formatPrice={formatPrice}
+        onPlanSelect={handlePlanSelect}
+      />
       
       <Footer />
     </div>

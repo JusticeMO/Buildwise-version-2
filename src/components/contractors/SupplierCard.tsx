@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { Phone, Check, MapPin, Award, Star, Sofa, Paintbrush, Lamp } from 'lucide-react';
+import { Phone, Check, MapPin, Award, Star, Sofa, Paintbrush, Lamp, ExternalLink } from 'lucide-react';
 import Card from '@/components/shared/Card';
 import Button from '@/components/shared/Button';
 import { Supplier } from '@/types/supplier';
+import { useNavigate } from 'react-router-dom';
 
 interface SupplierCardProps {
   supplier: Supplier;
@@ -55,6 +56,12 @@ const CategoryIcon = ({ category }: { category: string }) => {
 };
 
 const SupplierCard: React.FC<SupplierCardProps> = ({ supplier, onContactClick }) => {
+  const navigate = useNavigate();
+
+  const handleViewProfile = () => {
+    navigate(`/vendors/supplier-demo-1`);
+  };
+
   return (
     <Card 
       variant="outline" 
@@ -77,7 +84,13 @@ const SupplierCard: React.FC<SupplierCardProps> = ({ supplier, onContactClick })
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-medium">{supplier.name}</h3>
+                  <button
+                    onClick={handleViewProfile}
+                    className="text-lg font-medium hover:text-primary transition-colors cursor-pointer flex items-center gap-1"
+                  >
+                    {supplier.name}
+                    <ExternalLink size={16} />
+                  </button>
                   {supplier.verified && (
                     <div className="bg-green-100 text-green-800 rounded-full p-0.5" title="Verified Supplier">
                       <Check size={14} />

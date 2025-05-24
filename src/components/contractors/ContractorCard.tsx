@@ -1,11 +1,12 @@
 
 import React from 'react';
-import { Phone, Check, MapPin, Award, Star, Users } from 'lucide-react';
+import { Phone, Check, MapPin, Award, Star, Users, ExternalLink } from 'lucide-react';
 import Card from '@/components/shared/Card';
 import Button from '@/components/shared/Button';
 import { useToast } from '@/hooks/use-toast';
 import { Contractor } from '@/types/contractor';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface ContractorCardProps {
   contractor: Contractor;
@@ -48,6 +49,12 @@ const ContractorCard: React.FC<ContractorCardProps> = ({
   selectable = false,
   onSelect
 }) => {
+  const navigate = useNavigate();
+
+  const handleViewProfile = () => {
+    navigate(`/vendors/${contractor.id}`);
+  };
+
   return (
     <Card 
       variant="outline" 
@@ -72,7 +79,13 @@ const ContractorCard: React.FC<ContractorCardProps> = ({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-medium">{contractor.name}</h3>
+                  <button
+                    onClick={handleViewProfile}
+                    className="text-lg font-medium hover:text-primary transition-colors cursor-pointer flex items-center gap-1"
+                  >
+                    {contractor.name}
+                    <ExternalLink size={16} />
+                  </button>
                   {contractor.verified && (
                     <div className="bg-green-100 text-green-800 rounded-full p-0.5" title="Verified Contractor">
                       <Check size={14} />
