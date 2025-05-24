@@ -6,8 +6,8 @@ import Footer from '@/components/layout/Footer';
 import VendorProfile from '@/components/vendor/VendorProfile';
 import { VendorProfile as VendorProfileType } from '@/types/vendor';
 
-// Demo vendor data
-const demoVendors: VendorProfileType[] = [
+// Demo service provider data - expanded to include all construction service types
+const demoServiceProviders: VendorProfileType[] = [
   {
     id: 'contractor-demo-1',
     name: 'Elite Construction Co.',
@@ -148,21 +148,64 @@ const demoVendors: VendorProfileType[] = [
         category: 'Hospitality'
       }
     ]
+  },
+  {
+    id: 'consultant-demo-1',
+    name: 'Strategic Construction Consulting',
+    vendorType: 'consultant',
+    description: 'Expert construction consulting services for project management, cost estimation, and technical advisory.',
+    specialization: ['Project Management', 'Cost Estimation', 'Technical Advisory'],
+    location: 'Nairobi, Kenya',
+    contactEmail: 'info@strategicconstruction.co.ke',
+    contactPhone: '+254 744 567 890',
+    website: 'https://strategicconstruction.co.ke',
+    rating: 4.7,
+    reviewsCount: 73,
+    yearsExperience: 10,
+    verified: true,
+    planType: 'professional',
+    services: [
+      'Project Management',
+      'Cost Estimation',
+      'Quality Assurance',
+      'Technical Advisory',
+      'Risk Assessment',
+      'Compliance Consulting'
+    ],
+    portfolio: [
+      {
+        id: '1',
+        title: 'Hospital Construction Management',
+        description: 'Complete project management for 200-bed hospital facility',
+        imageUrl: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        category: 'Healthcare'
+      },
+      {
+        id: '2',
+        title: 'Shopping Center Development',
+        description: 'Technical advisory and cost management for retail complex',
+        imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        category: 'Commercial'
+      }
+    ]
   }
 ];
 
 const VendorProfiles = () => {
-  const { vendorId } = useParams<{ vendorId: string }>();
-  const vendor = demoVendors.find(v => v.id === vendorId);
+  const { vendorId, providerId } = useParams<{ vendorId?: string; providerId?: string }>();
+  
+  // Support both vendor and provider ID for backward compatibility
+  const serviceProviderId = providerId || vendorId;
+  const serviceProvider = demoServiceProviders.find(p => p.id === serviceProviderId);
 
-  if (!vendor) {
+  if (!serviceProvider) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow pt-20 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Vendor Not Found</h1>
-            <p className="text-muted-foreground">The vendor profile you're looking for doesn't exist.</p>
+            <h1 className="text-2xl font-bold mb-4">Service Provider Not Found</h1>
+            <p className="text-muted-foreground">The service provider profile you're looking for doesn't exist.</p>
           </div>
         </main>
         <Footer />
@@ -174,7 +217,7 @@ const VendorProfiles = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow pt-20">
-        <VendorProfile vendor={vendor} />
+        <VendorProfile vendor={serviceProvider} />
       </main>
       <Footer />
     </div>

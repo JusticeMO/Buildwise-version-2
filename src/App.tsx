@@ -18,6 +18,8 @@ import Furniture from "./pages/Furniture";
 import Finishings from "./pages/Finishings";
 import Materials from "./pages/Materials";
 import VendorApplication from "./pages/VendorApplication";
+import VendorProfiles from "./pages/VendorProfiles";
+import VendorProfileSetupPage from "./pages/VendorProfileSetup";
 import About from "./pages/About";
 import Help from "./pages/Help";
 import Blog from "./pages/Blog";
@@ -73,6 +75,14 @@ const App = () => (
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/cookies" element={<Cookies />} />
+              
+              {/* Service provider profile routes - accessible to all */}
+              <Route path="/providers/:providerId" element={<VendorProfiles />} />
+              <Route path="/providers/:providerId/setup" element={<PrivateRoute><VendorProfileSetupPage /></PrivateRoute>} />
+              
+              {/* Legacy vendor routes for backward compatibility */}
+              <Route path="/vendors/:vendorId" element={<VendorProfiles />} />
+              <Route path="/vendors/:vendorId/setup" element={<PrivateRoute><VendorProfileSetupPage /></PrivateRoute>} />
               
               {/* Protected routes */}
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />

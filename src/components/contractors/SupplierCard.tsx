@@ -59,7 +59,7 @@ const SupplierCard: React.FC<SupplierCardProps> = ({ supplier, onContactClick })
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
-    navigate(`/vendors/supplier-demo-1`);
+    navigate(`/providers/supplier-demo-1`);
   };
 
   return (

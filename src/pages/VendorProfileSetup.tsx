@@ -6,14 +6,17 @@ import Footer from '@/components/layout/Footer';
 import VendorProfileSetup from '@/components/vendor/VendorProfileSetup';
 
 const VendorProfileSetupPage = () => {
-  const { vendorId } = useParams<{ vendorId: string }>();
+  const { vendorId, providerId } = useParams<{ vendorId?: string; providerId?: string }>();
+  
+  // Support both vendor and provider ID for backward compatibility
+  const serviceProviderId = providerId || vendorId || '';
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow pt-20 py-8">
         <div className="container px-4">
-          <VendorProfileSetup vendorId={vendorId || ''} />
+          <VendorProfileSetup vendorId={serviceProviderId} />
         </div>
       </main>
       <Footer />

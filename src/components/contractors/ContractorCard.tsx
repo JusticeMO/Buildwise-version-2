@@ -52,7 +52,7 @@ const ContractorCard: React.FC<ContractorCardProps> = ({
   const navigate = useNavigate();
 
   const handleViewProfile = () => {
-    navigate(`/vendors/${contractor.id}`);
+    navigate(`/providers/contractor-demo-1`);
   };
 
   return (
