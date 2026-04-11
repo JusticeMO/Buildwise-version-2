@@ -19,21 +19,57 @@ import TenantGarbageServices from '../components/tenant/tabs/TenantGarbageServic
 import TenantComplaints from '../components/tenant/tabs/TenantComplaints';
 import TenantHistory from '../components/tenant/tabs/TenantHistory';
 import TenantEmergencyServices from '../components/tenant/tabs/TenantEmergencyServices';
+import TenantUtilities from '../components/tenant/tabs/TenantUtilities';
+import TenantUtilityCategory from '../components/tenant/tabs/TenantUtilityCategory';
+import TenantMaintenance from '../components/tenant/tabs/TenantMaintenance';
+import TenantDocuments from '../components/tenant/tabs/TenantDocuments';
+import TenantExplore from '../components/tenant/tabs/TenantExplore';
+import TenantSettings from '../components/tenant/tabs/TenantSettings';
 
-// Tenant Dashboard component
 const TenantDashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [utilityCategory, setUtilityCategory] = useState<string | null>(null);
   
   const handleLogout = () => {
     toast.success("Logged out successfully");
     navigate('/tenant/login');
   };
+
+  const handleNavChange = (tab: string) => {
+    if (tab.startsWith('utility-')) {
+      setUtilityCategory(tab);
+      setActiveTab('utility-category');
+    } else {
+      setUtilityCategory(null);
+      setActiveTab(tab);
+    }
+  };
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'overview': return <TenantOverview />;
+      case 'payments': return <TenantPayments />;
+      case 'messages': return <TenantMessages />;
+      case 'chat': return <TenantChat />;
+      case 'water': return <TenantWaterUsage />;
+      case 'garbage': return <TenantGarbageServices />;
+      case 'emergency': return <TenantEmergencyServices />;
+      case 'complaints': return <TenantComplaints />;
+      case 'history': return <TenantHistory />;
+      case 'utilities': return <TenantUtilities onNavigate={handleNavChange} />;
+      case 'utility-category': return utilityCategory ? <TenantUtilityCategory categoryId={utilityCategory} onBack={() => setActiveTab('utilities')} /> : <TenantUtilities onNavigate={handleNavChange} />;
+      case 'maintenance': return <TenantMaintenance />;
+      case 'documents': return <TenantDocuments />;
+      case 'explore': return <TenantExplore />;
+      case 'settings': return <TenantSettings />;
+      default: return <TenantOverview />;
+    }
+  };
   
   return (
     <div className="min-h-screen flex">
-      {/* Mobile Navigation - Using Drawer for better mobile experience */}
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <div className="fixed top-4 right-4 lg:hidden z-50">
           <Button size="lg" variant="outline" className="rounded-full h-12 w-12 shadow-lg bg-white" onClick={() => setDrawerOpen(!drawerOpen)}>
@@ -43,19 +79,17 @@ const TenantDashboard = () => {
         <DrawerContent className="bg-white p-0">
           <div className="h-[80vh] overflow-auto">
             <TenantSidebar onLogout={handleLogout} onNavChange={(tab) => {
-              setActiveTab(tab);
+              handleNavChange(tab);
               setDrawerOpen(false);
-            }} activeTab={activeTab} />
+            }} activeTab={activeTab === 'utility-category' ? 'utilities' : activeTab} />
           </div>
         </DrawerContent>
       </Drawer>
       
-      {/* Desktop Sidebar */}
       <div className="hidden lg:block w-64 bg-white border-r min-h-screen">
-        <TenantSidebar onLogout={handleLogout} onNavChange={setActiveTab} activeTab={activeTab} />
+        <TenantSidebar onLogout={handleLogout} onNavChange={handleNavChange} activeTab={activeTab === 'utility-category' ? 'utilities' : activeTab} />
       </div>
       
-      {/* Main Content */}
       <div className="flex-1 bg-secondary/10">
         <header className="bg-white shadow-sm py-4 px-6">
           <div className="flex justify-between items-center">
@@ -116,15 +150,7 @@ const TenantDashboard = () => {
         </header>
         
         <div className="p-4 sm:p-6">
-          {activeTab === 'overview' && <TenantOverview />}
-          {activeTab === 'payments' && <TenantPayments />}
-          {activeTab === 'messages' && <TenantMessages />}
-          {activeTab === 'chat' && <TenantChat />}
-          {activeTab === 'water' && <TenantWaterUsage />}
-          {activeTab === 'garbage' && <TenantGarbageServices />}
-          {activeTab === 'emergency' && <TenantEmergencyServices />}
-          {activeTab === 'complaints' && <TenantComplaints />}
-          {activeTab === 'history' && <TenantHistory />}
+          {renderContent()}
         </div>
       </div>
     </div>
