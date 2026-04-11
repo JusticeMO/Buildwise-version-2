@@ -49,7 +49,7 @@ const TenantDashboard = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'overview': return <TenantOverview />;
+      case 'overview': return <TenantOverview onNavigate={handleNavChange} />;
       case 'payments': return <TenantPayments />;
       case 'messages': return <TenantMessages />;
       case 'chat': return <TenantChat />;
