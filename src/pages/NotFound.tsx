@@ -7,17 +7,17 @@ import { Home, ArrowLeft, AlertCircle } from 'lucide-react';
 const NotFound = () => {
   const location = useLocation();
   
-  // Check if this is a tenant portal route to redirect appropriately
-  if (location.pathname.startsWith('/tenant/') && location.pathname !== '/tenant/login') {
-    return <Navigate to="/tenant/dashboard" replace />;
-  }
-
   useEffect(() => {
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
   }, [location.pathname]);
+
+  // Check if this is a tenant portal route to redirect appropriately
+  if (location.pathname.startsWith('/tenant/') && location.pathname !== '/tenant/login') {
+    return <Navigate to="/tenant/dashboard" replace />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-secondary/50 p-4">

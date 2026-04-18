@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Home, Settings2, Sparkles, ShieldCheck, UtensilsCrossed, Search, Truck, MonitorSmartphone, UserRound, Bell, Crown } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface UtilityCategoryProps {
   icon: React.ReactNode;
@@ -47,7 +48,7 @@ const TenantUtilities = ({ onNavigate }: TenantUtilitiesProps) => {
           <h2 className="text-xl sm:text-2xl font-bold">Your Personalized Bundles</h2>
           <p className="text-sm text-gray-300 mt-1">Bundle your utilities and save. Premium tenants get exclusive discounts.</p>
         </div>
-        <button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-6 py-2.5 rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap">
+        <button onClick={() => toast.info('Premium bundles — coming in the next update.')} className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-6 py-2.5 rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap">
           <Crown size={16} />
           View Premium Plan
         </button>

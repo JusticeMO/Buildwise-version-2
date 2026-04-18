@@ -25,6 +25,8 @@ import TenantMaintenance from '../components/tenant/tabs/TenantMaintenance';
 import TenantDocuments from '../components/tenant/tabs/TenantDocuments';
 import TenantExplore from '../components/tenant/tabs/TenantExplore';
 import TenantSettings from '../components/tenant/tabs/TenantSettings';
+import TenantGiveNotice from '../components/tenant/tabs/TenantGiveNotice';
+import TenantMarketplace from '../components/tenant/tabs/TenantMarketplace';
 
 const TenantDashboard = () => {
   const navigate = useNavigate();
@@ -63,6 +65,8 @@ const TenantDashboard = () => {
       case 'maintenance': return <TenantMaintenance />;
       case 'documents': return <TenantDocuments />;
       case 'explore': return <TenantExplore />;
+      case 'marketplace': return <TenantMarketplace />;
+      case 'notice': return <TenantGiveNotice />;
       case 'settings': return <TenantSettings />;
       default: return <TenantOverview />;
     }

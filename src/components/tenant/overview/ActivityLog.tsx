@@ -5,16 +5,19 @@ import { Button } from '@/components/ui/button';
 
 interface ActivityLogProps {
   lease: any;
+  onViewAll?: () => void;
 }
 
-const ActivityLog: React.FC<ActivityLogProps> = ({ lease }) => {
+const ActivityLog: React.FC<ActivityLogProps> = ({ lease, onViewAll }) => {
+  const rent = lease?.rentAmount || 25000;
+
   return (
     <div>
       <h3 className="text-lg font-medium mb-4">Recent Activity</h3>
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="p-4 flex justify-between items-center border-b">
           <h4 className="font-medium">Activity Log</h4>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={onViewAll}>
             View All
           </Button>
         </div>
@@ -26,7 +29,7 @@ const ActivityLog: React.FC<ActivityLogProps> = ({ lease }) => {
             </div>
             <div className="flex-1">
               <p>Rent payment confirmed</p>
-              <p className="text-sm text-muted-foreground">June 1, 2023 • KES {lease.rent_amount.toLocaleString()}</p>
+              <p className="text-sm text-muted-foreground">June 1, 2024 • KES {rent.toLocaleString()}</p>
             </div>
           </div>
           
@@ -35,8 +38,8 @@ const ActivityLog: React.FC<ActivityLogProps> = ({ lease }) => {
               <AlertCircle className="h-5 w-5 text-blue-600" />
             </div>
             <div className="flex-1">
-              <p>Water bill generated</p>
-              <p className="text-sm text-muted-foreground">June 15, 2023 • KES 1,200</p>
+              <p>Service bill generated</p>
+              <p className="text-sm text-muted-foreground">June 15, 2024 • KES 1,700</p>
             </div>
           </div>
           
@@ -46,7 +49,7 @@ const ActivityLog: React.FC<ActivityLogProps> = ({ lease }) => {
             </div>
             <div className="flex-1">
               <p>Rent reminder sent</p>
-              <p className="text-sm text-muted-foreground">June 28, 2023</p>
+              <p className="text-sm text-muted-foreground">June 28, 2024</p>
             </div>
           </div>
         </div>

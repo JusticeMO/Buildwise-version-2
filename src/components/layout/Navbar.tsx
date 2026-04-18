@@ -75,10 +75,13 @@ const Navbar = () => {
             {/* Logo */}
             <NavLink 
               to="/" 
-              className="text-xl font-bold flex items-center gap-2"
+              className="text-xl font-bold flex items-center gap-1.5 group"
             >
-              <span className="text-kenya-red">Jenga</span>
-              <span className="text-kenya-green">Safe</span>
+              <img src="/logo.png" alt="JengaSafe Logo" className="h-8 w-8 object-contain group-hover:scale-105 transition-transform" />
+              <div className="flex">
+                <span className="text-kenya-red">Jenga</span>
+                <span className="text-kenya-green">Safe</span>
+              </div>
             </NavLink>
 
             {/* Desktop Navigation */}

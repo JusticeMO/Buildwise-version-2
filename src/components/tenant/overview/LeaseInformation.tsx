@@ -20,7 +20,7 @@ const LeaseInformation: React.FC<LeaseInformationProps> = ({ lease, daysUntilExp
           <div>
             <h3 className="text-lg font-medium">Lease Information</h3>
             <p className="text-muted-foreground">
-              {lease.unit.property.title}, Unit {lease.unit.unit_number}
+              {lease.unit.property.title}, Unit {lease.unit.unitNumber}
             </p>
           </div>
           <Badge 
@@ -35,11 +35,11 @@ const LeaseInformation: React.FC<LeaseInformationProps> = ({ lease, daysUntilExp
           <div>
             <p className="text-sm text-muted-foreground mb-1">Lease Period</p>
             <p className="mb-4">
-              {new Date(lease.start_date).toLocaleDateString('en-GB', {
+              {new Date(lease.startDate).toLocaleDateString('en-GB', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
-              })} - {new Date(lease.end_date).toLocaleDateString('en-GB', {
+              })} - {new Date(lease.endDate).toLocaleDateString('en-GB', {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
@@ -47,10 +47,10 @@ const LeaseInformation: React.FC<LeaseInformationProps> = ({ lease, daysUntilExp
             </p>
             
             <p className="text-sm text-muted-foreground mb-1">Monthly Rent</p>
-            <p className="mb-4">KES {lease.rent_amount.toLocaleString()}</p>
+            <p className="mb-4">KES {lease.rentAmount.toLocaleString()}</p>
             
             <p className="text-sm text-muted-foreground mb-1">Security Deposit</p>
-            <p className="mb-4">KES {lease.deposit_amount ? lease.deposit_amount.toLocaleString() : 'N/A'}</p>
+            <p className="mb-4">KES {lease.depositAmount ? lease.depositAmount.toLocaleString() : 'N/A'}</p>
           </div>
           
           <div>

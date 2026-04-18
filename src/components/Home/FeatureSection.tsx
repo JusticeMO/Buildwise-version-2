@@ -2,15 +2,17 @@
 import React from 'react';
 import Card from '../shared/Card';
 import { cn } from '@/lib/utils';
-import { 
-  Shield, 
-  Clock, 
-  CreditCard, 
-  UserCheck, 
-  LineChart, 
-  Camera, 
-  BookOpen, 
-  Layers 
+import {
+  Shield,
+  Clock,
+  CreditCard,
+  UserCheck,
+  LineChart,
+  Camera,
+  BookOpen,
+  Layers,
+  Building2,
+  PieChart
 } from 'lucide-react';
 
 interface FeatureCardProps {
@@ -22,7 +24,7 @@ interface FeatureCardProps {
 }
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, className, delay = 0 }) => (
-  <Card 
+  <Card
     variant="outline"
     className={cn(
       'hover:border-primary/20 hover:shadow-md smooth-transition overflow-hidden group',
@@ -74,14 +76,19 @@ const FeatureSection = () => {
       description: "Release payments only when predefined project milestones are completed and verified by inspectors."
     },
     {
-      icon: <BookOpen size={24} />,
-      title: "Transparent Documentation",
-      description: "Access all project documentation, contracts, and agreements in one secure, transparent platform."
+      icon: <PieChart size={24} />,
+      title: "Land Owner Equity",
+      description: "Turn your land into long-term equity. Build, manage, and grow your real estate portfolio with full transparency."
     },
     {
       icon: <Layers size={24} />,
       title: "Material Sourcing",
       description: "Source quality construction materials at competitive prices through our network of verified suppliers."
+    },
+    {
+      icon: <Building2 size={24} />,
+      title: "Rental Property Management",
+      description: "Manage tenants, collect rent via M-Pesa, handle maintenance requests, and grow your property portfolio — all from one institutional-grade landlord dashboard."
     }
   ];
 
@@ -93,11 +100,11 @@ const FeatureSection = () => {
             Every feature you need to build with confidence
           </h2>
           <p className="text-muted-foreground opacity-0 animate-fade-in" style={{ animationDelay: '100ms' }}>
-            Our platform provides all the tools you need to manage your construction project 
+            Our platform provides all the tools you need to manage your construction project
             remotely with complete transparency and confidence.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <FeatureCard

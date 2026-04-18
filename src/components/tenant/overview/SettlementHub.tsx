@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Send, CreditCard, Clock, RefreshCw } from 'lucide-react';
+import { Send, CreditCard, Clock, RefreshCw, History } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
@@ -10,10 +10,10 @@ interface SettlementHubProps {
 
 const SettlementHub: React.FC<SettlementHubProps> = ({ lease }) => {
   const [phone, setPhone] = useState('');
-  const baseRent = lease?.rent_amount || 25000;
+  const baseRent = lease?.rentAmount || 25000;
   const serviceCharges = 1700;
   const totalDue = baseRent + serviceCharges;
-  const totalPaid = baseRent * 24; // mock: 2 years of payments
+  const totalPaid = 600000;
   const lastPayment = baseRent;
 
   const handlePay = () => {
@@ -29,7 +29,7 @@ const SettlementHub: React.FC<SettlementHubProps> = ({ lease }) => {
       {/* Settlement Hub */}
       <div className="bg-card rounded-xl border border-border p-5">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-sm italic">Settlement Hub</h3>
+          <h3 className="font-semibold text-sm">Settlement Hub</h3>
           <Send size={16} className="text-muted-foreground" />
         </div>
 
@@ -58,7 +58,7 @@ const SettlementHub: React.FC<SettlementHubProps> = ({ lease }) => {
 
       {/* Capital Registry */}
       <div className="bg-card rounded-xl border border-border p-5">
-        <h3 className="text-[10px] uppercase tracking-widest font-bold mb-3">Capital Registry</h3>
+        <h3 className="text-[10px] uppercase tracking-widest font-bold mb-3">Payment Summary</h3>
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold mb-1">Total Rent Paid</p>
         <p className="text-xl font-bold text-amber-600 mb-4">Ksh {totalPaid.toLocaleString()}</p>
 
@@ -69,9 +69,9 @@ const SettlementHub: React.FC<SettlementHubProps> = ({ lease }) => {
             <p className="text-sm text-amber-600">Ksh {(lastPayment / 1000).toFixed(0)}k</p>
           </div>
           <div className="border border-border rounded-lg p-3">
-            <RefreshCw size={14} className="text-muted-foreground mb-1" />
-            <p className="text-[10px] uppercase tracking-widest font-bold">Audit</p>
-            <p className="text-sm text-muted-foreground">4 entries</p>
+            <History size={14} className="text-muted-foreground mb-1" />
+            <p className="text-[10px] uppercase tracking-widest font-bold">History</p>
+            <p className="text-sm text-muted-foreground">24 entries</p>
           </div>
         </div>
       </div>

@@ -8,16 +8,16 @@ interface TenantProfileHeaderProps {
 }
 
 const TenantProfileHeader: React.FC<TenantProfileHeaderProps> = ({ lease }) => {
-  const tenantName = "John Tenant";
+  const tenantName = "demo tenant";
   const tenantEmail = "tenant@example.com";
-  const registryId = lease ? `JS-ALPHA-${String(lease.id).slice(0, 2).toUpperCase()}` : 'JS-ALPHA-01';
-  const unitNumber = lease?.unit?.unit_number || '3B';
+  const registryId = lease ? `JS-ALPHA-01` : 'JS-ALPHA-01';
+  const unitNumber = lease?.unit?.unitNumber || '3B';
 
   return (
     <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
       {/* Avatar */}
       <div className="h-14 w-14 rounded-full bg-accent flex items-center justify-center text-xl font-semibold text-muted-foreground border-2 border-border">
-        j
+        d
       </div>
 
       <div className="flex-1">

@@ -13,10 +13,10 @@ interface TenantSidebarProps {
 const TenantSidebar = ({ onLogout, onNavChange, activeTab }: TenantSidebarProps) => {
   const mainNavItems = [
     { id: 'overview', label: 'Dashboard', icon: <Home size={18} /> },
+    { id: 'notice', label: 'Give Notice', icon: <AlertOctagon size={18} /> },
     { id: 'payments', label: 'Payments', icon: <CreditCard size={18} /> },
     { id: 'history', label: 'Payment History', icon: <History size={18} /> },
     { id: 'messages', label: 'Messages', icon: <MessageSquare size={18} /> },
-    { id: 'chat', label: 'Tenant Chat', icon: <MessageCircle size={18} /> },
   ];
 
   const utilityNavItems = [
@@ -29,8 +29,8 @@ const TenantSidebar = ({ onLogout, onNavChange, activeTab }: TenantSidebarProps)
   ];
 
   const bottomNavItems = [
+    { id: 'marketplace', label: 'Explore Properties', icon: <Compass size={18} /> },
     { id: 'documents', label: 'Documents', icon: <FileText size={18} /> },
-    { id: 'explore', label: 'Explore', icon: <Compass size={18} /> },
     { id: 'settings', label: 'Settings', icon: <Settings size={18} /> },
   ];
 
@@ -53,9 +53,12 @@ const TenantSidebar = ({ onLogout, onNavChange, activeTab }: TenantSidebarProps)
   return (
     <div className="flex flex-col h-full bg-white">
       <div className="p-4 border-b">
-        <Link to="/" className="text-xl font-bold flex items-center gap-2">
-          <span className="text-kenya-red">Jenga</span>
-          <span className="text-kenya-green">Safe</span>
+        <Link to="/" className="text-xl font-bold flex items-center gap-1.5 group">
+          <img src="/logo.png" alt="JengaSafe Logo" className="h-7 w-7 object-contain group-hover:scale-105 transition-transform" />
+          <div className="flex">
+            <span className="text-kenya-red">Jenga</span>
+            <span className="text-kenya-green">Safe</span>
+          </div>
         </Link>
         <p className="text-xs text-muted-foreground mt-1">Tenant Portal</p>
       </div>

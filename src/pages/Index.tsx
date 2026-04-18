@@ -252,6 +252,98 @@ const Index = () => {
         
         <TestimonialSection />
         
+        {/* Land Owner Equity Section — Section 9 */}
+        <section className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+          <div className="container px-4">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <span className="inline-block bg-amber-500/20 text-amber-400 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
+                  For Property Investors & Landowners
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                  Turn Your Land Into<br />
+                  <span className="text-amber-400">Long-Term Equity</span>
+                </h2>
+                <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+                  JengaSafe bridges the gap between landowners and the rental economy. Whether you own 
+                  a single plot or a portfolio of properties, our platform helps you build, manage, and 
+                  grow your real estate equity with full transparency and institutional-grade tools.
+                </p>
+                <div className="space-y-4 mb-8">
+                  {[
+                    { title: 'Build-to-Rent Pipeline', desc: 'Finance and construct rental-ready units with verified NCA contractors, tracked milestone by milestone.' },
+                    { title: 'Smart Tenant Matching', desc: 'List vacant units on our marketplace and receive pre-vetted tenant applications instantly.' },
+                    { title: 'Full Rent Collection', desc: 'Automate rent collection via M-Pesa, track payments, and generate landlord reports in real time.' },
+                    { title: 'Maintenance Ecosystem', desc: 'Assign rated service providers to tenant requests directly from your dashboard — no middlemen.' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex gap-3">
+                      <div className="h-6 w-6 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                        <Shield size={14} className="text-amber-400" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm">{item.title}</p>
+                        <p className="text-gray-400 text-sm">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-4">
+                  <Link to="/landlord/login">
+                    <Button 
+                      size="lg" 
+                      className="bg-amber-500 hover:bg-amber-600 text-black font-semibold"
+                      icon={<ArrowRight size={18} />}
+                      iconPosition="right"
+                    >
+                      Landlord Portal
+                    </Button>
+                  </Link>
+                  <Link to="/about">
+                    <Button variant="outline" size="lg" className="border-gray-600 text-white hover:bg-gray-700">
+                      Learn More
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              <div className="hidden md:block">
+                <div className="bg-gray-700/40 rounded-2xl p-8 border border-gray-700 space-y-6">
+                  <h3 className="text-xl font-bold text-amber-400 mb-2">Landlord Dashboard Preview</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                      <p className="text-xs text-gray-400">Monthly Revenue</p>
+                      <p className="text-2xl font-bold mt-1">KES 425K</p>
+                      <p className="text-xs text-green-400 mt-1">+12% this month</p>
+                    </div>
+                    <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                      <p className="text-xs text-gray-400">Occupancy Rate</p>
+                      <p className="text-2xl font-bold mt-1">85%</p>
+                      <p className="text-xs text-green-400 mt-1">17/20 units</p>
+                    </div>
+                    <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                      <p className="text-xs text-gray-400">Active Tenants</p>
+                      <p className="text-2xl font-bold mt-1">50</p>
+                      <p className="text-xs text-gray-400 mt-1">Across 2 properties</p>
+                    </div>
+                    <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                      <p className="text-xs text-gray-400">Maintenance SLA</p>
+                      <p className="text-2xl font-bold mt-1">4.7★</p>
+                      <p className="text-xs text-amber-400 mt-1">Provider avg. rating</p>
+                    </div>
+                  </div>
+                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                    <p className="text-xs text-gray-400 mb-2">Recent Activity</p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between"><span>Rent payment — John Doe</span><span className="text-green-400">+KES 25,000</span></div>
+                      <div className="flex justify-between"><span>Maintenance assigned — Unit 5B</span><span className="text-amber-400">Plumber</span></div>
+                      <div className="flex justify-between"><span>New tenant inquiry</span><span className="text-blue-400">Unit 5A</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-kenya-red/10 to-kenya-green/10">
           <div className="container px-4">

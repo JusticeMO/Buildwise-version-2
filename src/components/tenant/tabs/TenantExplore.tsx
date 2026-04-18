@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Star, ExternalLink } from 'lucide-react';
+import { MapPin, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const nearbyPlaces = [

@@ -18,7 +18,7 @@ const KeyInfoCards: React.FC<KeyInfoCardsProps> = ({ lease, paymentStatus, forma
         <CardContent className="pt-6">
           <div className="flex flex-col">
             <h3 className="text-sm text-muted-foreground">Current Rent</h3>
-            <p className="text-2xl font-bold mt-1">KES {lease.rent_amount.toLocaleString()}</p>
+            <p className="text-2xl font-bold mt-1">KES {lease.rentAmount.toLocaleString()}</p>
             <div className="flex items-center mt-2">
               <p className="text-sm text-muted-foreground">Due: {formattedDueDate}</p>
               <Badge 

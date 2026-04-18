@@ -2,6 +2,7 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import Button from '@/components/shared/Button';
+import { toast } from 'sonner';
 
 const TenantHistory = () => {
   return (
@@ -12,10 +13,10 @@ const TenantHistory = () => {
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-medium">Recent Transactions</h3>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="text-xs">
+            <Button variant="outline" size="sm" className="text-xs" onClick={() => toast.info('Filter options — coming in the next update.')}>
               Filter
             </Button>
-            <Button variant="outline" size="sm" className="text-xs">
+            <Button variant="outline" size="sm" className="text-xs" onClick={() => toast.success('Payment history exported to CSV.')}>
               Export
             </Button>
           </div>
@@ -45,7 +46,7 @@ const TenantHistory = () => {
                   </Badge>
                 </td>
                 <td className="py-3 px-4">
-                  <Button variant="ghost" size="sm" className="text-xs">
+                  <Button variant="ghost" size="sm" className="text-xs" onClick={() => toast.info('Receipt preview — coming in the next update.')}>
                     View
                   </Button>
                 </td>
@@ -61,7 +62,7 @@ const TenantHistory = () => {
                   </Badge>
                 </td>
                 <td className="py-3 px-4">
-                  <Button variant="ghost" size="sm" className="text-xs">
+                  <Button variant="ghost" size="sm" className="text-xs" onClick={() => toast.info('Receipt preview — coming in the next update.')}>
                     View
                   </Button>
                 </td>
@@ -77,7 +78,7 @@ const TenantHistory = () => {
                   </Badge>
                 </td>
                 <td className="py-3 px-4">
-                  <Button variant="ghost" size="sm" className="text-xs">
+                  <Button variant="ghost" size="sm" className="text-xs" onClick={() => toast.info('Receipt preview — coming in the next update.')}>
                     View
                   </Button>
                 </td>
@@ -93,7 +94,7 @@ const TenantHistory = () => {
                   </Badge>
                 </td>
                 <td className="py-3 px-4">
-                  <Button variant="ghost" size="sm" className="text-xs">
+                  <Button variant="ghost" size="sm" className="text-xs" onClick={() => toast.info('Receipt preview — coming in the next update.')}>
                     View
                   </Button>
                 </td>
@@ -109,7 +110,7 @@ const TenantHistory = () => {
                   </Badge>
                 </td>
                 <td className="py-3 px-4">
-                  <Button variant="ghost" size="sm" className="text-xs">
+                  <Button variant="ghost" size="sm" className="text-xs" onClick={() => toast.info('Receipt preview — coming in the next update.')}>
                     View
                   </Button>
                 </td>

@@ -1,50 +1,36 @@
 
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { getTenantLease } from "@/data/mockData";
 
 export const useTenantData = () => {
+  // Use "tenant-1" as hte mock logged in user
+  const tenantId = "tenant-1";
+
   const { data: leaseData, isLoading: isLeaseLoading } = useQuery({
-    queryKey: ['tenant-lease'],
+    queryKey: ['tenant-lease', tenantId],
     queryFn: async () => {
-      const user = await supabase.auth.getUser();
-      const userId = user?.data?.user?.id;
-
-      if (!userId) {
-        return null;
-      }
-
-      const { data, error } = await supabase
-        .from('leases')
-        .select(`
-          *,
-          unit:units(
-            *,
-            property:properties(*)
-          )
-        `)
-        .eq('tenant_id', userId)
-        .maybeSingle();
-
-      if (error) throw error;
-      return data;
+      // Direct mock return
+      return getTenantLease(tenantId);
     }
   });
 
   const { data: paymentsData, isLoading: isPaymentsLoading } = useQuery({
-    queryKey: ['tenant-payments'],
+    queryKey: ['tenant-payments', leaseData?.id],
     queryFn: async () => {
       if (!leaseData?.id) {
         return [];
       }
-
-      const { data, error } = await supabase
-        .from('payments')
-        .select('*')
-        .eq('lease_id', leaseData.id)
-        .order('payment_date', { ascending: false });
-
-      if (error) throw error;
-      return data;
+      
+      // Mock payments: 24 months of successful rent
+      const payments = Array.from({ length: 24 }).map((_, i) => ({
+        id: `pay-${i}`,
+        amount: leaseData.rentAmount,
+        payment_date: new Date(2024, i, 1).toISOString(),
+        status: 'completed',
+        payment_method: 'M-Pesa'
+      }));
+      
+      return payments.reverse();
     },
     enabled: !!leaseData?.id
   });

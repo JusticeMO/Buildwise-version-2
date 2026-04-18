@@ -3,6 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Users, UserPlus, Calendar, Phone, Mail, Search, Home } from 'lucide-react';
 import Button from '@/components/shared/Button';
+import { toast } from 'sonner';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 
 const LandlordTenants = () => {
@@ -59,6 +60,7 @@ const LandlordTenants = () => {
             size="sm"
             icon={<UserPlus size={16} />}
             iconPosition="left"
+            onClick={() => toast.info('Tenant onboarding form — coming in the next update.')}
           >
             Add Tenant
           </Button>
@@ -255,7 +257,7 @@ const LandlordTenants = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <Button variant="outline" size="sm">View Profile</Button>
+                    <Button variant="outline" size="sm" onClick={() => toast.info(`Viewing profile for ${tenant.name}`)}>View Profile</Button>
                   </td>
                 </tr>
               ))}
