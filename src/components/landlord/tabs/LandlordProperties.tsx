@@ -16,7 +16,7 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
   const navigate = useNavigate();
   const [selectedTenant, setSelectedTenant] = React.useState(null);
   const [tenantDetailsOpen, setTenantDetailsOpen] = React.useState(false);
-  
+
   const properties = [
     { id: 1, name: 'Riverside Apartments', units: 12, occupiedUnits: 10, vacantUnits: 2, rentCollected: 250000, rentDue: 50000, tenants: 18 },
     { id: 2, name: 'Green Gardens Estate', units: 8, occupiedUnits: 7, vacantUnits: 1, rentCollected: 175000, rentDue: 25000, tenants: 12 },
@@ -58,8 +58,8 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Properties</h2>
-        <Button 
-          variant="secondary" 
+        <Button
+          variant="secondary"
           size="sm"
           onClick={handleAddProperty}
         >
@@ -81,7 +81,7 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
           </div>
           <p className="text-xs text-muted-foreground mt-4">Manage all your real estate</p>
         </Card>
-        
+
         <Card className="p-4">
           <div className="flex items-start justify-between">
             <div>
@@ -94,13 +94,13 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
           </div>
           <p className="text-xs text-muted-foreground mt-4">Across all properties</p>
         </Card>
-        
+
         <Card className="p-4">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Total Occupancy</p>
               <p className="text-2xl font-bold mt-1">
-                {Math.round((properties.reduce((sum, prop) => sum + prop.occupiedUnits, 0) / 
+                {Math.round((properties.reduce((sum, prop) => sum + prop.occupiedUnits, 0) /
                   properties.reduce((sum, prop) => sum + prop.units, 0)) * 100)}%
               </p>
             </div>
@@ -143,8 +143,8 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div 
-                          className="bg-green-500 h-2.5 rounded-full" 
+                        <div
+                          className="bg-green-500 h-2.5 rounded-full"
                           style={{ width: `${Math.round((property.occupiedUnits / property.units) * 100)}%` }}
                         ></div>
                       </div>
@@ -161,8 +161,8 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
       <Card className="p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Recent Tenants</h3>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="sm"
             onClick={handleAddTenant}
           >
@@ -189,29 +189,27 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
                   <TableCell>{tenant.property}</TableCell>
                   <TableCell>{tenant.unit}</TableCell>
                   <TableCell>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                      tenant.status === 'active' ? 'bg-green-100 text-green-800' :
-                      tenant.status === 'expiring' ? 'bg-amber-100 text-amber-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {tenant.status === 'active' ? 'Active' : 
-                       tenant.status === 'expiring' ? 'Expiring Soon' : 'Inactive'}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${tenant.status === 'active' ? 'bg-green-100 text-green-800' :
+                        tenant.status === 'expiring' ? 'bg-amber-100 text-amber-800' :
+                          'bg-red-100 text-red-800'
+                      }`}>
+                      {tenant.status === 'active' ? 'Active' :
+                        tenant.status === 'expiring' ? 'Expiring Soon' : 'Inactive'}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                      tenant.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' :
-                      tenant.paymentStatus === 'pending' ? 'bg-blue-100 text-blue-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {tenant.paymentStatus === 'paid' ? 'Paid' : 
-                       tenant.paymentStatus === 'pending' ? 'Pending' : 'Overdue'}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${tenant.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' :
+                        tenant.paymentStatus === 'pending' ? 'bg-blue-100 text-blue-800' :
+                          'bg-red-100 text-red-800'
+                      }`}>
+                      {tenant.paymentStatus === 'paid' ? 'Paid' :
+                        tenant.paymentStatus === 'pending' ? 'Pending' : 'Overdue'}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => handleViewTenant(tenant.id)}
                     >
                       <Eye size={16} className="mr-1" /> View Details
@@ -249,9 +247,9 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
                   <TableCell>KES {property.rentCollected.toLocaleString()}</TableCell>
                   <TableCell className="text-red-600">KES {property.rentDue.toLocaleString()}</TableCell>
                   <TableCell>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       onClick={() => handleViewDetails(property.id, property.name)}
                     >
                       View Details <ArrowRight size={14} className="ml-1" />
@@ -287,26 +285,24 @@ const LandlordProperties = ({ onViewPropertyDetails }) => {
                 <div>
                   <p className="text-sm text-muted-foreground">Status</p>
                   <p>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                      selectedTenant.status === 'active' ? 'bg-green-100 text-green-800' :
-                      selectedTenant.status === 'expiring' ? 'bg-amber-100 text-amber-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {selectedTenant.status === 'active' ? 'Active' : 
-                       selectedTenant.status === 'expiring' ? 'Expiring Soon' : 'Inactive'}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${selectedTenant.status === 'active' ? 'bg-green-100 text-green-800' :
+                        selectedTenant.status === 'expiring' ? 'bg-amber-100 text-amber-800' :
+                          'bg-red-100 text-red-800'
+                      }`}>
+                      {selectedTenant.status === 'active' ? 'Active' :
+                        selectedTenant.status === 'expiring' ? 'Expiring Soon' : 'Inactive'}
                     </span>
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Payment Status</p>
                   <p>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                      selectedTenant.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' :
-                      selectedTenant.paymentStatus === 'pending' ? 'bg-blue-100 text-blue-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {selectedTenant.paymentStatus === 'paid' ? 'Paid' : 
-                       selectedTenant.paymentStatus === 'pending' ? 'Pending' : 'Overdue'}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${selectedTenant.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' :
+                        selectedTenant.paymentStatus === 'pending' ? 'bg-blue-100 text-blue-800' :
+                          'bg-red-100 text-red-800'
+                      }`}>
+                      {selectedTenant.paymentStatus === 'paid' ? 'Paid' :
+                        selectedTenant.paymentStatus === 'pending' ? 'Pending' : 'Overdue'}
                     </span>
                   </p>
                 </div>

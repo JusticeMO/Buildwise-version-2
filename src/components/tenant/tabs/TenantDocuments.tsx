@@ -12,36 +12,48 @@ const mockDocuments = [
 ];
 
 const TenantDocuments = () => {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Documents</h2>
-        <p className="text-muted-foreground text-sm">Access your lease documents, receipts and reports</p>
-      </div>
+  const [downloading, setDownloading] = useState<string | null>(null);
 
-      <div className="bg-white rounded-lg border border-border divide-y">
-        {mockDocuments.map((doc, idx) => (
-          <div key={idx} className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-3">
-              <FileText size={20} className="text-primary" />
-              <div>
-                <p className="font-medium text-sm">{doc.name}</p>
-                <p className="text-xs text-muted-foreground">{doc.type} · {doc.size} · {doc.date}</p>
+  const handleDownload = (name: string) => {
+    setDownloading(name);
+    toast.info(`Preparing ${name} for secure transmission...`);
+    setTimeout(() => {
+      toast.success(`${name} successfully synchronized.`);
+      setDownloading(null);
+    }, 1500);
+  };
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex justify-between items-end">
+        <div>
+          <h2 className="text-2xl font-bold">Documents</h2>
+          <p className="text-muted-foreground text-sm">Access your lease documents, receipts and reports</p>
+        </div>
+
+        <div className="bg-white rounded-xl border border-border divide-y shadow-sm overflow-hidden">
+          {mockDocuments.map((doc, idx) => (
+            <div key={idx} className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-3">
+                <FileText size={20} className="text-primary" />
+                <div>
+                  <p className="font-medium text-sm">{doc.name}</p>
+                  <p className="text-xs text-muted-foreground">{doc.type} · {doc.size} · {doc.date}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={() => toast.info('Preview coming soon')} className="p-2 hover:bg-secondary/50 rounded-lg transition-colors">
+                  <Eye size={16} className="text-muted-foreground" />
+                </button>
+                <button onClick={() => toast.info('Download coming soon')} className="p-2 hover:bg-secondary/50 rounded-lg transition-colors">
+                  <Download size={16} className="text-muted-foreground" />
+                </button>
               </div>
             </div>
-            <div className="flex gap-2">
-              <button onClick={() => toast.info('Preview coming soon')} className="p-2 hover:bg-secondary/50 rounded-lg transition-colors">
-                <Eye size={16} className="text-muted-foreground" />
-              </button>
-              <button onClick={() => toast.info('Download coming soon')} className="p-2 hover:bg-secondary/50 rounded-lg transition-colors">
-                <Download size={16} className="text-muted-foreground" />
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
+      );
 };
 
-export default TenantDocuments;
+      export default TenantDocuments;

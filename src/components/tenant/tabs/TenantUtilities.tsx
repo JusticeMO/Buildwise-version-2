@@ -1,7 +1,12 @@
-
-import React from 'react';
-import { Home, Settings2, Sparkles, ShieldCheck, UtensilsCrossed, Search, Truck, MonitorSmartphone, UserRound, Bell, Crown } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  Home, Settings2, Sparkles, ShieldCheck, UtensilsCrossed, Search, Truck, 
+  MonitorSmartphone, UserRound, Bell, Crown, Plus, Zap
+} from 'lucide-react';
 import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+import Button from '@/components/shared/Button';
+import AddVendorDialog from '@/components/shared/AddVendorDialog';
 
 interface UtilityCategoryProps {
   icon: React.ReactNode;
@@ -13,10 +18,10 @@ interface UtilityCategoryProps {
 const UtilityCategory = ({ icon, title, tags, onClick }: UtilityCategoryProps) => (
   <button
     onClick={onClick}
-    className="flex flex-col items-start p-5 bg-white rounded-xl border border-border hover:shadow-md hover:border-primary/30 transition-all text-left"
+    className="flex flex-col items-start p-5 bg-white rounded-xl border border-border hover:shadow-md hover:border-primary/30 transition-all text-left group"
   >
-    <div className="p-2 rounded-lg bg-secondary/30 mb-3">{icon}</div>
-    <h3 className="font-semibold text-sm">{title}</h3>
+    <div className="p-2 rounded-lg bg-secondary/30 group-hover:bg-primary/10 transition-colors mb-3">{icon}</div>
+    <h3 className="font-semibold text-sm group-hover:text-primary transition-colors">{title}</h3>
     <p className="text-xs text-muted-foreground uppercase tracking-wide mt-1">{tags}</p>
   </button>
 );
@@ -40,32 +45,43 @@ const TenantUtilities = ({ onNavigate }: TenantUtilitiesProps) => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Premium Banner */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl p-6 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-6 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
         <div>
-          <p className="text-xs uppercase tracking-widest text-amber-400 font-semibold mb-1">Smart Layer Engine</p>
-          <h2 className="text-xl sm:text-2xl font-bold">Your Personalized Bundles</h2>
-          <p className="text-sm text-gray-300 mt-1">Bundle your utilities and save. Premium tenants get exclusive discounts.</p>
+          <Badge className="bg-amber-400 text-black border-none font-bold text-[10px] mb-2">SMART LAYER</Badge>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Personalized Ecosystem Bundles</h2>
+          <p className="text-sm text-slate-400 mt-1 max-w-lg">Connect multiple utilities under a single settlement layer and save.</p>
         </div>
-        <button onClick={() => toast.info('Premium bundles — coming in the next update.')} className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-6 py-2.5 rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap">
-          <Crown size={16} />
-          View Premium Plan
+        <button onClick={() => toast.info('Premium bundles activation coming soon.')} className="bg-white text-slate-900 hover:bg-slate-100 font-bold px-6 py-2.5 rounded-lg transition-all flex items-center gap-2 whitespace-nowrap">
+          <Crown size={16} className="text-amber-500" />
+          Activate Premium
         </button>
       </div>
 
       {/* Regional Service Registry */}
       <div>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
           <div>
             <h3 className="text-lg font-bold">Regional Service Registry</h3>
-            <p className="text-sm text-muted-foreground">Available utilities are curated specifically for your property region by your Landlord and JengaSafe administrators.</p>
+            <p className="text-sm text-muted-foreground">Available utilities curated specifically for your property region.</p>
           </div>
-          <div className="flex items-center gap-3 text-sm">
-            <span className="text-primary font-medium">Westlands Region</span>
-            <span className="flex items-center gap-1 text-amber-600 font-medium">
-              <ShieldCheck size={14} /> Admin Curated
-            </span>
+          
+          <div className="flex items-center gap-3">
+            <AddVendorDialog 
+              trigger={
+                <Button variant="outline" className="flex items-center gap-2 text-primary border-primary/20 hover:bg-primary/5">
+                  <Plus size={16} /> Recommend Vendor
+                </Button>
+              }
+            />
+            <div className="hidden sm:flex items-center gap-1.5 text-xs bg-slate-100 px-3 py-1.5 rounded-full border">
+              <span className="font-bold text-slate-700">Westlands Region</span>
+              <div className="w-1 h-1 rounded-full bg-slate-400"></div>
+              <span className="flex items-center gap-1 text-primary font-bold italic">
+                <ShieldCheck size={12} /> Curated
+              </span>
+            </div>
           </div>
         </div>
 

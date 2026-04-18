@@ -79,8 +79,8 @@ const LandlordOverview = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Overview</h2>
         <div className="flex items-center gap-4">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="sm"
             icon={<Building size={16} />}
             iconPosition="left"
@@ -105,7 +105,7 @@ const LandlordOverview = () => {
           </div>
           <p className="text-xs text-muted-foreground mt-4">{totalUnits} units total</p>
         </Card>
-        
+
         <Card className="p-4">
           <div className="flex items-start justify-between">
             <div>
@@ -118,7 +118,7 @@ const LandlordOverview = () => {
           </div>
           <p className="text-xs text-muted-foreground mt-4">{totalOccupied} of {totalUnits} units occupied</p>
         </Card>
-        
+
         <Card className="p-4">
           <div className="flex items-start justify-between">
             <div>
@@ -131,7 +131,7 @@ const LandlordOverview = () => {
           </div>
           <p className="text-xs text-green-600 mt-4">+12% from last month</p>
         </Card>
-        
+
         <Card className="p-4">
           <div className="flex items-start justify-between">
             <div>
@@ -194,15 +194,14 @@ const LandlordOverview = () => {
         <div className="space-y-4">
           {recentActivities.map((activity) => (
             <div key={activity.id} className="flex items-start gap-3 border-b pb-4">
-              <div className={`p-2 rounded-full ${
-                activity.status === 'success' ? 'bg-green-100' : 
-                activity.status === 'pending' ? 'bg-amber-100' : 'bg-red-100'
-              }`}>
-                {activity.status === 'success' ? 
-                  <CreditCard className="text-green-600" size={16} /> : 
-                  activity.status === 'pending' ? 
-                  <Clock className="text-amber-600" size={16} /> :
-                  <AlertTriangle className="text-red-600" size={16} />
+              <div className={`p-2 rounded-full ${activity.status === 'success' ? 'bg-green-100' :
+                  activity.status === 'pending' ? 'bg-amber-100' : 'bg-red-100'
+                }`}>
+                {activity.status === 'success' ?
+                  <CreditCard className="text-green-600" size={16} /> :
+                  activity.status === 'pending' ?
+                    <Clock className="text-amber-600" size={16} /> :
+                    <AlertTriangle className="text-red-600" size={16} />
                 }
               </div>
               <div className="flex-1">
@@ -210,10 +209,9 @@ const LandlordOverview = () => {
                 <div className="flex items-center justify-between mt-1">
                   <p className="text-xs text-muted-foreground">{activity.date}</p>
                   {activity.amount && (
-                    <p className={`text-xs ${
-                      activity.status === 'success' ? 'text-green-600' : 
-                      activity.status === 'danger' ? 'text-red-600' : ''
-                    }`}>KES {activity.amount.toLocaleString()}</p>
+                    <p className={`text-xs ${activity.status === 'success' ? 'text-green-600' :
+                        activity.status === 'danger' ? 'text-red-600' : ''
+                      }`}>KES {activity.amount.toLocaleString()}</p>
                   )}
                 </div>
               </div>
@@ -295,8 +293,8 @@ const LandlordOverview = () => {
               <Button variant="outline" className="flex-1" onClick={() => setShowAddDialog(false)}>
                 Cancel
               </Button>
-              <Button 
-                variant="primary" 
+              <Button
+                variant="primary"
                 className="flex-1"
                 icon={<Plus size={16} />}
                 iconPosition="left"

@@ -12,6 +12,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import ProjectCreate from "./pages/ProjectCreate";
 import Contractors from "./pages/Contractors";
 import Furniture from "./pages/Furniture";
@@ -94,6 +95,7 @@ const App = () => (
               <Route path="/vendor-application" element={<PrivateRoute><VendorApplication /></PrivateRoute>} />
               <Route path="/tenant/dashboard" element={<PrivateRoute><TenantDashboard /></PrivateRoute>} />
               <Route path="/landlord/dashboard" element={<PrivateRoute><LandlordDashboard /></PrivateRoute>} />
+              <Route path="/admin/dashboard" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
               <Route path="/financing" element={<PrivateRoute><BankFinancing /></PrivateRoute>} />
               <Route path="/mortgage-calculator" element={<PrivateRoute><MortgageCalculator /></PrivateRoute>} />
               <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />

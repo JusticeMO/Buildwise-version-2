@@ -98,6 +98,14 @@ export interface PermissionSet {
   canManageUtilities: boolean;
 }
 
+export interface CustomRole {
+  id: string;
+  name: string;
+  description: string;
+  permissions: PermissionSet;
+  isDefault: boolean;
+}
+
 export interface TeamMember {
   id: string;
   name: string;
@@ -189,6 +197,142 @@ export const updateMemberPermissions = (memberId: string, permissions: Permissio
 export const removeTeamMember = (memberId: string) => {
   _teamMembers = _teamMembers.filter(m => m.id !== memberId);
 };
+
+// ─── Custom Role Management ──────────────────────────────────────────────────
+
+let _customRoles: CustomRole[] = [
+  {
+    id: 'role-owner',
+    name: 'Owner',
+    description: 'Full administrative access to all property features.',
+    isDefault: true,
+    permissions: {
+      canViewOverview: true,
+      canManageProperties: true,
+      canManageTenants: true,
+      canManageMaintenance: true,
+      canManagePayments: true,
+      canManageMessages: true,
+      canViewReports: true,
+      canManageTeam: true,
+      canManageUtilities: true,
+    }
+  },
+  {
+    id: 'role-manager',
+    name: 'Property Manager',
+    description: 'Day-to-day operations and tenant management.',
+    isDefault: true,
+    permissions: {
+      canViewOverview: true,
+      canManageProperties: true,
+      canManageTenants: true,
+      canManageMaintenance: true,
+      canManagePayments: true,
+      canManageMessages: true,
+      canViewReports: true,
+      canManageTeam: false,
+      canManageUtilities: true,
+    }
+  },
+  {
+    id: 'role-maintenance',
+    name: 'Maintenance Staff',
+    description: 'Restricted access only to maintenance and messaging.',
+    isDefault: true,
+    permissions: {
+      canViewOverview: false,
+      canManageProperties: false,
+      canManageTenants: false,
+      canManageMaintenance: true,
+      canManagePayments: false,
+      canManageMessages: true,
+      canViewReports: false,
+      canManageTeam: false,
+      canManageUtilities: false,
+    }
+  }
+];
+
+export const getCustomRoles = () => [..._customRoles];
+
+export const addCustomRole = (role: Omit<CustomRole, 'id' | 'isDefault'>) => {
+  const newRole: CustomRole = {
+    ...role,
+    id: `role-${Date.now()}`,
+    isDefault: false,
+  };
+  _customRoles = [..._customRoles, newRole];
+  return newRole;
+};
+
+export const removeCustomRole = (roleId: string) => {
+  _customRoles = _customRoles.filter(r => r.id !== roleId || r.isDefault);
+};
+
+// ─── Utility Ecosystem Centralized Data ──────────────────────────────────────
+
+export interface UtilityProvider {
+  id: string;
+  name: string;
+  rating: number;
+  category: string;
+  categoryId: string;
+  location: string;
+  phone: string;
+  hours: string;
+  description: string;
+  verified: boolean;
+  isRecommended: boolean;
+  isHidden: boolean;
+}
+
+let _utilityProviders: UtilityProvider[] = [
+  // Home Essentials
+  { id: 'up-1', name: 'Safaricom Home Fibre', rating: 4.5, category: 'Internet', categoryId: 'utility-home', location: 'Westlands', phone: '+254 722 000 000', hours: '24/7', description: 'High-speed fiber internet with packages starting from KES 2,999/month.', verified: true, isRecommended: true, isHidden: false },
+  { id: 'up-2', name: 'Kenya Power', rating: 3.8, category: 'Electricity', categoryId: 'utility-home', location: 'Nationwide', phone: '+254 203 201 000', hours: '8AM-5PM', description: 'National electricity provider. Token purchases and outage reporting.', verified: true, isRecommended: false, isHidden: false },
+  { id: 'up-3', name: 'Nairobi Water', rating: 3.5, category: 'Water', categoryId: 'utility-home', location: 'Nairobi', phone: '+254 20 272 2000', hours: '8AM-5PM', description: 'Municipal water supply and billing services.', verified: true, isRecommended: false, isHidden: false },
+  
+  // Maintenance
+  { id: 'up-4', name: 'FixIt Kenya', rating: 4.7, category: 'General Repairs', categoryId: 'utility-maintenance', location: 'Westlands', phone: '+254 733 100 200', hours: '7AM-7PM', description: 'Professional handyman services for all home repairs.', verified: true, isRecommended: true, isHidden: false },
+  { id: 'up-5', name: 'PipeMasters Plumbing', rating: 4.4, category: 'Plumbing', categoryId: 'utility-maintenance', location: 'Kilimani', phone: '+254 700 300 400', hours: '24/7', description: 'Emergency and scheduled plumbing services.', verified: true, isRecommended: true, isHidden: false },
+  
+  // Cleaning
+  { id: 'up-6', name: 'Pristine Cleaners', rating: 4.8, category: 'Deep Clean', categoryId: 'utility-cleaning', location: 'Westlands', phone: '+254 720 111 222', hours: '7AM-6PM', description: 'Professional deep cleaning for apartments and offices.', verified: true, isRecommended: true, isHidden: false },
+  { id: 'up-7', name: 'FreshSofa Kenya', rating: 4.5, category: 'Sofa Washing', categoryId: 'utility-cleaning', location: 'Lavington', phone: '+254 733 222 333', hours: '8AM-5PM', description: 'Upholstery and carpet cleaning specialists.', verified: true, isRecommended: false, isHidden: false },
+  
+  // Security
+  { id: 'up-8', name: 'SecureHome KE', rating: 4.6, category: 'CCTV', categoryId: 'utility-security', location: 'Westlands', phone: '+254 722 600 700', hours: '24/7', description: 'CCTV installation and monitoring services for residential properties.', verified: true, isRecommended: true, isHidden: false },
+  { id: 'up-9', name: 'G4S Kenya', rating: 4.4, category: 'Security Systems', categoryId: 'utility-security', location: 'Nationwide', phone: '+254 20 699 0000', hours: '24/7', description: 'Comprehensive security solutions including alarms and patrols.', verified: true, isRecommended: true, isHidden: false },
+];
+
+export const getUtilityProviders = () => [..._utilityProviders];
+
+export const updateUtilityProvider = (providerId: string, updates: Partial<UtilityProvider>) => {
+  _utilityProviders = _utilityProviders.map(p => 
+    p.id === providerId ? { ...p, ...updates } : p
+  );
+};
+
+export const addUtilityProvider = (provider: Omit<UtilityProvider, 'id'>) => {
+  const newProvider: UtilityProvider = {
+    rating: 0,
+    verified: false,
+    isRecommended: false,
+    isHidden: false,
+    ...provider,
+    id: `up-${Date.now()}`,
+  };
+  _utilityProviders = [..._utilityProviders, newProvider];
+  return newProvider;
+};
+
+export const deleteUtilityProvider = (providerId: string) => {
+  _utilityProviders = _utilityProviders.filter(p => p.id !== providerId);
+};
+
+export const getUtilityProvidersByCategory = (categoryId: string) => 
+  _utilityProviders.filter(p => p.categoryId === categoryId && !p.isHidden);
 
 // ─── Tenant Marketplace Access ───────────────────────────────────────────────
 

@@ -22,6 +22,7 @@ import LandlordMessages from '../components/landlord/tabs/LandlordMessages';
 import LandlordComplaints from '../components/landlord/tabs/LandlordComplaints';
 import LandlordTeam from '../components/landlord/tabs/LandlordTeam';
 import LandlordUtilities from '../components/landlord/tabs/LandlordUtilities';
+import LandlordSettings from '../components/landlord/tabs/LandlordSettings';
 
 // Placeholder component for tabs still under development
 const PlaceholderTab = ({ title }: { title: string }) => (
@@ -37,7 +38,7 @@ const LandlordDashboard = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('overview');
   const [drawerOpen, setDrawerOpen] = useState(false);
-  
+
   // Mocking "Active User Selection" for RBAC testing
   // team-1: Owner (Full Access)
   // team-3: Maintenance (Restricted Access)
@@ -74,22 +75,22 @@ const LandlordDashboard = () => {
       else setActiveTab('settings');
     }
   }, [activeUserId, activeTab, perms]);
-  
+
   const handleLogout = () => {
     toast.success("Logged out successfully");
     navigate('/landlord/login');
   };
-  
+
   const handlePropertyDetails = (propertyName: string) => {
     setActiveTab('property-details');
-    navigate('/landlord/dashboard', { 
+    navigate('/landlord/dashboard', {
       state: { activeTab: 'property-details', property: propertyName },
-      replace: true 
+      replace: true
     });
   };
-  
+
   const renderTabContent = () => {
-    switch(activeTab) {
+    switch (activeTab) {
       case 'overview': return perms.canViewOverview ? <LandlordOverview /> : <PlaceholderTab title="Dashboard Restricted" />;
       case 'properties': return perms.canManageProperties ? <LandlordProperties onViewPropertyDetails={handlePropertyDetails} /> : <PlaceholderTab title="Access Denied" />;
       case 'tenants': return perms.canManageTenants ? <LandlordTenants /> : <PlaceholderTab title="Access Denied" />;
@@ -102,11 +103,11 @@ const LandlordDashboard = () => {
       case 'utilities': return perms.canManageUtilities ? <LandlordUtilities /> : <PlaceholderTab title="Access Denied" />;
       case 'team': return perms.canManageTeam ? <LandlordTeam /> : <PlaceholderTab title="Access Denied" />;
       case 'documents': return <PlaceholderTab title="Documents" />;
-      case 'settings': return <PlaceholderTab title="Settings" />;
+      case 'settings': return <LandlordSettings />;
       default: return <LandlordOverview />;
     }
   };
-  
+
   return (
     <div className="min-h-screen flex">
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
@@ -117,28 +118,28 @@ const LandlordDashboard = () => {
         </div>
         <DrawerContent className="bg-white p-0">
           <div className="h-[80vh] overflow-auto">
-            <LandlordSidebar 
-              onLogout={handleLogout} 
+            <LandlordSidebar
+              onLogout={handleLogout}
               onNavChange={(tab) => {
                 setActiveTab(tab);
                 setDrawerOpen(false);
-              }} 
-              activeTab={activeTab} 
+              }}
+              activeTab={activeTab}
             />
           </div>
         </DrawerContent>
       </Drawer>
-      
+
       <div className="hidden lg:block w-64 bg-white border-r min-h-screen">
         <LandlordSidebar onLogout={handleLogout} onNavChange={setActiveTab} activeTab={activeTab} />
       </div>
-      
+
       <div className="flex-1 bg-secondary/10">
         <header className="bg-white shadow-sm py-4 px-6 sticky top-0 z-30">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-xl font-bold flex items-center gap-2">
-                Landlord Portal 
+                Landlord Portal
                 <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full text-slate-500 font-bold border border-slate-200">
                   INSTITUTIONAL v2.0
                 </span>
@@ -147,12 +148,12 @@ const LandlordDashboard = () => {
                 Active Environment: <span className="font-bold text-slate-700">Production</span>
               </p>
             </div>
-            
+
             <div className="flex items-center gap-6">
               {/* RBAC Tester Toolkit */}
               <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-slate-50 border border-slate-200 rounded-full">
                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">View As:</span>
-                <select 
+                <select
                   className="bg-transparent text-xs font-bold focus:outline-none cursor-pointer"
                   value={activeUserId}
                   onChange={(e) => {
@@ -218,7 +219,7 @@ const LandlordDashboard = () => {
                     </div>
                   </DialogContent>
                 </Dialog>
-                
+
                 <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setActiveTab('settings')}>
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
                     <UserCircle size={20} />
@@ -233,7 +234,7 @@ const LandlordDashboard = () => {
             </div>
           </div>
         </header>
-        
+
         <div className="p-4 sm:p-6 min-h-[calc(100vh-80px)]">
           {renderTabContent()}
         </div>

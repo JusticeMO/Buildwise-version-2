@@ -14,6 +14,8 @@ import SupplierCard from '@/components/contractors/SupplierCard';
 import SearchFilters from '@/components/contractors/SearchFilters';
 import ContactModal from '@/components/contractors/ContactModal';
 import MultiSelectActionBar from '@/components/contractors/MultiSelectActionBar';
+import AddVendorDialog from '@/components/shared/AddVendorDialog';
+import { Plus } from 'lucide-react';
 
 // Import data and types
 import { mockContractors, getUniqueLocations as getContractorLocations, getUniqueSpecializations as getContractorSpecializations } from '@/data/contractors';
@@ -153,9 +155,18 @@ const Contractors = () => {
           {/* Page Header */}
           <div className="text-center max-w-3xl mx-auto mb-8">
             <h1 className="text-3xl font-bold mb-4">Find Verified Service Providers</h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-6">
               Connect with pre-vetted, reliable contractors and suppliers in Kenya who can bring your construction project to life
             </p>
+            <div className="flex justify-center">
+              <AddVendorDialog 
+                trigger={
+                  <Button variant="outline" className="flex items-center gap-2 border-primary text-primary hover:bg-primary/5">
+                    <Plus size={16} /> Partner Your Business
+                  </Button>
+                }
+              />
+            </div>
           </div>
           
           {/* Tabs Navigation */}

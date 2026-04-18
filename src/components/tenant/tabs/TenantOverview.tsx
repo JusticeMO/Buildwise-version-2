@@ -34,7 +34,7 @@ const TenantOverview: React.FC<TenantOverviewProps> = ({ onNavigate }) => {
           <TenantProfileHeader lease={lease} />
           <PropertyHero lease={lease} />
           <PropertyDetailsRow lease={lease} />
-          
+
           {/* Give Notice Banner */}
           <div className="bg-foreground rounded-xl p-6 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -48,7 +48,7 @@ const TenantOverview: React.FC<TenantOverviewProps> = ({ onNavigate }) => {
                 </p>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => onNavigate?.('notice')}
               className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity shrink-0"
             >
